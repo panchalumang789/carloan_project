@@ -1,24 +1,26 @@
 const router = require("express").Router();
-const dbConnect = require("../config/db.connection");
 
+const carRoutes = router;
 const carsMiddleware = require("../middleware/cars.middleware");
 
-router.get("/carCompany", carsMiddleware.getCarmakers, async (req, res) => {
-  res.send();
+carRoutes.use(carsMiddleware.createTable);
+
+carRoutes.get("/carCompany", carsMiddleware.getCarmakers, async (req, res) => {
+  res.status(200).send(res.locals.carMakers);
 });
 
-router.get("/cars", carsMiddleware.getCars, async (req, res) => {
-  res.send();
+carRoutes.get("/cars", carsMiddleware.getCars, async (req, res) => {
+  res.status(200).send(res.locals.cars);
 });
 
-router.post("/cars", carsMiddleware.addCar, async (req, res) => {
+carRoutes.post("/cars", carsMiddleware.addCar, async (req, res) => {
   res
     .status(200)
-    .send(`${req.body.make} '${req.body.modeltype}' added Successfully.`);
+    .send(`${req.body.make} '${req.body.modeltype}' added successfully.`);
 });
 
-router.delete("/cars", carsMiddleware.deleteCar, async (req, res) => {
-  res.status(200).send(`${req.body.modeltype} deleted Successfully.`);
+carRoutes.delete("/cars/:id", carsMiddleware.deleteCar, async (req, res) => {
+  res.status(200).send("Car deleted successfully.");
 });
 
-module.exports = router;
+module.exports = carRoutes;

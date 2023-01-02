@@ -2,14 +2,35 @@ const dbConnect = require("../config/db.connection");
 const carTable = require("../models/car");
 
 /**
+ * create cars table
+ */
+const createTable = (req, res, next) => {
+  carTable
+    .then((result) => {
+      if (result.command !== "CREATE") {
+        next({
+          error: { status: 500, message: "Something is wrong!", error: result },
+        });
+      } else next();
+    })
+    .catch((error) => {
+      next({
+        error: { status: 500, message: "Something is wrong!", error: error },
+      });
+    });
+};
+
+/**
  *
  * @returns all car companies name
  */
 const getCarmakers = async (req, res, next) => {
-  await carTable;
-  dbConnect.query("SELECT make FROM cars WHERE", (error, result) => {
+  dbConnect.query("SELECT DISTINCT make FROM cars", (error, result) => {
     if (error) next({ error: { status: 404, message: "No car maker found!" } });
-    else next();
+    else {
+      res.locals.carMakers = result.rows;
+      next();
+    }
   });
 };
 
@@ -18,14 +39,13 @@ const getCarmakers = async (req, res, next) => {
  * @return all cars details
  */
 const getCars = async (req, res, next) => {
-  await carTable;
-  dbConnect.query(
-    "SELECT make,model,production_year,model_type,image FROM cars WHERE",
-    (error, result) => {
-      if (error) next({ error: { status: 404, message: "Cars not found!" } });
-      else next();
+  dbConnect.query("SELECT * FROM cars", (error, result) => {
+    if (error) next({ error: { status: 404, message: "Cars not found!" } });
+    else {
+      res.locals.cars = result.rows;
+      next();
     }
-  );
+  });
 };
 
 /**
@@ -33,7 +53,6 @@ const getCars = async (req, res, next) => {
  * @return add new car data
  */
 const addCar = async (req, res, next) => {
-  await carTable;
   dbConnect.query(
     `INSERT INTO cars (make, model, production_year, model_type,image)
     VALUES('${req.body.make}','${req.body.model}', ARRAY [${req.body.productionyear}],'${req.body.modeltype}','${req.body.image}')`,
@@ -54,7 +73,6 @@ const addCar = async (req, res, next) => {
  * @return delete car data by id
  */
 const deleteCar = async (req, res, next) => {
-  await carTable;
   dbConnect.query(
     `DELETE FROM cars WHERE id=${req.params.id}`,
     (error, result) => {
@@ -71,4 +89,4 @@ const deleteCar = async (req, res, next) => {
   );
 };
 
-module.exports = { getCarmakers, getCars, addCar, deleteCar };
+module.exports = { createTable, getCarmakers, getCars, addCar, deleteCar };

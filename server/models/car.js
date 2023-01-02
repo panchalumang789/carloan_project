@@ -1,5 +1,7 @@
 const dbConnect = require("../config/db.connection");
 
+// updated_at TIMESTAMPTZ DEFAULT (CURRENT_TIMESTAMP())
+
 const carTable = dbConnect
   .query(
     `CREATE TABLE IF NOT EXISTS cars (

@@ -1,17 +1,25 @@
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
 require("dotenv").config();
 
 const carRoutes = require("./routes/car.routes");
+const userRoutes = require("./routes/user.routes");
+const loanRoutes = require("./routes/loan.routes");
 
-app.use(express.json());
+app.use(bodyParser.json());
 
-app.use(carRoutes);
+app.use(carRoutes, userRoutes, loanRoutes);
 
 // Error handler from middleware
 app.use((error, req, res, next) => {
-  console.log(error);
-  res.status(error.status || 500).send({ message: error.message });
+  if (error.error.detail) {
+    res.status(error.error.status || 500).send({ message: error.error.detail });
+  } else {
+    res
+      .status(error.error.status || 500)
+      .send({ message: error.error.message });
+  }
 });
 
 // Running server
