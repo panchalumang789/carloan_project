@@ -1,17 +1,17 @@
 const router = require("express").Router();
 
 const loanRoutes = router;
-const loanMiddleware = require("../middleware/loan.middleware");
+const loanController = require("../controller/loan.controller");
 
-loanRoutes.get("/loan", loanMiddleware.getLoan, (req, res) => {
+loanRoutes.get("/loan", loanController.getLoan, (req, res) => {
   res.send(res.locals.loans);
 });
 
-loanRoutes.post("/loan", loanMiddleware.newLoan, (req, res) => {
+loanRoutes.post("/loan", loanController.newLoan, (req, res) => {
   res.send("ok");
 });
 
-loanRoutes.put("/loan/:id", loanMiddleware.updateLoan, (req, res) => {
+loanRoutes.put("/loan/:id", loanController.updateLoan, (req, res) => {
   res.send("ok");
 });
 

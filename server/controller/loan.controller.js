@@ -39,9 +39,10 @@ const getLoan = async (req, res, next) => {
  */
 const newLoan = async (req, res, next) => {
   const dataValidation = Joi.object().keys({
-    approx_price: Joi.number().required(),
-    deposit: Joi.number().required(),
-    additional_income: Joi.number().required(),
+    approx_price: Joi.number().min(0).required(),
+    deposit: Joi.number().min(0).required(),
+    term: Joi.number().min(0).max(10).required(),
+    ballon: Joi.number().min(0).max(35).required(),
   });
   const validate = dataValidation.validate(...req.body);
   console.log();

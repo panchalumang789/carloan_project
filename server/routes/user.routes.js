@@ -1,13 +1,13 @@
 const router = require("express").Router();
 
 const userRoutes = router;
-const userMiddleware = require("../middleware/user.middleware");
+const userController = require("../controller/user.controller");
 
-userRoutes.get("/user", userMiddleware.getUser, (req, res) => {
+userRoutes.get("/user", userController.getUser, (req, res) => {
   res.status(200).send(res.locals.users);
 });
 
-userRoutes.post("/user", userMiddleware.createUser, (req, res) => {
+userRoutes.post("/user", userController.createUser, (req, res) => {
   res
     .status(200)
     .send(
@@ -15,7 +15,7 @@ userRoutes.post("/user", userMiddleware.createUser, (req, res) => {
     );
 });
 
-userRoutes.delete("/user/:id", userMiddleware.deleteUser, (req, res) => {
+userRoutes.delete("/user/:id", userController.deleteUser, (req, res) => {
   res.status(200).send(`User deleted successfully.`);
 });
 

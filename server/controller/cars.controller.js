@@ -1,5 +1,5 @@
 const carTable = require("../models/car");
-const carsList = require(".././carsList");
+const carsList = require("../carsList");
 
 /**
  *
@@ -10,17 +10,17 @@ const getCarmakers = async (req, res, next) => {
     .findAll({
       attributes: ["id", "make"],
     })
-      .then((result) => {
-        if (result.length === 0) {
-          next({ error: { status: 404, message: "No car maker found!" } });
-        } else {
-          res.locals.carMakers = result;
-          next();
-        }
-      })
-      .catch(() => {
+    .then((result) => {
+      if (result.length === 0) {
         next({ error: { status: 404, message: "No car maker found!" } });
-      });
+      } else {
+        res.locals.carMakers = result;
+        next();
+      }
+    })
+    .catch(() => {
+      next({ error: { status: 404, message: "No car maker found!" } });
+    });
 };
 
 /**

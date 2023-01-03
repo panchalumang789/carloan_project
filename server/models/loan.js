@@ -23,39 +23,6 @@ const loanTable = sequalize.define("loans", {
   ballon: {
     type: DataTypes.INTEGER,
   },
-  additional_income: {
-    type: DataTypes.INTEGER,
-  },
-  rental_income: {
-    type: DataTypes.INTEGER,
-  },
-  investment_income: {
-    type: DataTypes.INTEGER,
-  },
-  salary_secrifice: {
-    type: DataTypes.INTEGER,
-  },
-  foreign_income: {
-    type: DataTypes.INTEGER,
-  },
-  vehicle_running_cost: {
-    type: DataTypes.INTEGER,
-  },
-  travel_cost: {
-    type: DataTypes.INTEGER,
-  },
-  utilities_cost: {
-    type: DataTypes.INTEGER,
-  },
-  insurances: {
-    type: DataTypes.INTEGER,
-  },
-  tel_internet: {
-    type: DataTypes.INTEGER,
-  },
-  entertainment: {
-    type: DataTypes.INTEGER,
-  },
 });
 
 loanTable.associate = (userTable) => {

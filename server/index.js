@@ -8,12 +8,14 @@ const sequalize = require("./config/db.connection");
 const carRoutes = require("./routes/car.routes");
 const userRoutes = require("./routes/user.routes");
 const loanRoutes = require("./routes/loan.routes");
+const incomeRoutes = require("./routes/income.routes");
+const expensesRoutes = require("./routes/expenses.routes");
 
 app.use(bodyParser.json());
 
-app.use(carRoutes, userRoutes, loanRoutes);
+app.use(carRoutes, userRoutes, loanRoutes, incomeRoutes, expensesRoutes);
 
-// Error handler from middleware
+// Error handler
 app.use((error, req, res, next) => {
   if (error.error.detail) {
     res.status(error.error.status || 500).send({ message: error.error.detail });
