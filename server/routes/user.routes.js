@@ -3,8 +3,6 @@ const router = require("express").Router();
 const userRoutes = router;
 const userMiddleware = require("../middleware/user.middleware");
 
-userRoutes.use(userMiddleware.createTable);
-
 userRoutes.get("/user", userMiddleware.getUser, (req, res) => {
   res.status(200).send(res.locals.users);
 });

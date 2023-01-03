@@ -3,6 +3,8 @@ const app = express();
 const bodyParser = require("body-parser");
 require("dotenv").config();
 
+const sequalize = require("./config/db.connection");
+
 const carRoutes = require("./routes/car.routes");
 const userRoutes = require("./routes/user.routes");
 const loanRoutes = require("./routes/loan.routes");
@@ -21,6 +23,16 @@ app.use((error, req, res, next) => {
       .send({ message: error.error.message });
   }
 });
+
+// synchronize all sequalize model with database
+sequalize
+  .sync({ alter: true })
+  .then((result) => {
+    return result;
+  })
+  .catch((error) => {
+    return error;
+  });
 
 // Running server
 app.listen(process.env.PORT || 3333, () => {

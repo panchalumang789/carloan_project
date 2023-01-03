@@ -1,5 +1,4 @@
 const Joi = require("joi");
-const dbConnect = require("../config/db.connection");
 const userTable = require("../models/user");
 
 const licenceType = ["LMV-NT", "HPMV", "HGMV"];
@@ -29,39 +28,34 @@ const states = [
   "Sikkim",
   "Tamil Nadu",
 ];
+const gender = ["Male", "Female", "Other"];
 const prefix = ["Mr.", "Ms.", "Mrs."];
 
 /**
- * create users table
+ *
+ * @param {*} res get all users detail
  */
-const createTable = (req, res, next) => {
+const getUser = async (req, res, next) => {
   userTable
+    .findAll()
     .then((result) => {
-      if (result.command !== "CREATE") {
-        next({
-          error: { status: 500, message: "Something is wrong!", error: result },
-        });
-      } else next();
+      if (result.length === 0) {
+        next({ error: { status: 404, message: "Users not found!" } });
+      } else {
+        res.locals.users = result;
+        next();
+      }
     })
-    .catch((error) => {
-      next({
-        error: { status: 500, message: "Something is wrong!", error: error },
-      });
+    .catch(() => {
+      next({ error: { status: 404, message: "Users not found!" } });
     });
 };
 
-const getUser = async (req, res, next) => {
-  dbConnect.query(`SELECT * FROM users`, (error, result) => {
-    if (error) {
-      next({ error: { status: 404, message: "User table not found!" } });
-    } else {
-      console.log(result.rows[0].id);
-      res.locals.users = result.rows;
-      next();
-    }
-  });
-};
-
+/**
+ *
+ * @param {*} req get user details from body
+ * @param {*} res add new user details
+ */
 const createUser = async (req, res, next) => {
   const userValidation = Joi.object().keys({
     status: Joi.string().required(),
@@ -70,9 +64,14 @@ const createUser = async (req, res, next) => {
       .length(10)
       .pattern(/^[6-9]{1}[0-9]{9}$/)
       .required(),
-    firstName: Joi.string().min(2).max(15).required(),
-    lastName: Joi.string().min(2).max(15).required(),
-    gender: Joi.string().required().valid("Male", "Female", "Other"),
+    prefix: Joi.string()
+      .required()
+      .valid(...prefix),
+    firstName: Joi.string().min(2).max(20).required(),
+    lastName: Joi.string().min(2).max(20).required(),
+    gender: Joi.string()
+      .required()
+      .valid(...gender),
     email: Joi.string()
       .email({
         minDomainSegments: 2,
@@ -83,83 +82,58 @@ const createUser = async (req, res, next) => {
       .required()
       .valid(...states),
     medicalcardImage: Joi.string().required(),
-    licenceFname: Joi.string().min(2).max(15).required(),
-    licenceLname: Joi.string().min(2).max(15).required(),
+    licenceFname: Joi.string().min(2).max(20).required(),
+    licenceLname: Joi.string().min(2).max(20).required(),
     licenceNumber: Joi.string().required(),
     licenceType: Joi.string()
       .required()
       .valid(...licenceType),
-    licenceExpireDate: Joi.array()
-      .items(Joi.string(), Joi.number().required())
-      .required(),
-    licenceIssueDate: Joi.array()
-      .items(Joi.string(), Joi.number().required())
-      .required(),
+    licenceExpireDate: Joi.string().required(),
+    licenceIssueDate: Joi.string().required(),
     licenceBackImage: Joi.string().required(),
     licenceFrontImage: Joi.string().required(),
   });
 
   const validate = userValidation.validate(req.body);
+
   if (validate.error) {
     next({ error: { status: 400, message: validate.error.message } });
   } else {
-    dbConnect.query(
-      `INSERT INTO users (status,income,contactNo,firstName,lastName,gender,email,state,medicalcardImage,licenceFname,licenceLname,licenceNumber,licenceType,licenceExpireDate,licenceIssueDate,licenceBackImage,licenceFrontImage) VALUES (
-            '${req.body.status}',
-            '${req.body.income}',
-            '${req.body.contactNo}',
-            '${req.body.firstName}',
-            '${req.body.lastName}',
-            '${req.body.gender}',
-            '${req.body.email}',
-            '${req.body.state}',
-            '${req.body.medicalcardImage}',
-            '${req.body.licenceFname}',
-            '${req.body.licenceLname}',
-            '${req.body.licenceNumber}',
-            '${req.body.licenceType}',
-            ARRAY [${req.body.licenceExpireDate}],
-            ARRAY [${req.body.licenceIssueDate}],
-            '${req.body.licenceBackImage}',
-            '${req.body.licenceFrontImage}'
-        ) ON CONFLICT(id) DO NOTHING`,
-      (error, result) => {
-        if (error) {
-          if (error.detail) {
-            next({ error: { status: 500, message: error.detail } });
-          } else {
-            next({ error: { status: 500, error: error } });
-          }
-        } else {
-          if (result.rowCount === 1) {
-            next();
-          } else
-            next({ error: { status: 500, message: "Something is wrong!" } });
-        }
-      }
-    );
+    userTable
+      .build(req.body)
+      .save()
+      .then(() => {
+        next();
+      })
+      .catch((error) => {
+        if (error.errors)
+          next({ error: { status: 500, message: error.errors[0].message } });
+        else next({ error: { status: 500, message: error } });
+      });
   }
 };
 
 /**
  *
- * @return delete user data by id
+ * @param {*} res delete user data by id
  */
 const deleteUser = async (req, res, next) => {
-  dbConnect.query(
-    `DELETE FROM users WHERE id=${req.params.id}`,
-    (error, result) => {
-      if (error) {
-        next({ error: { status: 400, message: "Invalid argument." } });
+  userTable
+    .destroy({
+      where: {
+        id: req.params.id,
+      },
+    })
+    .then((result) => {
+      if (result === 1) {
+        next();
       } else {
-        if (result.rowCount === 1) {
-          next();
-        } else {
-          next({ error: { status: 400, message: "Invalid argument." } });
-        }
+        next({ error: { status: 400, message: "Invalid argument." } });
       }
-    }
-  );
+    })
+    .catch(() => {
+      next({ error: { status: 400, message: "Invalid argument." } });
+    });
 };
 
-module.exports = { createTable, getUser, createUser, deleteUser };
+module.exports = { getUser, createUser, deleteUser };

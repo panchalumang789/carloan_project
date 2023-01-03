@@ -3,8 +3,6 @@ const router = require("express").Router();
 const loanRoutes = router;
 const loanMiddleware = require("../middleware/loan.middleware");
 
-loanRoutes.use(loanMiddleware.createTable);
-
 loanRoutes.get("/loan", loanMiddleware.getLoan, (req, res) => {
   res.send(res.locals.loans);
 });

@@ -1,24 +1,38 @@
-const dbConnect = require("../config/db.connection");
+const { DataTypes } = require("sequelize");
+const sequalize = require("../config/db.connection");
 
-// updated_at TIMESTAMPTZ DEFAULT (CURRENT_TIMESTAMP())
+let carTable = sequalize.define("cars", {
+  make: {
+    type: DataTypes.STRING(30),
+    allowNull: false,
+  },
+  model: {
+    type: DataTypes.STRING(30),
+    allowNull: false,
+  },
+  production_year: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
+    allowNull: false,
+  },
+  model_type: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
+    unique: true,
+  },
+  image: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+});
 
-const carTable = dbConnect
-  .query(
-    `CREATE TABLE IF NOT EXISTS cars (
-        id SERIAL NOT NULL PRIMARY KEY, 
-        make VARCHAR(30) NOT NULL,
-        model VARCHAR(50) NOT NULL,
-        production_year VARCHAR[] NOT NULL,
-        model_type VARCHAR(50) NOT NULL UNIQUE,
-        image VARCHAR(1000) NOT NULL UNIQUE,
-        created_at TIMESTAMPTZ NOT NULL DEFAULT (now())
-    )`
-  )
-  .then((result) => {
-    return result;
-  })
-  .catch((error) => {
-    return error;
-  });
+// carTable
+//   .sync()
+//   .then((result) => {
+//     return result;
+//   })
+//   .catch((error) => {
+//     return error;
+//   });
 
 module.exports = carTable;

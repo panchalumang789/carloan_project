@@ -1,39 +1,43 @@
 const Joi = require("joi");
-const dbConnect = require("../config/db.connection");
 const loanTable = require("../models/loan");
+const dbConnect = require("../config/db.connection");
 
 /**
- * create loan table
+ *
+ * @param {*} res get all loans details
  */
-const createTable = async (req, res, next) => {
+const getLoan = async (req, res, next) => {
   loanTable
+    .findAll()
     .then((result) => {
-      if (result.command !== "CREATE") {
+      if (result.length === 0) {
         next({
-          error: { status: 500, message: "Something is wrong!", error: result },
+          error: {
+            status: 500,
+            message: "No loan application found, something is wrong!",
+          },
         });
-      } else next();
+      } else {
+        res.locals.loans = result;
+        next();
+      }
     })
-    .catch((error) => {
+    .catch(() => {
       next({
-        error: { status: 500, message: "Something is wrong!", error: error },
+        error: {
+          status: 500,
+          message: "No loan application found, something is wrong!",
+        },
       });
     });
 };
 
-const getLoan = async (req, res, next) => {
-  dbConnect.query(`SELECT * FROM loans`, (error, result) => {
-    if (error) next({ error: { status: 500, message: "Something is wrong!" } });
-    else {
-      res.locals.loans = result.rows;
-      next();
-    }
-  });
-};
-
+/**
+ *
+ * @param {*} req get user details from body
+ * @param {*} res add new user details
+ */
 const newLoan = async (req, res, next) => {
-  //   console.log(...req.body);
-  //   next();
   const dataValidation = Joi.object().keys({
     approx_price: Joi.number().required(),
     deposit: Joi.number().required(),
@@ -64,6 +68,11 @@ const newLoan = async (req, res, next) => {
   }
 };
 
+/**
+ *
+ * @param {*} req get loan new details from body
+ * @param {*} res update loan details by id
+ */
 const updateLoan = async (req, res, next) => {
   const dataValidation = Joi.object().keys({
     approx_price: Joi.number().required(),
@@ -101,4 +110,4 @@ const updateLoan = async (req, res, next) => {
   }
 };
 
-module.exports = { createTable, getLoan, newLoan, updateLoan };
+module.exports = { getLoan, newLoan, updateLoan };

@@ -1,38 +1,122 @@
-const dbConnect = require("../config/db.connection");
-const userTable = dbConnect
-  .query(
-    `CREATE TABLE IF NOT EXISTS users(
-        id SERIAL,
-        status VARCHAR(20) NOT NULL,
-        income INTEGER NOT NULL,
-        contactNo VARCHAR(10) NOT NULL,
-        prefix VARCHAR(6) NOT NULL,
-        firstName VARCHAR(20) NOT NULL ,
-        lastName VARCHAR(20) NOT NULL ,
-        gender VARCHAR(6) NOT NULL,
-        email VARCHAR(30) NOT NULL,
-        state VARCHAR(30) NOT NULL,
-        medicalcardImage VARCHAR(100) NOT NULL,
-        licenceFname VARCHAR(20) NOT NULL ,
-        licenceLname VARCHAR(20) NOT NULL ,
-        licenceNumber VARCHAR(20),
-        licenceType VARCHAR(10) NOT NULL,
-        licenceExpireDate VARCHAR[],
-        licenceIssueDate  VARCHAR[],
-        licenceBackImage VARCHAR(100) NOT NULL,
-        licenceFrontImage VARCHAR(100) NOT NULL,
-        created_at TIMESTAMPTZ DEFAULT (now()),
-        updated_at TIMESTAMPTZ DEFAULT (now()),
-        PRIMARY KEY (id),
-        CHECK (income > 0),
-        UNIQUE (contactNo ,email ,medicalcardImage ,licenceNumber ,licenceBackImage ,licenceFrontImage)
-    )`
-  )
-  .then((result) => {
-    return result;
-  })
-  .catch((error) => {
-    return error;
-  });
+const { DataTypes } = require("sequelize");
+const sequalize = require("../config/db.connection");
+
+const loanTable = require("./loan");
+
+const userTable = sequalize.define("users", {
+  status: {
+    type: DataTypes.STRING(20),
+    allowNull: false,
+  },
+  income: {
+    type: DataTypes.INTEGER,
+    isNumeric: true,
+    allowNull: false,
+    min: 100000,
+  },
+  contactNo: {
+    type: DataTypes.STRING(10),
+    allowNull: false,
+    isNumeric: true,
+    unique: true,
+  },
+  prefix: {
+    type: DataTypes.STRING(6),
+    allowNull: false,
+  },
+  firstName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      len: [2, 20],
+    },
+  },
+  lastName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      len: [2, 20],
+    },
+  },
+  gender: {
+    type: DataTypes.STRING(6),
+    allowNull: false,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    isEmail: true,
+    unique: true,
+  },
+  state: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  medicalcardImage: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    isUrl: true,
+  },
+  licenceFname: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      len: [2, 20],
+    },
+  },
+  licenceLname: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      len: [2, 20],
+    },
+  },
+  licenceNumber: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  licenceType: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  licenceIssueDate: {
+    type: DataTypes.STRING,
+    validate: {
+      isAfter: "1980-01-01",
+      isBefore: "2024-01-01",
+    },
+  },
+  licenceExpireDate: {
+    type: DataTypes.STRING,
+    validate: {
+      isAfter: "2023-01-01",
+    },
+  },
+  licenceBackImage: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    isUrl: true,
+  },
+  licenceFrontImage: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    isUrl: true,
+  },
+});
+
+userTable.hasMany(loanTable);
+
+// userTable
+//   .sync()
+//   .then((result) => {
+//     return result;
+//   })
+//   .catch((error) => {
+//     return error;
+//   });
 
 module.exports = userTable;

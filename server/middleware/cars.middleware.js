@@ -1,92 +1,61 @@
-const dbConnect = require("../config/db.connection");
 const carTable = require("../models/car");
+const carsList = require(".././carsList");
 
 /**
- * create cars table
+ *
+ * @param {*} res get all car maker list
  */
-const createTable = (req, res, next) => {
+const getCarmakers = async (req, res, next) => {
   carTable
-    .then((result) => {
-      if (result.command !== "CREATE") {
-        next({
-          error: { status: 500, message: "Something is wrong!", error: result },
-        });
-      } else next();
+    .findAll({
+      attributes: ["id", "make"],
     })
-    .catch((error) => {
-      next({
-        error: { status: 500, message: "Something is wrong!", error: error },
+      .then((result) => {
+        if (result.length === 0) {
+          next({ error: { status: 404, message: "No car maker found!" } });
+        } else {
+          res.locals.carMakers = result;
+          next();
+        }
+      })
+      .catch(() => {
+        next({ error: { status: 404, message: "No car maker found!" } });
       });
+};
+
+/**
+ *
+ * @param {*} res get all cars details
+ */
+const getCars = async (req, res, next) => {
+  carTable
+    .findAll()
+    .then((result) => {
+      if (result.length === 0) {
+        next({ error: { status: 404, message: "No car maker found!" } });
+      } else {
+        res.locals.cars = result;
+        next();
+      }
+    })
+    .catch(() => {
+      next({ error: { status: 404, message: "No car maker found!" } });
     });
 };
 
 /**
  *
- * @returns all car companies name
+ * @param {*} res add all cars data
  */
-const getCarmakers = async (req, res, next) => {
-  dbConnect.query("SELECT DISTINCT make FROM cars", (error, result) => {
-    if (error) next({ error: { status: 404, message: "No car maker found!" } });
-    else {
-      res.locals.carMakers = result.rows;
+const addCars = async (req, res, next) => {
+  carTable
+    .bulkCreate(carsList, { validate: true })
+    .then(() => {
       next();
-    }
-  });
+    })
+    .catch((error) => {
+      next({ error: { status: 500, message: error.original } });
+    });
 };
 
-/**
- *
- * @return all cars details
- */
-const getCars = async (req, res, next) => {
-  dbConnect.query("SELECT * FROM cars", (error, result) => {
-    if (error) next({ error: { status: 404, message: "Cars not found!" } });
-    else {
-      res.locals.cars = result.rows;
-      next();
-    }
-  });
-};
-
-/**
- *
- * @return add new car data
- */
-const addCar = async (req, res, next) => {
-  dbConnect.query(
-    `INSERT INTO cars (make, model, production_year, model_type,image)
-    VALUES('${req.body.make}','${req.body.model}', ARRAY [${req.body.productionyear}],'${req.body.modeltype}','${req.body.image}')`,
-    (error, result) => {
-      if (error) {
-        next({ error: { status: 500, message: error.detail } });
-      } else {
-        if (result.rowCount === 1) {
-          next();
-        } else next({ error: { status: 500, message: "Something is wrong!" } });
-      }
-    }
-  );
-};
-
-/**
- *
- * @return delete car data by id
- */
-const deleteCar = async (req, res, next) => {
-  dbConnect.query(
-    `DELETE FROM cars WHERE id=${req.params.id}`,
-    (error, result) => {
-      if (error) {
-        next({ error: { status: 400, message: "Invalid argument." } });
-      } else {
-        if (result.rowCount === 1) {
-          next();
-        } else {
-          next({ error: { status: 400, message: "Invalid argument." } });
-        }
-      }
-    }
-  );
-};
-
-module.exports = { createTable, getCarmakers, getCars, addCar, deleteCar };
+module.exports = { getCarmakers, getCars, addCars };
