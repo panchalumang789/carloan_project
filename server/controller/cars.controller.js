@@ -1,5 +1,6 @@
 const carTable = require("../models/car");
 const carsList = require("../carsList");
+const loanTable = require("../models/loan");
 
 /**
  *
@@ -8,7 +9,9 @@ const carsList = require("../carsList");
 const getCarmakers = async (req, res, next) => {
   carTable
     .findAll({
-      attributes: ["id", "make"],
+      attributes: ["make"],
+      order: ["make"],
+      group: ["make"],
     })
     .then((result) => {
       if (result.length === 0) {
@@ -25,11 +28,15 @@ const getCarmakers = async (req, res, next) => {
 
 /**
  *
- * @param {*} res get all cars details
+ * @param {*} res get all cars of car maker
  */
 const getCars = async (req, res, next) => {
   carTable
-    .findAll()
+    .findAll({
+      where: {
+        make: req.body.make,
+      },
+    })
     .then((result) => {
       if (result.length === 0) {
         next({ error: { status: 404, message: "No car maker found!" } });
@@ -50,11 +57,12 @@ const getCars = async (req, res, next) => {
 const addCars = async (req, res, next) => {
   carTable
     .bulkCreate(carsList, { validate: true })
-    .then(() => {
+    .then((result) => {
+      res.locals.cars = result.length;
       next();
     })
     .catch((error) => {
-      next({ error: { status: 500, message: error.original } });
+      next({ error: { status: 500, message: error.original.detail } });
     });
 };
 

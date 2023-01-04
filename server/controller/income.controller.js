@@ -1,20 +1,111 @@
 const Joi = require("joi");
 const incomeTable = require("../models/income");
 
+// Validation Rules
+const incomeValidation = Joi.object().keys({
+  userId: Joi.number().required(),
+  loanId: Joi.number().required(),
+  additional_income: Joi.number().min(0).default(0).required(),
+  rental_income: Joi.number().min(0).default(0).required(),
+  investment_income: Joi.number().min(0).default(0).required(),
+  salary_secrifice: Joi.number().min(0).default(0).required(),
+  foreign_income: Joi.number().min(0).default(0).required(),
+});
+
+/**
+ *
+ * @return all income details
+ */
+const getAllIncome = async (req, res, next) => {
+  incomeTable
+    .findAll()
+    .then((result) => {
+      if (result.length === 0) {
+        next({ error: { status: 404, message: "No income details found!" } });
+      } else {
+        res.locals.income = result;
+        next();
+      }
+    })
+    .catch(() => {
+      next({ error: { status: 404, message: "No income details found!" } });
+    });
+};
+
+/**
+ *
+ * @return income details by UserId
+ */
+const getIncomeByUserId = async (req, res, next) => {
+  incomeTable
+    .findAll({
+      where: {
+        userId: req.params.id,
+      },
+    })
+    .then((result) => {
+      if (result.length === 0) {
+        next({
+          error: {
+            status: 404,
+            message: "Something is wrong, income details not found!",
+          },
+        });
+      } else {
+        res.locals.income = result;
+        next();
+      }
+    })
+    .catch(() => {
+      next({
+        error: {
+          status: 404,
+          message: "Something is wrong, income details not found!",
+        },
+      });
+    });
+};
+
+/**
+ *
+ * @return income details by LoanId
+ */
+const getIncomeByLoanId = async (req, res, next) => {
+  incomeTable
+    .findAll({
+      where: {
+        loanId: req.params.id,
+      },
+    })
+    .then((result) => {
+      if (result.length === 0) {
+        next({
+          error: {
+            status: 404,
+            message: "Something is wrong, income details not found!",
+          },
+        });
+      } else {
+        res.locals.income = result;
+        next();
+      }
+    })
+    .catch(() => {
+      next({
+        error: {
+          status: 404,
+          message: "Something is wrong, income details not found!",
+        },
+      });
+    });
+};
+
 /**
  *
  * @param {*} req get income details from body
  * @param {*} res add new income details
  */
 const addIncome = async (req, res, next) => {
-  const incomeValidation = Joi.object().keys({
-    additional_income: Joi.number().min(0).default(0),
-    rental_income: Joi.number().min(0).default(0),
-    investment_income: Joi.number().min(0).default(0),
-    salary_secrifice: Joi.number().min(0).default(0),
-    foreign_income: Joi.number().min(0).default(0),
-  });
-
   const validate = incomeValidation.validate(req.body);
 
   if (validate.error) {
@@ -29,9 +120,14 @@ const addIncome = async (req, res, next) => {
       .catch((error) => {
         if (error.errors)
           next({ error: { status: 500, message: error.errors[0].message } });
-        else next({ error: { status: 500, message: error } });
+        else next({ error: { status: 500, message: error.original.detail } });
       });
   }
 };
 
-module.exports = { addIncome };
+module.exports = {
+  getAllIncome,
+  getIncomeByUserId,
+  getIncomeByLoanId,
+  addIncome,
+};

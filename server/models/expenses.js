@@ -2,13 +2,14 @@ const { DataTypes } = require("sequelize");
 const sequalize = require("../config/db.connection");
 
 const expensesTable = sequalize.define("expenses", {
-  userid: {
+  userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
   loanId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    unique: true,
   },
   vehicle_running_cost: {
     type: DataTypes.INTEGER,
@@ -33,6 +34,7 @@ const expensesTable = sequalize.define("expenses", {
 expensesTable.associate = (userTable) => {
   expensesTable.belongsTo(userTable.id);
 };
+
 expensesTable.associate = (loanTable) => {
   expensesTable.belongsTo(loanTable.id);
 };

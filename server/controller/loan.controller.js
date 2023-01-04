@@ -1,20 +1,35 @@
 const Joi = require("joi");
 const loanTable = require("../models/loan");
-const dbConnect = require("../config/db.connection");
+const incomeTable = require("../models/income");
+const expensesTable = require("../models/expenses");
+const carTable = require("../models/car");
+
+// Validation Rules
+const dataValidation = Joi.object().keys({
+  userId: Joi.number().required(),
+  carId: Joi.number().required(),
+  approx_price: Joi.number().min(0).required(),
+  deposit: Joi.number().min(0).required(),
+  term: Joi.number().min(0).max(10).required(),
+  ballon: Joi.number().min(0).max(35).default(0),
+  agentId: Joi.number().optional(),
+});
 
 /**
  *
- * @param {*} res get all loans details
+ * @return all loans details
  */
 const getLoan = async (req, res, next) => {
   loanTable
-    .findAll()
+    .findAll({
+      order: ["id"],
+    })
     .then((result) => {
       if (result.length === 0) {
         next({
           error: {
             status: 500,
-            message: "No loan application found, something is wrong!",
+            message: "Something is wrong, loan application not found!",
           },
         });
       } else {
@@ -22,11 +37,68 @@ const getLoan = async (req, res, next) => {
         next();
       }
     })
-    .catch(() => {
+    .catch((error) => {
+      console.log(error);
       next({
         error: {
           status: 500,
-          message: "No loan application found, something is wrong!",
+          message: "Something is wrong, loan application not found!",
+        },
+      });
+    });
+};
+
+/**
+ *
+ * @return loan details by LoanId
+ */
+const getLoanById = async (req, res, next) => {
+  loanTable
+    .findOne({
+      order: ["id"],
+      where: {
+        id: req.params.id,
+      },
+      include: [incomeTable, expensesTable],
+    })
+    .then((result) => {
+      if (result.length === 0) {
+        next({
+          error: {
+            status: 500,
+            message: "Something is wrong, loan application not found!",
+          },
+        });
+      } else {
+        carTable
+          .findOne({
+            where: {
+              id: result.carId,
+            },
+          })
+          .then((carresult) => {
+            if (carresult.length === 0) {
+              next({ error: { status: 500, message: "Something is wrong!" } });
+            } else {
+              result.dataValues.carImage = carresult.dataValues.image;
+              res.locals.loans = result;
+              next();
+            }
+          })
+          .catch(() => {
+            next({ error: { status: 500, message: "Something is wrong!" } });
+          });
+
+        // res.locals.loans = result;
+        // next();
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      next({
+        error: {
+          status: 500,
+          message: "Something is wrong, loan application not found!",
         },
       });
     });
@@ -38,34 +110,21 @@ const getLoan = async (req, res, next) => {
  * @param {*} res add new user details
  */
 const newLoan = async (req, res, next) => {
-  const dataValidation = Joi.object().keys({
-    approx_price: Joi.number().min(0).required(),
-    deposit: Joi.number().min(0).required(),
-    term: Joi.number().min(0).max(10).required(),
-    ballon: Joi.number().min(0).max(35).required(),
-  });
-  const validate = dataValidation.validate(...req.body);
-  console.log();
+  const validate = dataValidation.validate(req.body);
   if (validate.error) {
     next({ error: { status: 400, message: validate.error.message } });
   } else {
-    dbConnect.query(
-      `INSERT INTO loans (approx_price,deposit,additional_income) VALUES (
-      ${req.body[0].approx_price},
-      ${req.body[0].deposit},
-      ${req.body[0].additional_income}
-    )`,
-      (error, result) => {
-        if (error) {
-          next({ error: { status: 500, detail: error } });
-        } else {
-          if (result.rowCount === 1) {
-            next();
-          } else
-            next({ error: { status: 500, message: "Something is wrong!" } });
-        }
-      }
-    );
+    loanTable
+      .build(req.body)
+      .save()
+      .then(() => {
+        next();
+      })
+      .catch((error) => {
+        if (error.errors)
+          next({ error: { status: 500, message: error.errors[0].message } });
+        else next({ error: { status: 500, message: error.original.detail } });
+      });
   }
 };
 
@@ -75,40 +134,29 @@ const newLoan = async (req, res, next) => {
  * @param {*} res update loan details by id
  */
 const updateLoan = async (req, res, next) => {
-  const dataValidation = Joi.object().keys({
-    approx_price: Joi.number().required(),
-    deposit: Joi.number().required(),
-    additional_income: Joi.number().required(),
-  });
-
   const validate = dataValidation.validate(req.body);
 
   if (validate.error) {
     next({ error: { status: 400, message: validate.error.message } });
   } else {
-    dbConnect.query(
-      `UPDATE loans SET 
-            approx_price = ${req.body.approx_price},
-            deposit = ${req.body.deposit},
-            additional_income = ${req.body.additional_income}
-        WHERE id=${req.params.id}`,
-      (error, result) => {
-        if (error) {
-          next({ error: { status: 500, detail: error } });
-        } else {
-          if (result.rowCount === 1) {
-            next();
-          } else
-            next({
-              error: {
-                status: 500,
-                message: "Data not found, something is wrong!",
-              },
-            });
+    loanTable
+      .update(
+        { ...req.body },
+        {
+          where: {
+            id: req.params.id,
+          },
         }
-      }
-    );
+      )
+      .then(() => {
+        next();
+      })
+      .catch((error) => {
+        if (error.errors)
+          next({ error: { status: 500, message: error.errors[0].message } });
+        else next({ error: { status: 500, message: error.original.detail } });
+      });
   }
 };
 
-module.exports = { getLoan, newLoan, updateLoan };
+module.exports = { getLoan, getLoanById, newLoan, updateLoan };

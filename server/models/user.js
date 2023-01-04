@@ -2,6 +2,9 @@ const { DataTypes } = require("sequelize");
 const sequalize = require("../config/db.connection");
 
 const loanTable = require("./loan");
+const incomeTable = require("./income");
+const expensesTable = require("./expenses");
+const carTable = require("./car");
 
 const userTable = sequalize.define("users", {
   status: {
@@ -108,15 +111,14 @@ const userTable = sequalize.define("users", {
   },
 });
 
-userTable.hasMany(loanTable);
-
-// userTable
-//   .sync()
-//   .then((result) => {
-//     return result;
-//   })
-//   .catch((error) => {
-//     return error;
-//   });
+userTable.hasMany(loanTable, {
+  onDelete: "SET NULL",
+});
+userTable.hasMany(incomeTable, {
+  onDelete: "SET NULL",
+});
+userTable.hasMany(expensesTable, {
+  onDelete: "SET NULL",
+});
 
 module.exports = userTable;

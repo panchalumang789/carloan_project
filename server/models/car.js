@@ -1,7 +1,9 @@
 const { DataTypes } = require("sequelize");
 const sequalize = require("../config/db.connection");
 
-let carTable = sequalize.define("cars", {
+const loanTable = require("./loan");
+
+const carTable = sequalize.define("cars", {
   make: {
     type: DataTypes.STRING(30),
     allowNull: false,
@@ -25,6 +27,8 @@ let carTable = sequalize.define("cars", {
     unique: true,
   },
 });
+
+carTable.hasMany(loanTable);
 
 // carTable
 //   .sync()

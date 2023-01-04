@@ -1,14 +1,15 @@
 const { DataTypes } = require("sequelize");
 const sequalize = require("../config/db.connection");
 
-const incomeTable = sequalize.define({
-  userid: {
+const incomeTable = sequalize.define("incomes", {
+  userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
   loanId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    unique: true,
   },
   additional_income: {
     type: DataTypes.INTEGER,
@@ -35,6 +36,7 @@ const incomeTable = sequalize.define({
 incomeTable.associate = (userTable) => {
   incomeTable.belongsTo(userTable.id);
 };
+
 incomeTable.associate = (loanTable) => {
   incomeTable.belongsTo(loanTable.id);
 };

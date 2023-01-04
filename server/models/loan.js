@@ -1,10 +1,15 @@
 const { DataTypes } = require("sequelize");
 const sequalize = require("../config/db.connection");
 
-const userTable = require("./user");
+const incomeTable = require("./income");
+const expensesTable = require("./expenses");
 
 const loanTable = sequalize.define("loans", {
-  userid: {
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  carId: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
@@ -23,19 +28,25 @@ const loanTable = sequalize.define("loans", {
   ballon: {
     type: DataTypes.INTEGER,
   },
+  agentId: {
+    type: DataTypes.INTEGER,
+  },
 });
 
 loanTable.associate = (userTable) => {
   loanTable.belongsTo(userTable.id);
 };
 
-// loanTable
-//   .sync({ force: true })
-//   .then((result) => {
-//     return result;
-//   })
-//   .catch((error) => {
-//     return error;
-//   });
+loanTable.associate = (carTable) => {
+  loanTable.belongsTo(carTable.id);
+};
+
+loanTable.hasMany(incomeTable, {
+  onDelete: "SET NULL",
+});
+
+loanTable.hasMany(expensesTable, {
+  onDelete: "SET NULL",
+});
 
 module.exports = loanTable;
