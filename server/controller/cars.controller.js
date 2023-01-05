@@ -1,9 +1,7 @@
 const carTable = require("../models/car");
 const carsList = require("../carsList");
-const loanTable = require("../models/loan");
 
 /**
- *
  * @param {*} res get all car maker list
  */
 const getCarmakers = async (req, res, next) => {
@@ -27,7 +25,6 @@ const getCarmakers = async (req, res, next) => {
 };
 
 /**
- *
  * @param {*} res get all cars of car maker
  */
 const getCars = async (req, res, next) => {
@@ -51,7 +48,6 @@ const getCars = async (req, res, next) => {
 };
 
 /**
- *
  * @param {*} res add all cars data
  */
 const addCars = async (req, res, next) => {

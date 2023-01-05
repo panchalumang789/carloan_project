@@ -14,7 +14,6 @@ const expensesValidation = Joi.object().keys({
 });
 
 /**
- *
  * @return all expenses data
  */
 const getAllExpenses = async (req, res, next) => {
@@ -34,7 +33,6 @@ const getAllExpenses = async (req, res, next) => {
 };
 
 /**
- *
  * @return expenses data by UserId
  */
 const getExpensesByUserId = async (req, res, next) => {
@@ -68,7 +66,6 @@ const getExpensesByUserId = async (req, res, next) => {
 };
 
 /**
- *
  * @return expenses data by LoanId
  */
 const getExpensesByLoanId = async (req, res, next) => {
@@ -102,7 +99,6 @@ const getExpensesByLoanId = async (req, res, next) => {
 };
 
 /**
- *
  * @param {*} req get expenses data from body
  * @param {*} res add new expenses data
  */

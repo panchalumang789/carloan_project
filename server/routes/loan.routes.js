@@ -5,7 +5,7 @@ const authorization = require("../middleware/authorization");
 const loanController = require("../controller/loan.controller");
 
 loanRoutes.get(
-  "/loan",
+  "/loans",
   authorization.verifyRole,
   loanController.getLoan,
   (req, res) => {
@@ -13,9 +13,23 @@ loanRoutes.get(
   }
 );
 
-loanRoutes.get("/loan/:id", loanController.getLoanById, (req, res) => {
-  res.send(res.locals.loans);
-});
+loanRoutes.get(
+  "/loan/:id",
+  authorization.verifyRole,
+  loanController.getLoanById,
+  (req, res) => {
+    res.send(res.locals.loans);
+  }
+);
+
+loanRoutes.get(
+  "/loan",
+  authorization.verifyUser,
+  loanController.getLoanByContactNo,
+  (req, res) => {
+    res.send(res.locals.loans);
+  }
+);
 
 loanRoutes.post("/loan", loanController.newLoan, (req, res) => {
   res.send("Loan application submitted.");

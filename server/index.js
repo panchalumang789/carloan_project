@@ -12,6 +12,7 @@ const userRoutes = require("./routes/user.routes");
 const loanRoutes = require("./routes/loan.routes");
 const incomeRoutes = require("./routes/income.routes");
 const expensesRoutes = require("./routes/expenses.routes");
+require("./routes/index");
 
 app.use(bodyParser.json(), cookieParser());
 
@@ -23,6 +24,10 @@ app.use(
   incomeRoutes,
   expensesRoutes
 );
+
+app.use("*", (req, res) => {
+  res.status(404).json({ message: "Invalid route!" });
+});
 
 // Error handler
 app.use((error, req, res, next) => {
@@ -40,10 +45,14 @@ sequalize.sync({ alter: true }, (error, result) => {
   if (error) return error;
   else return result;
 });
-// sequalize.sync({ force: true }, (error, result) => {
-//   if (error) return error;
-//   else return sequalize.drop();
-// });
+// sequalize
+//   .sync({ force: true })
+//   .then(() => {
+//     return sequalize.drop();
+//   })
+//   .catch((error) => {
+//     return error;
+//   });
 
 // Running server
 app.listen(process.env.PORT || 3333, () => {

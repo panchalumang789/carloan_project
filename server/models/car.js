@@ -1,8 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequalize = require("../config/db.connection");
 
-const loanTable = require("./loan");
-
 const carTable = sequalize.define("cars", {
   make: {
     type: DataTypes.STRING(30),
@@ -27,16 +25,5 @@ const carTable = sequalize.define("cars", {
     unique: true,
   },
 });
-
-carTable.hasMany(loanTable);
-
-// carTable
-//   .sync()
-//   .then((result) => {
-//     return result;
-//   })
-//   .catch((error) => {
-//     return error;
-//   });
 
 module.exports = carTable;

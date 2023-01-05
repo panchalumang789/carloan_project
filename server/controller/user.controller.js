@@ -1,6 +1,5 @@
 const Joi = require("joi");
 const userTable = require("../models/user");
-const loanTable = require("../models/loan");
 const incomeTable = require("../models/income");
 const expensesTable = require("../models/expenses");
 
@@ -36,45 +35,42 @@ const prefix = ["Mr.", "Ms.", "Mrs."];
 
 // Validation rules
 const userValidation = Joi.object().keys({
-  status: Joi.string().required(),
-  income: Joi.number().min(10000).required(),
   contactNo: Joi.string()
     .length(10)
     .pattern(/^[6-9]{1}[0-9]{9}$/)
     .required()
     .messages({ any: "Not a valid number." }),
   prefix: Joi.string()
-    .required()
+    .optional()
     .valid(...prefix),
-  firstName: Joi.string().min(2).max(20).required(),
-  lastName: Joi.string().min(2).max(20).required(),
+  firstName: Joi.string().min(2).max(20).optional(),
+  lastName: Joi.string().min(2).max(20).optional(),
   gender: Joi.string()
-    .required()
+    .optional()
     .valid(...gender),
   email: Joi.string()
     .email({
       minDomainSegments: 2,
       tlds: { allow: ["com", "net"] },
     })
-    .required(),
+    .optional(),
   state: Joi.string()
-    .required()
+    .optional()
     .valid(...states),
-  medicalcardImage: Joi.string().required(),
-  licenceFname: Joi.string().min(2).max(20).required(),
-  licenceLname: Joi.string().min(2).max(20).required(),
-  licenceNumber: Joi.string().required(),
+  medicalcardImage: Joi.string().optional(),
+  licenceFname: Joi.string().min(2).max(20).optional(),
+  licenceLname: Joi.string().min(2).max(20).optional(),
+  licenceNumber: Joi.string().optional(),
   licenceType: Joi.string()
-    .required()
+    .optional()
     .valid(...licenceType),
-  licenceExpireDate: Joi.string().required(),
-  licenceIssueDate: Joi.string().required(),
-  licenceBackImage: Joi.string().required(),
-  licenceFrontImage: Joi.string().required(),
+  licenceExpireDate: Joi.string().optional(),
+  licenceIssueDate: Joi.string().optional(),
+  licenceBackImage: Joi.string().optional(),
+  licenceFrontImage: Joi.string().optional(),
 });
 
 /**
- *
  * @return all users details
  */
 const getUser = async (req, res, next) => {
@@ -96,17 +92,16 @@ const getUser = async (req, res, next) => {
 };
 
 /**
- *
  * @return users details by Id
  */
-const getUserById = async (req, res, next) => {
+const getUserByContact = async (req, res, next) => {
   userTable
     .findOne({
       where: {
-        id: req.params.id,
+        contactNo: res.locals.contactNo,
       },
       order: ["id"],
-      include: [{ model: loanTable, include: [incomeTable, expensesTable] }],
+      include: [incomeTable, expensesTable],
     })
     .then((result) => {
       if (result.length === 0) {
@@ -122,7 +117,31 @@ const getUserById = async (req, res, next) => {
 };
 
 /**
- *
+ * @return users details by Id
+ */
+const getUserById = async (req, res, next) => {
+  userTable
+    .findOne({
+      where: {
+        id: req.params.id,
+      },
+      order: ["id"],
+      include: [incomeTable, expensesTable],
+    })
+    .then((result) => {
+      if (result.length === 0) {
+        next({ error: { status: 404, message: "Users not found!" } });
+      } else {
+        res.locals.users = result;
+        next();
+      }
+    })
+    .catch(() => {
+      next({ error: { status: 404, message: "Users not found!" } });
+    });
+};
+
+/**
  * @param {*} req get user details from body
  * @param {*} res add new user details
  */
@@ -141,17 +160,60 @@ const createUser = async (req, res, next) => {
       .catch((error) => {
         if (error.errors)
           next({ error: { status: 500, message: error.errors[0].message } });
-        else next({ error: { status: 500, message: error } });
+        else next({ error: { status: 500, message: error.original.detail } });
       });
   }
 };
 
 /**
- *
+ * @param {*} res update user by contact no
+ */
+const updateUser = async (req, res, next) => {
+  const validate = userValidation.validate(req.body);
+
+  if (validate.error) {
+    next({ error: { status: 400, message: validate.error.message } });
+  } else {
+    userTable
+      .count({
+        where: {
+          contactNo: req.body.contactNo,
+        },
+      })
+      .then((result) => {
+        console.log(result);
+        if (result === 0) {
+          next({ error: { status: 500, message: "User not found." } });
+        } else {
+          userTable
+            .update(
+              { ...req.body },
+              {
+                where: {
+                  contactNo: req.body.contactNo,
+                },
+              }
+            )
+            .then(() => {
+              next();
+            })
+            .catch((error) => {
+              if (error.errors)
+                next({
+                  error: { status: 500, message: error.errors[0].message },
+                });
+              else next({ error: { status: 500, message: error } });
+            });
+        }
+      });
+  }
+};
+
+/**
  * @param {*} req get user details from body
  * @param {*} res add new user details
  */
-const updateUser = async (req, res, next) => {
+const updateUserByContact = async (req, res, next) => {
   const validate = userValidation.validate(req.body);
 
   if (validate.error) {
@@ -192,7 +254,6 @@ const updateUser = async (req, res, next) => {
 };
 
 /**
- *
  * @param {*} res delete user data by id
  */
 const deleteUser = async (req, res, next) => {
@@ -214,4 +275,12 @@ const deleteUser = async (req, res, next) => {
     });
 };
 
-module.exports = { getUser, getUserById, createUser, updateUser, deleteUser };
+module.exports = {
+  getUser,
+  getUserById,
+  getUserByContact,
+  createUser,
+  updateUserByContact,
+  updateUser,
+  deleteUser,
+};

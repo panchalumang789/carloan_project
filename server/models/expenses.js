@@ -31,12 +31,4 @@ const expensesTable = sequalize.define("expenses", {
   },
 });
 
-expensesTable.associate = (userTable) => {
-  expensesTable.belongsTo(userTable.id);
-};
-
-expensesTable.associate = (loanTable) => {
-  expensesTable.belongsTo(loanTable.id);
-};
-
 module.exports = expensesTable;

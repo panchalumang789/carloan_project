@@ -13,7 +13,6 @@ const incomeValidation = Joi.object().keys({
 });
 
 /**
- *
  * @return all income details
  */
 const getAllIncome = async (req, res, next) => {
@@ -33,7 +32,6 @@ const getAllIncome = async (req, res, next) => {
 };
 
 /**
- *
  * @return income details by UserId
  */
 const getIncomeByUserId = async (req, res, next) => {
@@ -67,7 +65,6 @@ const getIncomeByUserId = async (req, res, next) => {
 };
 
 /**
- *
  * @return income details by LoanId
  */
 const getIncomeByLoanId = async (req, res, next) => {
@@ -101,7 +98,6 @@ const getIncomeByLoanId = async (req, res, next) => {
 };
 
 /**
- *
  * @param {*} req get income details from body
  * @param {*} res add new income details
  */

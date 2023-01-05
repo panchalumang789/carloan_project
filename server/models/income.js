@@ -33,12 +33,4 @@ const incomeTable = sequalize.define("incomes", {
   },
 });
 
-incomeTable.associate = (userTable) => {
-  incomeTable.belongsTo(userTable.id);
-};
-
-incomeTable.associate = (loanTable) => {
-  incomeTable.belongsTo(loanTable.id);
-};
-
 module.exports = incomeTable;
