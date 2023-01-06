@@ -6,7 +6,7 @@ const expensesController = require("../controller/expenses.controller");
 
 expensesRoutes.get(
   "/expenses",
-  authorization.verifyRole,
+  authorization.verifyRole("Admin"),
   expensesController.getAllExpenses,
   async (req, res) => {
     res.status(200).send(res.locals.expenses);
@@ -15,17 +15,9 @@ expensesRoutes.get(
 
 expensesRoutes.get(
   "/expenses/user/:id",
-  expensesController.getExpensesByUserId,
+  expensesController.getUserExpenses,
   async (req, res) => {
-    res.status(200).send("Expenses added successfully.");
-  }
-);
-
-expensesRoutes.get(
-  "/expenses/loan/:id",
-  expensesController.getExpensesByLoanId,
-  async (req, res) => {
-    res.status(200).send("Expenses added successfully.");
+    res.status(200).send(res.locals.expenses);
   }
 );
 

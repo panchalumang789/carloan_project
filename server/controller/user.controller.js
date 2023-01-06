@@ -41,33 +41,33 @@ const userValidation = Joi.object().keys({
     .required()
     .messages({ any: "Not a valid number." }),
   prefix: Joi.string()
-    .optional()
+    .required()
     .valid(...prefix),
-  firstName: Joi.string().min(2).max(20).optional(),
-  lastName: Joi.string().min(2).max(20).optional(),
+  firstName: Joi.string().min(2).max(20).required(),
+  lastName: Joi.string().min(2).max(20).required(),
   gender: Joi.string()
-    .optional()
+    .required()
     .valid(...gender),
   email: Joi.string()
     .email({
       minDomainSegments: 2,
       tlds: { allow: ["com", "net"] },
     })
-    .optional(),
+    .required(),
   state: Joi.string()
-    .optional()
+    .required()
     .valid(...states),
-  medicalcardImage: Joi.string().optional(),
-  licenceFname: Joi.string().min(2).max(20).optional(),
-  licenceLname: Joi.string().min(2).max(20).optional(),
-  licenceNumber: Joi.string().optional(),
+  medicalcardImage: Joi.string().required(),
+  licenceFname: Joi.string().min(2).max(20).required(),
+  licenceLname: Joi.string().min(2).max(20).required(),
+  licenceNumber: Joi.string().required(),
   licenceType: Joi.string()
-    .optional()
+    .required()
     .valid(...licenceType),
-  licenceExpireDate: Joi.string().optional(),
-  licenceIssueDate: Joi.string().optional(),
-  licenceBackImage: Joi.string().optional(),
-  licenceFrontImage: Joi.string().optional(),
+  licenceExpireDate: Joi.string().required(),
+  licenceIssueDate: Joi.string().required(),
+  licenceBackImage: Joi.string().required(),
+  licenceFrontImage: Joi.string().required(),
 });
 
 /**
@@ -77,31 +77,6 @@ const getUser = async (req, res, next) => {
   userTable
     .findAll({
       order: ["id"],
-    })
-    .then((result) => {
-      if (result.length === 0) {
-        next({ error: { status: 404, message: "Users not found!" } });
-      } else {
-        res.locals.users = result;
-        next();
-      }
-    })
-    .catch(() => {
-      next({ error: { status: 404, message: "Users not found!" } });
-    });
-};
-
-/**
- * @return users details by Id
- */
-const getUserByContact = async (req, res, next) => {
-  userTable
-    .findOne({
-      where: {
-        contactNo: res.locals.contactNo,
-      },
-      order: ["id"],
-      include: [incomeTable, expensesTable],
     })
     .then((result) => {
       if (result.length === 0) {
@@ -154,7 +129,20 @@ const createUser = async (req, res, next) => {
     userTable
       .build(req.body)
       .save()
-      .then(() => {
+      .then((result) => {
+        let token = jwt.sign(
+          {
+            contactNo: result.contactNo,
+            firstName: result.firstName,
+            lastName: result.lastName,
+            email: result.email,
+          },
+          process.env.JWT_SECRET_KEY
+        );
+        res.locals.user = {
+          message: `${firstName} ${lastName}  registered successfully.`,
+          token: token,
+        };
         next();
       })
       .catch((error) => {
@@ -166,54 +154,10 @@ const createUser = async (req, res, next) => {
 };
 
 /**
- * @param {*} res update user by contact no
- */
-const updateUser = async (req, res, next) => {
-  const validate = userValidation.validate(req.body);
-
-  if (validate.error) {
-    next({ error: { status: 400, message: validate.error.message } });
-  } else {
-    userTable
-      .count({
-        where: {
-          contactNo: req.body.contactNo,
-        },
-      })
-      .then((result) => {
-        console.log(result);
-        if (result === 0) {
-          next({ error: { status: 500, message: "User not found." } });
-        } else {
-          userTable
-            .update(
-              { ...req.body },
-              {
-                where: {
-                  contactNo: req.body.contactNo,
-                },
-              }
-            )
-            .then(() => {
-              next();
-            })
-            .catch((error) => {
-              if (error.errors)
-                next({
-                  error: { status: 500, message: error.errors[0].message },
-                });
-              else next({ error: { status: 500, message: error } });
-            });
-        }
-      });
-  }
-};
-
-/**
  * @param {*} req get user details from body
  * @param {*} res add new user details
  */
-const updateUserByContact = async (req, res, next) => {
+const updateUser = async (req, res, next) => {
   const validate = userValidation.validate(req.body);
 
   if (validate.error) {
@@ -238,7 +182,20 @@ const updateUserByContact = async (req, res, next) => {
                 },
               }
             )
-            .then(() => {
+            .then((result) => {
+              let token = jwt.sign(
+                {
+                  contactNo: result.contactNo,
+                  firstName: result.firstName,
+                  lastName: result.lastName,
+                  email: result.email,
+                },
+                process.env.JWT_SECRET_KEY
+              );
+              res.locals.user = {
+                message: `${firstName} ${lastName}  updated successfully.`,
+                token: token,
+              };
               next();
             })
             .catch((error) => {
@@ -278,9 +235,7 @@ const deleteUser = async (req, res, next) => {
 module.exports = {
   getUser,
   getUserById,
-  getUserByContact,
   createUser,
-  updateUserByContact,
   updateUser,
   deleteUser,
 };

@@ -6,8 +6,8 @@ const incomeController = require("../controller/income.controller");
 
 incomeRoutes.get(
   "/income",
-  authorization.verifyRole,
-  incomeController.getAllIncome,
+  authorization.verifyRole("Admin"),
+  incomeController.getIncome,
   async (req, res) => {
     res.status(200).send(res.locals.income);
   }
@@ -15,15 +15,7 @@ incomeRoutes.get(
 
 incomeRoutes.get(
   "/income/user/:id",
-  incomeController.getIncomeByUserId,
-  async (req, res) => {
-    res.status(200).send(res.locals.income);
-  }
-);
-
-incomeRoutes.get(
-  "/income/loan/:id",
-  incomeController.getIncomeByLoanId,
+  incomeController.getUserIncome,
   async (req, res) => {
     res.status(200).send(res.locals.income);
   }

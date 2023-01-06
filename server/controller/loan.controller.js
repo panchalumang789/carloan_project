@@ -5,20 +5,20 @@ const expensesTable = require("../models/expenses");
 const carTable = require("../models/car");
 const userTable = require("../models/user");
 
+const userStatus = ["Employee", "Unemployed"];
+
 // Validation Rules
 const dataValidation = Joi.object().keys({
   carId: Joi.number().required(),
+  userId: Joi.number().default(null).optional(),
   approx_price: Joi.number().min(0).required(),
   deposit: Joi.number().min(0).required(),
   term: Joi.number().min(0).max(10).required(),
   ballon: Joi.number().min(0).max(35).default(0),
-  user_status: Joi.string().required(),
-  user_income: Joi.number().min(10000).required(),
-  contactNo: Joi.string()
-    .length(10)
-    .pattern(/^[6-9]{1}[0-9]{9}$/)
+  user_status: Joi.string()
     .required()
-    .messages({ any: "Not a valid number." }),
+    .valid(...userStatus),
+  user_income: Joi.number().min(10000).required(),
   agentId: Joi.number().optional(),
 });
 
@@ -54,7 +54,7 @@ const getLoan = async (req, res, next) => {
 };
 
 /**
- * @return loan details by LoanId
+ * @return loan details by User, Agent Id
  */
 const getLoanById = async (req, res, next) => {
   loanTable
@@ -82,7 +82,9 @@ const getLoanById = async (req, res, next) => {
           })
           .then((carresult) => {
             if (carresult.length === 0) {
-              next({ error: { status: 500, message: "Something is wrong!" } });
+              next({
+                error: { status: 500, message: "Something is wrong!" },
+              });
             } else {
               result.dataValues.carImage = carresult.dataValues.image;
               res.locals.loans = result;
@@ -105,14 +107,14 @@ const getLoanById = async (req, res, next) => {
 };
 
 /**
- * @return loan details by ContacNo
+ * @return loan details by UserId
  */
-const getLoanByContactNo = async (req, res, next) => {
+const getUserLoan = async (req, res, next) => {
   loanTable
     .findAll({
       order: ["id"],
       where: {
-        contactNo: res.locals.contactNo,
+        userId: req.params.id,
       },
       include: [incomeTable, expensesTable],
     })
@@ -133,7 +135,9 @@ const getLoanByContactNo = async (req, res, next) => {
           })
           .then((carresult) => {
             if (carresult.length === 0) {
-              next({ error: { status: 500, message: "Something is wrong!" } });
+              next({
+                error: { status: 500, message: "Something is wrong!" },
+              });
             } else {
               result.dataValues.carImage = carresult.dataValues.image;
               res.locals.loans = result;
@@ -274,7 +278,7 @@ const updateLoan = async (req, res, next) => {
 
 module.exports = {
   getLoan,
-  getLoanByContactNo,
+  getUserLoan,
   getLoanById,
   newLoan,
   updateLoan,

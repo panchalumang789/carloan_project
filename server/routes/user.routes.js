@@ -7,7 +7,7 @@ const userController = require("../controller/user.controller");
 // @admin all users list
 userRoutes.get(
   "/users",
-  authorization.verifyRole,
+  authorization.verifyRole("Admin"),
   userController.getUser,
   (req, res) => {
     res.status(200).send(res.locals.users);
@@ -17,7 +17,7 @@ userRoutes.get(
 // @admin user list by id
 userRoutes.get(
   "/user/:id",
-  authorization.verifyRole,
+  authorization.verifyRole("Admin"),
   userController.getUserById,
   (req, res) => {
     res.status(200).send(res.locals.users);
@@ -33,18 +33,12 @@ userRoutes.get(
   }
 );
 
-userRoutes.post("/user", userController.updateUserByContact, (req, res) => {
-  res
-    .status(200)
-    .send(
-      `${req.body.firstName} ${req.body.lastName} registered successfully.`
-    );
+userRoutes.post("/user", userController.createUser, (req, res) => {
+  res.status(200).send(res.locals.user);
 });
 
 userRoutes.put("/user/:id", userController.updateUser, (req, res) => {
-  res
-    .status(200)
-    .send(`${req.body.firstName} ${req.body.lastName} updated successfully.`);
+  res.status(200).send(res.locals.user);
 });
 
 userRoutes.delete("/user/:id", userController.deleteUser, (req, res) => {

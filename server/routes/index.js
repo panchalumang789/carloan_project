@@ -14,10 +14,7 @@ loanTable.hasMany(expensesTable, {
   onDelete: "SET NULL",
 });
 
-userTable.hasMany(loanTable, {
-  foreignKey: "contactNo",
-  sourceKey: "contactNo",
-});
+userTable.hasMany(loanTable);
 
 userTable.hasMany(incomeTable, {
   onDelete: "SET NULL",

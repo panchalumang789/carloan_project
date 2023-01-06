@@ -15,7 +15,7 @@ const incomeValidation = Joi.object().keys({
 /**
  * @return all income details
  */
-const getAllIncome = async (req, res, next) => {
+const getIncome = async (req, res, next) => {
   incomeTable
     .findAll()
     .then((result) => {
@@ -34,44 +34,11 @@ const getAllIncome = async (req, res, next) => {
 /**
  * @return income details by UserId
  */
-const getIncomeByUserId = async (req, res, next) => {
+const getUserIncome = async (req, res, next) => {
   incomeTable
     .findAll({
       where: {
         userId: req.params.id,
-      },
-    })
-    .then((result) => {
-      if (result.length === 0) {
-        next({
-          error: {
-            status: 404,
-            message: "Something is wrong, income details not found!",
-          },
-        });
-      } else {
-        res.locals.income = result;
-        next();
-      }
-    })
-    .catch(() => {
-      next({
-        error: {
-          status: 404,
-          message: "Something is wrong, income details not found!",
-        },
-      });
-    });
-};
-
-/**
- * @return income details by LoanId
- */
-const getIncomeByLoanId = async (req, res, next) => {
-  incomeTable
-    .findAll({
-      where: {
-        loanId: req.params.id,
       },
     })
     .then((result) => {
@@ -122,8 +89,7 @@ const addIncome = async (req, res, next) => {
 };
 
 module.exports = {
-  getAllIncome,
-  getIncomeByUserId,
-  getIncomeByLoanId,
+  getIncome,
+  getUserIncome,
   addIncome,
 };

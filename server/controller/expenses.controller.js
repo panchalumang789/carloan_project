@@ -35,44 +35,11 @@ const getAllExpenses = async (req, res, next) => {
 /**
  * @return expenses data by UserId
  */
-const getExpensesByUserId = async (req, res, next) => {
+const getUserExpenses = async (req, res, next) => {
   expensesTable
     .findAll({
       where: {
         userId: req.params.id,
-      },
-    })
-    .then((result) => {
-      if (result.length === 0) {
-        next({
-          error: {
-            status: 404,
-            message: "Something is wrong, expenses data not found!",
-          },
-        });
-      } else {
-        res.locals.expenses = result;
-        next();
-      }
-    })
-    .catch(() => {
-      next({
-        error: {
-          status: 404,
-          message: "Something is wrong, expenses data not found!",
-        },
-      });
-    });
-};
-
-/**
- * @return expenses data by LoanId
- */
-const getExpensesByLoanId = async (req, res, next) => {
-  expensesTable
-    .findAll({
-      where: {
-        loanId: req.params.id,
       },
     })
     .then((result) => {
@@ -124,7 +91,6 @@ const addExpenses = async (req, res, next) => {
 
 module.exports = {
   getAllExpenses,
-  getExpensesByUserId,
-  getExpensesByLoanId,
+  getUserExpenses,
   addExpenses,
 };

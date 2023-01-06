@@ -2,15 +2,14 @@ const { DataTypes } = require("sequelize");
 const sequalize = require("../config/db.connection");
 
 const loanTable = sequalize.define("loans", {
-  id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    primaryKey: true,
-    autoIncrement: true,
-  },
   carId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    defaultValue: null,
   },
   approx_price: {
     type: DataTypes.INTEGER,
@@ -36,11 +35,6 @@ const loanTable = sequalize.define("loans", {
     isNumeric: true,
     allowNull: false,
     min: 100000,
-  },
-  contactNo: {
-    type: DataTypes.STRING(10),
-    allowNull: false,
-    isNumeric: true,
   },
   agentId: {
     type: DataTypes.INTEGER,
