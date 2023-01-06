@@ -36,14 +36,14 @@ const getCars = async (req, res, next) => {
     })
     .then((result) => {
       if (result.length === 0) {
-        next({ error: { status: 404, message: "No car maker found!" } });
+        next({ error: { status: 404, message: "Cars not found!" } });
       } else {
         res.locals.cars = result;
         next();
       }
     })
     .catch(() => {
-      next({ error: { status: 404, message: "No car maker found!" } });
+      next({ error: { status: 404, message: "Cars not found!" } });
     });
 };
 

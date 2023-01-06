@@ -6,7 +6,7 @@ const expensesController = require("../controller/expenses.controller");
 
 expensesRoutes.get(
   "/expenses",
-  authorization.verifyRole("Admin"),
+  authorization.verifyRole,
   expensesController.getAllExpenses,
   async (req, res) => {
     res.status(200).send(res.locals.expenses);
@@ -21,12 +21,8 @@ expensesRoutes.get(
   }
 );
 
-expensesRoutes.post(
-  "/expenses",
-  expensesController.addExpenses,
-  async (req, res) => {
-    res.status(200).send("Expenses added successfully.");
-  }
-);
+expensesRoutes.post("/expenses", expensesController.addExpenses, (req, res) => {
+  res.status(200).json({ message: "Expenses added successfully." });
+});
 
 module.exports = expensesRoutes;

@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const jwt = require("jsonwebtoken");
 const loanTable = require("../models/loan");
 const incomeTable = require("../models/income");
 const expensesTable = require("../models/expenses");
@@ -26,137 +27,77 @@ const dataValidation = Joi.object().keys({
  * @return all loans details
  */
 const getLoan = async (req, res, next) => {
-  loanTable
-    .findAll({
+  try {
+    let filter = "";
+    if (res.locals.role === "User") {
+      filter = {
+        userId: res.locals.user.id,
+      };
+    }
+    let loanData = await loanTable.findAll({
+      where: filter,
       order: ["id"],
-    })
-    .then((result) => {
-      if (result.length === 0) {
-        next({
-          error: {
-            status: 500,
-            message: "Something is wrong, loan application not found!",
-          },
-        });
-      } else {
-        res.locals.loans = result;
-        next();
-      }
-    })
-    .catch((error) => {
+    });
+    if (loanData.length === 0) {
       next({
         error: {
           status: 500,
           message: "Something is wrong, loan application not found!",
         },
       });
+    } else {
+      res.locals.loans = loanData;
+      next();
+    }
+  } catch (error) {
+    next({
+      error: {
+        status: 500,
+        message: "Something is wrong, loan application not found!",
+      },
     });
+  }
 };
 
 /**
- * @return loan details by User, Agent Id
+ * @return loan details by LoanId
  */
 const getLoanById = async (req, res, next) => {
-  loanTable
-    .findOne({
+  try {
+    let filter = { id: parseInt(req.params.id) };
+    if (res.locals.role === "User") {
+      filter = {
+        id: parseInt(req.params.id),
+        userId: parseInt(res.locals.user.id),
+      };
+    }
+    let loanFind = await loanTable.findOne({
       order: ["id"],
-      where: {
-        id: req.params.id,
-      },
+      where: filter,
       include: [incomeTable, expensesTable],
-    })
-    .then((result) => {
-      if (result === null) {
-        next({
-          error: {
-            status: 500,
-            message: "Something is wrong, loan application not found!",
-          },
-        });
+    });
+    if (loanFind !== null) {
+      let carFind = await carTable.findOne({ where: { id: loanFind.carId } });
+      if (carFind.length !== 0) {
+        loanFind.dataValues.carImage = carFind.dataValues.image;
+        res.locals.loans = loanFind;
+        next();
       } else {
-        carTable
-          .findOne({
-            where: {
-              id: result.carId,
-            },
-          })
-          .then((carresult) => {
-            if (carresult.length === 0) {
-              next({
-                error: { status: 500, message: "Something is wrong!" },
-              });
-            } else {
-              result.dataValues.carImage = carresult.dataValues.image;
-              res.locals.loans = result;
-              next();
-            }
-          })
-          .catch(() => {
-            next({ error: { status: 500, message: "Something is wrong!" } });
-          });
+        next({ error: { status: 500, message: "Something is wrong!" } });
       }
-    })
-    .catch((error) => {
+    } else {
       next({
         error: {
           status: 500,
           message: "Something is wrong, loan application not found!",
         },
       });
-    });
-};
-
-/**
- * @return loan details by UserId
- */
-const getUserLoan = async (req, res, next) => {
-  loanTable
-    .findAll({
-      order: ["id"],
-      where: {
-        userId: req.params.id,
-      },
-      include: [incomeTable, expensesTable],
-    })
-    .then((result) => {
-      if (result.length <= 0) {
-        next({
-          error: {
-            status: 500,
-            message: "Something is wrong, loan application not found!",
-          },
-        });
-      } else {
-        carTable
-          .findOne({
-            where: {
-              id: result.carId,
-            },
-          })
-          .then((carresult) => {
-            if (carresult.length === 0) {
-              next({
-                error: { status: 500, message: "Something is wrong!" },
-              });
-            } else {
-              result.dataValues.carImage = carresult.dataValues.image;
-              res.locals.loans = result;
-              next();
-            }
-          })
-          .catch(() => {
-            next({ error: { status: 500, message: "Something is wrong!" } });
-          });
-      }
-    })
-    .catch((error) => {
-      next({
-        error: {
-          status: 500,
-          message: "Something is wrong, loan application not found!",
-        },
-      });
-    });
+    }
+  } catch (error) {
+    if (error.original) {
+      next({ error: { status: 500, message: error.original } });
+    } else next({ error: { status: 500, message: "Invalid token" } });
+  }
 };
 
 /**
@@ -164,85 +105,26 @@ const getUserLoan = async (req, res, next) => {
  * @param {*} res add new user details
  */
 const newLoan = async (req, res, next) => {
-  const validate = dataValidation.validate(req.body);
-  if (validate.error) {
-    next({ error: { status: 400, message: validate.error.message } });
-  } else {
-    userTable
-      .findOne({
-        where: {
-          contactNo: req.body.contactNo,
-        },
-      })
-      .then((result) => {
-        if (result) {
-          loanTable
-            .build(req.body)
-            .save()
-            .then(() => {
-              next();
-            })
-            .catch((error) => {
-              if (error.errors)
-                next({
-                  error: { status: 500, message: error.errors[0].message },
-                });
-              else
-                next({
-                  error: { status: 500, message: error.original.detail },
-                });
-            });
-        } else {
-          userTable
-            .build(req.body)
-            .save()
-            .then(() => {
-              loanTable
-                .build(req.body)
-                .save()
-                .then(() => {
-                  next();
-                })
-                .catch((error) => {
-                  if (error.errors)
-                    next({
-                      error: { status: 500, message: error.errors[0].message },
-                    });
-                  else
-                    next({
-                      error: { status: 500, message: error.original.detail },
-                    });
-                });
-            })
-            .catch((error) => {
-              if (error.errors)
-                next({
-                  error: { status: 500, message: error.errors[0].message },
-                });
-              else
-                next({
-                  error: { status: 500, message: error.original.detail },
-                });
-            });
-        }
-      })
-      .catch((error) => {
-        if (error.errors)
-          next({ error: { status: 500, message: error.errors[0].message } });
-        else next({ error: { status: 500, message: error.original.detail } });
+  try {
+    if (req.headers.token) {
+      let verify = jwt.verify(req.headers.token, process.env.JWT_SECRET_KEY);
+      let findUser = await userTable.findOne({
+        where: { contactNo: verify.contactNo },
       });
+      req.body.userId = findUser.id;
+    }
 
-    // loanTable
-    //   .build(req.body)
-    //   .save()
-    //   .then(() => {
-    //     next();
-    //   })
-    //   .catch((error) => {
-    //     if (error.errors)
-    //       next({ error: { status: 500, message: error.errors[0].message } });
-    //     else next({ error: { status: 500, message: error.original.detail } });
-    //   });
+    let validate = dataValidation.validate(req.body);
+    if (validate.error) {
+      next({ error: { status: 400, message: validate.error.message } });
+    }
+    let addLoan = await loanTable.build(req.body).save();
+    res.locals.loanId = addLoan.id;
+    next();
+  } catch (error) {
+    if (error.errors)
+      next({ error: { status: 500, message: error.errors[0].message } });
+    else next({ error: { status: 500, message: error } });
   }
 };
 
@@ -251,34 +133,47 @@ const newLoan = async (req, res, next) => {
  * @param {*} res update loan details by id
  */
 const updateLoan = async (req, res, next) => {
-  const validate = dataValidation.validate(req.body);
-
-  if (validate.error) {
-    next({ error: { status: 400, message: validate.error.message } });
-  } else {
-    loanTable
-      .update(
-        { ...req.body },
-        {
-          where: {
-            id: req.params.id,
-          },
-        }
-      )
-      .then(() => {
+  try {
+    let validate = dataValidation.validate(req.body);
+    if (validate.error) {
+      next({ error: { status: 400, message: validate.error.message } });
+    }
+    if (res.locals.role === "Admin") {
+      await loanTable.update({ ...req.body }, { where: { id: req.params.id } });
+      next();
+    } else if (res.locals.role === "User") {
+      let findLoan = await loanTable.findOne({ where: { id: req.params.id } });
+      if (res.locals.user.id === findLoan.userId) {
+        await loanTable.update(
+          { ...req.body },
+          { where: { id: req.params.id } }
+        );
         next();
-      })
-      .catch((error) => {
-        if (error.errors)
-          next({ error: { status: 500, message: error.errors[0].message } });
-        else next({ error: { status: 500, message: error.original.detail } });
+      } else {
+        next({
+          error: {
+            status: 400,
+            message: "Unothorized request!",
+          },
+        });
+      }
+    } else {
+      next({
+        error: {
+          status: 500,
+          message: "Something is wrong, loan application not found!",
+        },
       });
+    }
+  } catch (error) {
+    if (error.errors)
+      next({ error: { status: 500, message: error.errors[0].message } });
+    else next({ error: { status: 500, message: error } });
   }
 };
 
 module.exports = {
   getLoan,
-  getUserLoan,
   getLoanById,
   newLoan,
   updateLoan,

@@ -12,7 +12,9 @@ carRoutes.get("/cars", carsController.getCars, async (req, res) => {
 });
 
 carRoutes.post("/cars", carsController.addCars, async (req, res) => {
-  res.status(200).send(`${res.locals.cars} cars added successfully.`);
+  res
+    .status(200)
+    .json({ message: `${res.locals.cars} cars added successfully.` });
 });
 
 module.exports = carRoutes;

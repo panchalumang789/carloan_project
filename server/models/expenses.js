@@ -20,7 +20,7 @@ const expensesTable = sequalize.define("expenses", {
   utilities_cost: {
     type: DataTypes.INTEGER,
   },
-  insurances: {
+  insurance: {
     type: DataTypes.INTEGER,
   },
   tel_internet: {

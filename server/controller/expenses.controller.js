@@ -1,5 +1,6 @@
 const Joi = require("joi");
 const expensesTable = require("../models/expenses");
+const loanTable = require("../models/loan");
 
 // Validation Rules
 const expensesValidation = Joi.object().keys({
@@ -70,22 +71,23 @@ const getUserExpenses = async (req, res, next) => {
  * @param {*} res add new expenses data
  */
 const addExpenses = async (req, res, next) => {
-  const validate = expensesValidation.validate(req.body);
-
-  if (validate.error) {
-    next({ error: { status: 400, message: validate.error.message } });
-  } else {
-    expensesTable
-      .build(req.body)
-      .save()
-      .then(() => {
-        next();
-      })
-      .catch((error) => {
-        if (error.errors)
-          next({ error: { status: 500, message: error.errors[0].message } });
-        else next({ error: { status: 500, message: error.original.detail } });
-      });
+  try {
+    let validate = expensesValidation.validate(req.body);
+    if (validate.error) {
+      next({ error: { status: 400, message: validate.error.message } });
+    }
+    let findLoan = await loanTable.findOne({
+      where: { id: req.body.loanId, userId: req.body.userId },
+    });
+    if (findLoan === null) {
+      next({ error: { status: 500, message: "UserId or LoanId is wrong!" } });
+    } else {
+      const addExpenses = await expensesTable.build(req.body).save();
+      res.locals.expenses = addExpenses;
+      next();
+    }
+  } catch (error) {
+    next({ error: { status: 500, message: error.errors[0].message } });
   }
 };
 

@@ -9,7 +9,6 @@ const loanTable = sequalize.define("loans", {
   userId: {
     type: DataTypes.INTEGER,
     allowNull: true,
-    defaultValue: null,
   },
   approx_price: {
     type: DataTypes.INTEGER,

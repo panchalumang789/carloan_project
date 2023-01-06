@@ -7,7 +7,7 @@ const userController = require("../controller/user.controller");
 // @admin all users list
 userRoutes.get(
   "/users",
-  authorization.verifyRole("Admin"),
+  authorization.verifyRole,
   userController.getUser,
   (req, res) => {
     res.status(200).send(res.locals.users);
@@ -17,25 +17,30 @@ userRoutes.get(
 // @admin user list by id
 userRoutes.get(
   "/user/:id",
-  authorization.verifyRole("Admin"),
+  authorization.verifyRole,
   userController.getUserById,
   (req, res) => {
     res.status(200).send(res.locals.users);
   }
 );
 
-userRoutes.get(
+// userRoutes.get(
+//   "/user",
+//   authorization.verifyUser,
+//   userController.getUserByContact,
+//   (req, res) => {
+//     res.status(200).send(res.locals.users);
+//   }
+// );
+
+userRoutes.post(
   "/user",
-  authorization.verifyUser,
-  userController.getUserByContact,
+  authorization.generateToken("User"),
+  userController.createUser,
   (req, res) => {
-    res.status(200).send(res.locals.users);
+    res.status(200).send(res.locals.user);
   }
 );
-
-userRoutes.post("/user", userController.createUser, (req, res) => {
-  res.status(200).send(res.locals.user);
-});
 
 userRoutes.put("/user/:id", userController.updateUser, (req, res) => {
   res.status(200).send(res.locals.user);
@@ -43,6 +48,10 @@ userRoutes.put("/user/:id", userController.updateUser, (req, res) => {
 
 userRoutes.delete("/user/:id", userController.deleteUser, (req, res) => {
   res.status(200).send(`User deleted successfully.`);
+});
+
+userRoutes.post("/admin", authorization.generateToken("Admin"), (req, res) => {
+  res.status(200).send(res.locals.token);
 });
 
 module.exports = userRoutes;

@@ -1,7 +1,9 @@
 const Joi = require("joi");
 const userTable = require("../models/user");
 const incomeTable = require("../models/income");
+const jwt = require("jsonwebtoken");
 const expensesTable = require("../models/expenses");
+const loanTable = require("../models/loan");
 
 const licenceType = ["LMV-NT", "HPMV", "HGMV"];
 const states = [
@@ -74,46 +76,39 @@ const userValidation = Joi.object().keys({
  * @return all users details
  */
 const getUser = async (req, res, next) => {
-  userTable
-    .findAll({
-      order: ["id"],
-    })
-    .then((result) => {
-      if (result.length === 0) {
-        next({ error: { status: 404, message: "Users not found!" } });
-      } else {
-        res.locals.users = result;
-        next();
-      }
-    })
-    .catch(() => {
+  try {
+    let findUsers = await userTable.findAll({ order: ["id"] });
+    if (findUsers.length === 0) {
       next({ error: { status: 404, message: "Users not found!" } });
-    });
+    } else {
+      res.locals.users = findUsers;
+      next();
+    }
+  } catch (error) {
+    next({ error: { status: 404, message: "Users not found!" } });
+  }
 };
 
 /**
  * @return users details by Id
  */
 const getUserById = async (req, res, next) => {
-  userTable
-    .findOne({
-      where: {
-        id: req.params.id,
-      },
+  try {
+    let findUser = await userTable.findOne({
+      where: { id: req.params.id },
       order: ["id"],
-      include: [incomeTable, expensesTable],
-    })
-    .then((result) => {
-      if (result.length === 0) {
-        next({ error: { status: 404, message: "Users not found!" } });
-      } else {
-        res.locals.users = result;
-        next();
-      }
-    })
-    .catch(() => {
-      next({ error: { status: 404, message: "Users not found!" } });
+      include: [{ model: loanTable, include: [incomeTable, expensesTable] }],
     });
+    console.log(Object.keys(findUser).length);
+    if (Object.keys(findUser).length <= 0) {
+      next({ error: { status: 404, message: "Users not found!" } });
+    } else {
+      res.locals.users = findUser;
+      next();
+    }
+  } catch (error) {
+    next({ error: { status: 404, message: "Users not found!" } });
+  }
 };
 
 /**
@@ -121,35 +116,27 @@ const getUserById = async (req, res, next) => {
  * @param {*} res add new user details
  */
 const createUser = async (req, res, next) => {
-  const validate = userValidation.validate(req.body);
-
-  if (validate.error) {
-    next({ error: { status: 400, message: validate.error.message } });
-  } else {
-    userTable
-      .build(req.body)
-      .save()
-      .then((result) => {
-        let token = jwt.sign(
-          {
-            contactNo: result.contactNo,
-            firstName: result.firstName,
-            lastName: result.lastName,
-            email: result.email,
-          },
-          process.env.JWT_SECRET_KEY
-        );
-        res.locals.user = {
-          message: `${firstName} ${lastName}  registered successfully.`,
-          token: token,
-        };
-        next();
-      })
-      .catch((error) => {
-        if (error.errors)
-          next({ error: { status: 500, message: error.errors[0].message } });
-        else next({ error: { status: 500, message: error.original.detail } });
-      });
+  try {
+    let validate = userValidation.validate(req.body);
+    if (validate.error) {
+      next({ error: { status: 400, message: validate.error.message } });
+    }
+    let addUser = await userTable.build(req.body).save();
+    if (addUser.id) {
+      await loanTable.update(
+        { userId: addUser.id },
+        { where: { id: req.headers.loanid } }
+      );
+    }
+    res.locals.user = {
+      message: `${req.body.firstName} ${req.body.lastName} registered successfully.`,
+      token: res.locals.token,
+    };
+    next();
+  } catch (error) {
+    if (error.errors)
+      next({ error: { status: 500, message: error.errors[0].message } });
+    else next({ error: { status: 500, message: error.original.detail } });
   }
 };
 
@@ -159,7 +146,6 @@ const createUser = async (req, res, next) => {
  */
 const updateUser = async (req, res, next) => {
   const validate = userValidation.validate(req.body);
-
   if (validate.error) {
     next({ error: { status: 400, message: validate.error.message } });
   } else {
@@ -214,22 +200,16 @@ const updateUser = async (req, res, next) => {
  * @param {*} res delete user data by id
  */
 const deleteUser = async (req, res, next) => {
-  userTable
-    .destroy({
-      where: {
-        id: req.params.id,
-      },
-    })
-    .then((result) => {
-      if (result === 1) {
-        next();
-      } else {
-        next({ error: { status: 400, message: "Invalid argument." } });
-      }
-    })
-    .catch(() => {
+  try {
+    let deleteUser = userTable.destroy({ where: { id: req.params.id } });
+    if (deleteUser === 1) {
+      next();
+    } else {
       next({ error: { status: 400, message: "Invalid argument." } });
-    });
+    }
+  } catch (error) {
+    next({ error: { status: 400, message: "Invalid argument." } });
+  }
 };
 
 module.exports = {

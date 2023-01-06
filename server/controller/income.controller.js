@@ -1,5 +1,6 @@
 const Joi = require("joi");
 const incomeTable = require("../models/income");
+const loanTable = require("../models/loan");
 
 // Validation Rules
 const incomeValidation = Joi.object().keys({
@@ -69,22 +70,23 @@ const getUserIncome = async (req, res, next) => {
  * @param {*} res add new income details
  */
 const addIncome = async (req, res, next) => {
-  const validate = incomeValidation.validate(req.body);
-
-  if (validate.error) {
-    next({ error: { status: 400, message: validate.error.message } });
-  } else {
-    incomeTable
-      .build(req.body)
-      .save()
-      .then(() => {
-        next();
-      })
-      .catch((error) => {
-        if (error.errors)
-          next({ error: { status: 500, message: error.errors[0].message } });
-        else next({ error: { status: 500, message: error.original.detail } });
-      });
+  try {
+    let validate = incomeValidation.validate(req.body);
+    if (validate.error) {
+      next({ error: { status: 400, message: validate.error.message } });
+    }
+    let findLoan = await loanTable.findOne({
+      where: { id: req.body.loanId, userId: req.body.userId },
+    });
+    if (findLoan === null) {
+      next({ error: { status: 500, message: "UserId or LoanId is wrong!" } });
+    } else {
+      const addIncome = await incomeTable.build(req.body).save();
+      res.locals.income = addIncome;
+      next();
+    }
+  } catch (error) {
+    next({ error: { status: 500, message: error.errors[0].message } });
   }
 };
 

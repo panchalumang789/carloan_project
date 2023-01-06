@@ -10,64 +10,64 @@ const userTable = sequalize.define("users", {
   },
   prefix: {
     type: DataTypes.STRING(6),
-    allowNull: true,
+    allowNull: false,
   },
   firstName: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
     validate: {
       len: [2, 20],
     },
   },
   lastName: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
     validate: {
       len: [2, 20],
     },
   },
   gender: {
     type: DataTypes.STRING(6),
-    allowNull: true,
+    allowNull: false,
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
     isEmail: true,
     unique: true,
   },
   state: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
   medicalcardImage: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
     unique: true,
     isUrl: true,
   },
   licenceFname: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
     validate: {
       len: [2, 20],
     },
   },
   licenceLname: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
     validate: {
       len: [2, 20],
     },
   },
   licenceNumber: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
     unique: true,
   },
   licenceType: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
   licenceIssueDate: {
     type: DataTypes.STRING,
@@ -75,22 +75,24 @@ const userTable = sequalize.define("users", {
       isAfter: "1980-01-01",
       isBefore: "2024-01-01",
     },
+    allowNull: false,
   },
   licenceExpireDate: {
     type: DataTypes.STRING,
     validate: {
       isAfter: "2023-01-01",
     },
+    allowNull: false,
   },
   licenceBackImage: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
     unique: true,
     isUrl: true,
   },
   licenceFrontImage: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
     unique: true,
     isUrl: true,
   },
