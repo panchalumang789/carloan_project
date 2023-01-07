@@ -7,7 +7,7 @@ const userController = require("../controller/user.controller");
 // @admin all users list
 userRoutes.get(
   "/users",
-  authorization.verifyRole,
+  authorization.verifyToken,
   userController.getUser,
   (req, res) => {
     res.status(200).send(res.locals.users);
@@ -17,21 +17,12 @@ userRoutes.get(
 // @admin user list by id
 userRoutes.get(
   "/user/:id",
-  authorization.verifyRole,
+  authorization.verifyToken,
   userController.getUserById,
   (req, res) => {
     res.status(200).send(res.locals.users);
   }
 );
-
-// userRoutes.get(
-//   "/user",
-//   authorization.verifyUser,
-//   userController.getUserByContact,
-//   (req, res) => {
-//     res.status(200).send(res.locals.users);
-//   }
-// );
 
 userRoutes.post(
   "/user",

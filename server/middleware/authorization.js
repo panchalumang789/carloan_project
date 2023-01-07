@@ -19,19 +19,9 @@ const generateToken = (role) => {
   };
 };
 
-const verifyRole = (req, res, next) => {
-  // if (req.headers.role === "Admin") {
-  //   res.locals.role = req.headers.role;
-  //   next();
-  // } else if (req.headers.token && req.headers.token !== "") {
-  //   res.locals.token = req.headers.token;
-  //   next();
-  // } else {
-  //   next({ error: { status: 500, message: "Permission denied!" } });
-  // }
-  next();
-};
-
+/**
+ * @return verify token of loggedin user or admin
+ */
 const verifyToken = async (req, res, next) => {
   try {
     let verify = jwt.verify(req.headers.token, process.env.JWT_SECRET_KEY);
@@ -94,4 +84,4 @@ const verifyOTP = async (req, res, next) => {
   }
 };
 
-module.exports = { generateToken, verifyRole, verifyToken, verifyOTP };
+module.exports = { generateToken, verifyToken, verifyOTP };

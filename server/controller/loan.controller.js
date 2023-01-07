@@ -34,10 +34,7 @@ const getLoan = async (req, res, next) => {
         userId: res.locals.user.id,
       };
     }
-    let loanData = await loanTable.findAll({
-      where: filter,
-      order: ["id"],
-    });
+    let loanData = await loanTable.findAll({ where: filter, order: ["id"] });
     if (loanData.length === 0) {
       next({
         error: {
@@ -74,7 +71,20 @@ const getLoanById = async (req, res, next) => {
     let loanFind = await loanTable.findOne({
       order: ["id"],
       where: filter,
-      include: [incomeTable, expensesTable],
+      include: [
+        {
+          model: incomeTable,
+          attributes: {
+            exclude: ["userId", "loanId", "createdAt", "updatedAt"],
+          },
+        },
+        {
+          model: expensesTable,
+          attributes: {
+            exclude: ["userId", "loanId", "createdAt", "updatedAt"],
+          },
+        },
+      ],
     });
     if (loanFind !== null) {
       let carFind = await carTable.findOne({ where: { id: loanFind.carId } });
@@ -113,10 +123,9 @@ const newLoan = async (req, res, next) => {
       });
       req.body.userId = findUser.id;
     }
-
-    let validate = dataValidation.validate(req.body);
-    if (validate.error) {
-      next({ error: { status: 400, message: validate.error.message } });
+    let { error } = dataValidation.validate(req.body);
+    if (error) {
+      next({ error: { status: 400, message: error.message } });
     }
     let addLoan = await loanTable.build(req.body).save();
     res.locals.loanId = addLoan.id;

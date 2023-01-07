@@ -9,7 +9,7 @@ const expensesValidation = Joi.object().keys({
   vehicle_running_cost: Joi.number().default(null).optional(),
   travel_cost: Joi.number().default(null).optional(),
   utilities_cost: Joi.number().default(null).optional(),
-  insurances: Joi.number().default(null).optional(),
+  insurance: Joi.number().default(null).optional(),
   tel_internet: Joi.number().default(null).optional(),
   entertainment: Joi.number().default(null).optional(),
 });
@@ -18,52 +18,17 @@ const expensesValidation = Joi.object().keys({
  * @return all expenses data
  */
 const getAllExpenses = async (req, res, next) => {
-  expensesTable
-    .findAll()
-    .then((result) => {
-      if (result.length === 0) {
-        next({ error: { status: 404, message: "No expenses data found!" } });
-      } else {
-        res.locals.expenses = result;
-        next();
-      }
-    })
-    .catch(() => {
+  try {
+    const findExpenses = await expensesTable.findAll();
+    if (findExpenses.length === 0) {
       next({ error: { status: 404, message: "No expenses data found!" } });
-    });
-};
-
-/**
- * @return expenses data by UserId
- */
-const getUserExpenses = async (req, res, next) => {
-  expensesTable
-    .findAll({
-      where: {
-        userId: req.params.id,
-      },
-    })
-    .then((result) => {
-      if (result.length === 0) {
-        next({
-          error: {
-            status: 404,
-            message: "Something is wrong, expenses data not found!",
-          },
-        });
-      } else {
-        res.locals.expenses = result;
-        next();
-      }
-    })
-    .catch(() => {
-      next({
-        error: {
-          status: 404,
-          message: "Something is wrong, expenses data not found!",
-        },
-      });
-    });
+    } else {
+      res.locals.expenses = findExpenses;
+      next();
+    }
+  } catch (error) {
+    next({ error: { status: 404, message: "No expenses data found!" } });
+  }
 };
 
 /**
@@ -72,9 +37,12 @@ const getUserExpenses = async (req, res, next) => {
  */
 const addExpenses = async (req, res, next) => {
   try {
-    let validate = expensesValidation.validate(req.body);
-    if (validate.error) {
-      next({ error: { status: 400, message: validate.error.message } });
+    if (res.locals.role === "User") {
+      req.body.userId = res.locals.user.id;
+    }
+    let { error } = expensesValidation.validate(req.body);
+    if (error) {
+      next({ error: { status: 400, message: error.message } });
     }
     let findLoan = await loanTable.findOne({
       where: { id: req.body.loanId, userId: req.body.userId },
@@ -87,12 +55,15 @@ const addExpenses = async (req, res, next) => {
       next();
     }
   } catch (error) {
-    next({ error: { status: 500, message: error.errors[0].message } });
+    if (Object.keys(error.errors).length >= 0) {
+      next({ error: { status: 500, message: error.errors[0].message } });
+    } else {
+      next({ error: { status: 500, message: error.errors } });
+    }
   }
 };
 
 module.exports = {
   getAllExpenses,
-  getUserExpenses,
   addExpenses,
 };

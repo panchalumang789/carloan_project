@@ -77,7 +77,13 @@ const userValidation = Joi.object().keys({
  */
 const getUser = async (req, res, next) => {
   try {
-    let findUsers = await userTable.findAll({ order: ["id"] });
+    let filter = "";
+    if (res.locals.role === "User") {
+      filter = {
+        id: res.locals.user.id,
+      };
+    }
+    let findUsers = await userTable.findAll({ where: filter, order: ["id"] });
     if (findUsers.length === 0) {
       next({ error: { status: 404, message: "Users not found!" } });
     } else {
@@ -94,17 +100,20 @@ const getUser = async (req, res, next) => {
  */
 const getUserById = async (req, res, next) => {
   try {
-    let findUser = await userTable.findOne({
-      where: { id: req.params.id },
-      order: ["id"],
-      include: [{ model: loanTable, include: [incomeTable, expensesTable] }],
-    });
-    console.log(Object.keys(findUser).length);
-    if (Object.keys(findUser).length <= 0) {
-      next({ error: { status: 404, message: "Users not found!" } });
+    if (res.locals.role === "Admin") {
+      let findUser = await userTable.findOne({
+        where: { id: req.params.id },
+        order: ["id"],
+        include: [{ model: loanTable, include: [incomeTable, expensesTable] }],
+      });
+      if (Object.keys(findUser).length <= 0) {
+        next({ error: { status: 404, message: "Users not found!" } });
+      } else {
+        res.locals.users = findUser;
+        next();
+      }
     } else {
-      res.locals.users = findUser;
-      next();
+      next({ error: { status: 401, message: "Permission denied!" } });
     }
   } catch (error) {
     next({ error: { status: 404, message: "Users not found!" } });
@@ -117,9 +126,9 @@ const getUserById = async (req, res, next) => {
  */
 const createUser = async (req, res, next) => {
   try {
-    let validate = userValidation.validate(req.body);
-    if (validate.error) {
-      next({ error: { status: 400, message: validate.error.message } });
+    const { error } = userValidation.validate(req.body);
+    if (error) {
+      next({ error: { status: 400, message: error.message } });
     }
     let addUser = await userTable.build(req.body).save();
     if (addUser.id) {
@@ -145,9 +154,9 @@ const createUser = async (req, res, next) => {
  * @param {*} res add new user details
  */
 const updateUser = async (req, res, next) => {
-  const validate = userValidation.validate(req.body);
-  if (validate.error) {
-    next({ error: { status: 400, message: validate.error.message } });
+  const { error } = userValidation.validate(req.body);
+  if (error) {
+    next({ error: { status: 400, message: error.message } });
   } else {
     userTable
       .count({

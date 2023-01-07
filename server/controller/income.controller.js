@@ -17,52 +17,17 @@ const incomeValidation = Joi.object().keys({
  * @return all income details
  */
 const getIncome = async (req, res, next) => {
-  incomeTable
-    .findAll()
-    .then((result) => {
-      if (result.length === 0) {
-        next({ error: { status: 404, message: "No income details found!" } });
-      } else {
-        res.locals.income = result;
-        next();
-      }
-    })
-    .catch(() => {
+  try {
+    const findIncome = await incomeTable.findAll();
+    if (findIncome.length === 0) {
       next({ error: { status: 404, message: "No income details found!" } });
-    });
-};
-
-/**
- * @return income details by UserId
- */
-const getUserIncome = async (req, res, next) => {
-  incomeTable
-    .findAll({
-      where: {
-        userId: req.params.id,
-      },
-    })
-    .then((result) => {
-      if (result.length === 0) {
-        next({
-          error: {
-            status: 404,
-            message: "Something is wrong, income details not found!",
-          },
-        });
-      } else {
-        res.locals.income = result;
-        next();
-      }
-    })
-    .catch(() => {
-      next({
-        error: {
-          status: 404,
-          message: "Something is wrong, income details not found!",
-        },
-      });
-    });
+    } else {
+      res.locals.income = findIncome;
+      next();
+    }
+  } catch (error) {
+    next({ error: { status: 404, message: "No income details found!" } });
+  }
 };
 
 /**
@@ -71,9 +36,12 @@ const getUserIncome = async (req, res, next) => {
  */
 const addIncome = async (req, res, next) => {
   try {
-    let validate = incomeValidation.validate(req.body);
-    if (validate.error) {
-      next({ error: { status: 400, message: validate.error.message } });
+    if (res.locals.role === "User") {
+      req.body.userId = res.locals.user.id;
+    }
+    let { error } = incomeValidation.validate(req.body);
+    if (error) {
+      next({ error: { status: 400, message: error.message } });
     }
     let findLoan = await loanTable.findOne({
       where: { id: req.body.loanId, userId: req.body.userId },
@@ -86,12 +54,11 @@ const addIncome = async (req, res, next) => {
       next();
     }
   } catch (error) {
-    next({ error: { status: 500, message: error.errors[0].message } });
+    next({ error: { status: 500, message: error.errors } });
   }
 };
 
 module.exports = {
   getIncome,
-  getUserIncome,
   addIncome,
 };
