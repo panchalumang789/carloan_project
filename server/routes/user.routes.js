@@ -4,6 +4,11 @@ const userRoutes = router;
 const authorization = require("../middleware/authorization");
 const userController = require("../controller/user.controller");
 
+// get all states
+userRoutes.get("/states", (req, res) => {
+  res.send(userController.states);
+});
+
 // @admin all users list
 userRoutes.get(
   "/users",

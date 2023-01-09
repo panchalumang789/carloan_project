@@ -25,13 +25,40 @@ const getCarmakers = async (req, res, next) => {
 };
 
 /**
+ * @param {*} res get all car maker list
+ */
+const getCarmodel = async (req, res, next) => {
+  carTable
+    .findAll({
+      where: {
+        make: req.params.maker,
+      },
+      attributes: ["model"],
+      order: ["model"],
+      group: ["model"],
+    })
+    .then((result) => {
+      if (result.length === 0) {
+        next({ error: { status: 404, message: "No car maker found!" } });
+      } else {
+        res.locals.cars = result;
+        next();
+      }
+    })
+    .catch(() => {
+      next({ error: { status: 404, message: "No car maker found!" } });
+    });
+};
+
+/**
  * @param {*} res get all cars of car maker
  */
 const getCars = async (req, res, next) => {
   carTable
     .findAll({
       where: {
-        make: req.body.make,
+        make: req.params.maker,
+        model: req.params.model,
       },
     })
     .then((result) => {
@@ -62,4 +89,4 @@ const addCars = async (req, res, next) => {
     });
 };
 
-module.exports = { getCarmakers, getCars, addCars };
+module.exports = { getCarmakers, getCarmodel, getCars, addCars };

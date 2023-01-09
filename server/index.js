@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 require("dotenv").config();
 
 const sequalize = require("./config/db.connection");
@@ -14,7 +15,7 @@ const incomeRoutes = require("./routes/income.routes");
 const expensesRoutes = require("./routes/expenses.routes");
 require("./routes/index");
 
-app.use(bodyParser.json(), cookieParser());
+app.use(bodyParser.json(), cookieParser(), cors());
 
 app.use(
   authorization,

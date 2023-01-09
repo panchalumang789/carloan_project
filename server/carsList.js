@@ -16,6 +16,22 @@ const carsList = [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdg_r2ehhWO3emacprRUqvbSDmfhzmF5oW5edkfxCz5eQ&sa",
   },
   {
+    make: "Tata",
+    model: "Safari",
+    production_year: ["2010", "2020"],
+    model_type: " Safari LXI",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdg_r2ehhWO3emacprRUqvbSDmfhzmF5oW5edkfxCz5eQ&saa",
+  },
+  {
+    make: "Tata",
+    model: "Safari",
+    production_year: ["2012", "2022"],
+    model_type: "Safari VXI",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdg_r2ehhWO3emacprRUqvbSDmfhzmF5oW5edkfxCz5eQ&saaa",
+  },
+  {
     make: "Hyundai",
     model: "i10",
     production_year: ["2011", "Present"],
