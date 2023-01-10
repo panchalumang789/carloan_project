@@ -1,13 +1,16 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom';
 
-const LeadDetails = () => {
+const LeadDetails = (props) => {
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm({ model: 'all' });
     const LeadDetail = (data) => {
-        console.log(data);
+        props.loanDetail(data)
+        navigate('carDetail')
     }
     return (
-        <div className='flex items-center'>
+        <div className='flex items-center h-screen'>
             <div className='w-1/2 text-center'>
                 <p>Hello I'm Kate.</p>
                 <p>I am here to help you find the best car loan options.</p>
@@ -17,12 +20,12 @@ const LeadDetails = () => {
                 <div >
                     <p>Loan Detail</p>
                     <div>
-                        <label htmlFor="approx_amount">Approx Amount</label>
-                        <input type="number" id='approx_amount' placeholder='Approx Amount' className='border' {...register('approx_amount', { required: true, min: 0 })} />
-                        {errors.approx_amount?.type === 'required' && (
+                        <label htmlFor="approx_price">Approx Amount</label>
+                        <input type="number" id='approx_price' placeholder='Approx Amount' className='border' {...register('approx_price', { required: true, min: 0 })} />
+                        {errors.approx_price?.type === 'required' && (
                             <span>This field is required.</span>
                         )}
-                        {errors.approx_amount?.type === 'min' && (
+                        {errors.approx_price?.type === 'min' && (
                             <span>Enter valid amount.</span>
                         )}
                     </div>

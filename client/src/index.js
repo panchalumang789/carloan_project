@@ -15,7 +15,7 @@ root.render(
     <Routes>
       <Route path="/" element={<App />}>
         <Route path="" element={<LandingPage />}></Route>
-        <Route path="journey" element={<Journey />}></Route>
+        <Route path="journey/*" element={<Journey />}></Route>
       </Route>
     </Routes>
   </BrowserRouter>

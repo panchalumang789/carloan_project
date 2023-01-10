@@ -20,7 +20,7 @@ const LicenseDetails = () => {
     console.log(data);
   }
   return (
-    <div className='flex items-center'>
+    <div className='flex items-center h-screen'>
       <div className='w-1/2 text-center'>
         <p>Great! I need your driving license details.</p>
       </div>

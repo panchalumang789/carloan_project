@@ -20,7 +20,7 @@ const dataValidation = Joi.object().keys({
     .required()
     .valid(...userStatus),
   user_income: Joi.number().min(10000).required(),
-  agentId: Joi.number().optional(),
+  agentId: Joi.number().optional().default(null),
 });
 
 /**

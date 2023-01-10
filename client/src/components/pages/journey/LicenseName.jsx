@@ -7,7 +7,7 @@ const LicenseName = () => {
 
     }
     return (
-        <div className='flex items-center'>
+        <div className='flex items-center h-screen'>
             <div className='w-1/2 text-center'>
                 <p>Perfect! I need to grab some personal info so we can run a soft credit check. Don't worry, it won't impact your credit score.</p>
             </div>

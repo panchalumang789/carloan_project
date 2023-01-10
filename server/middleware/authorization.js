@@ -52,7 +52,42 @@ const verifyToken = async (req, res, next) => {
 /**
  * @return verification of otp
  */
+const sendOTP = async (req, res, next) => {
+  try {
+    if (!req.body && req.body.ContactNo === "") {
+      next({ error: { status: 500, message: "Invalid parameter!" } });
+    } else {
+      let sendOTP = await client.verify
+        .services(process.env.SERVICEID)
+        .verifications.create({
+          to: `+91${req.body.ContactNo}`,
+          channel: "sms",
+        });
+      if (sendOTP.status === "pending") {
+        res.locals.response = "OTP sended successfully.";
+        res.locals.verification = result.status;
+        next();
+      } else {
+        next({ error: { status: 200, message: "Something is wrong!" } });
+      }
+    }
+  } catch (error) {
+    if (error.original) {
+      next({ error: { status: 200, message: error.original } });
+    } else next({ error: { status: 200, message: "Something is Wrong" } });
+  }
+};
+
+/**
+ * @return verification of otp
+ */
 const verifyOTP = async (req, res, next) => {
+  try {
+  } catch (error) {
+    if (error.original) {
+      next({ error: { status: 500, message: error.original } });
+    } else next({ error: { status: 500, message: "Invalid token" } });
+  }
   if (!req.body && req.body.ContactNo === "") {
     next({ error: { status: 500, message: "Invalid parameter!" } });
   } else if (req.body.code === "7777") {
@@ -84,4 +119,4 @@ const verifyOTP = async (req, res, next) => {
   }
 };
 
-module.exports = { generateToken, verifyToken, verifyOTP };
+module.exports = { generateToken, verifyToken, sendOTP, verifyOTP };

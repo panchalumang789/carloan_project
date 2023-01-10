@@ -7,7 +7,7 @@ const ExpensesDetails = () => {
     console.log(data);
   }
   return (
-    <div className='flex items-center'>
+    <div className='flex items-center h-screen'>
       <div className='w-1/2 text-center'>
         <p>Please provide your monthly expenses.</p>
       </div>

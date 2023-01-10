@@ -7,7 +7,7 @@ const IncomeDetails = () => {
     console.log(data);
   }
   return (
-    <div className='flex items-center'>
+    <div className='flex items-center h-screen'>
       <div className='w-1/2 text-center'>
         <p>Do you earn any additional income.</p>
       </div>
