@@ -23,13 +23,16 @@ const Theme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
   return (
-    <div className="fixed top-10 right-32">
-      <button
-        className="dark:bg-white p-2 rounded-lg border"
-        onClick={handleTheme}
-      >
-        Theme
-      </button>
+    <div className="fixed top-10 right-24 md:top-12 mt-1 md:right-32 z-50">
+      <label className="relative inline-flex items-center cursor-pointer">
+        <input
+          type="checkbox"
+          value=""
+          className="sr-only peer"
+          onChange={handleTheme}
+        />
+        <div className="w-11 h-6 bg-primary-color-1 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-color-1 dark:peer-focus:ring-primary-color-5 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-primary-color-1 peer-checked:after:bg-primary-color-1 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-primary-color-5 after:border-primary-color-5 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-color-5"></div>
+      </label>
     </div>
   );
 };

@@ -1,14 +1,10 @@
 import React from "react";
-// import Navbar from "../navbar/Navbar";
-// import Footer from "./Footer";
-import Journey from "./Journey";
+import { Link } from "react-router-dom";
 
 const LandingPage = () => {
   return (
     <div className="">
-      <Journey />
-      {/* <Navbar /> */}
-      {/* <Footer /> */}
+      <Link to="/journey">Lets Start Journey</Link>
     </div>
   );
 };
