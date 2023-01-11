@@ -1,133 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import Cookies from "universal-cookie";
+import { ToastContainer, } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AnimatePresence } from "framer-motion";
 
 import CustomerJourney from "./journey/index";
 
-import loanService from "services/loanService";
 
 const Journey = () => {
-  const [leadDetail, setLeadDetails] = useState({});
-  const cookie = new Cookies();
-  const location = useLocation();
-  cookie.set("customerJourney", leadDetail);
-  console.log("Cookie", cookie.get("customerJourney"));
-  // const [leadDetail, setLeadDetails] = useState({ "approx_price": "12", "deposit": "12", "term": "4", "ballon": "12", "carId": "4", "user_status": "Employee", "user_income": "987654" })
-  const [ContactNo, setContactNo] = useState("7046611714");
-  const [Status, setStatus] = useState("");
-  useEffect(() => {
-    let verification = "";
-    (async () => {
-      if (Status === "approved") {
-        const leadServices = new loanService();
-        const applyLoan = await leadServices.applyLoan({
-          path: "loan",
-          details: { loanData: leadDetail },
-        });
-        if (applyLoan) {
-          toast.success("Verifying OTP", {
-            position: "top-right",
-            autoClose: 2000,
-            theme: "light",
-          });
-          verification = setTimeout(() => {
-            toast.success(applyLoan.message, {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-          }, 2000);
-        }
-      }
-    })();
-    return () => {
-      clearTimeout(verification);
-    };
-    // eslint-disable-next-line
-  }, [Status]);
-
+  const location = useLocation()
   return (
     <>
       <ToastContainer />
       <AnimatePresence>
         <Routes location={location} key={location.pathname}>
-          <Route
-            path="/"
-            element={
-              <CustomerJourney.LeadDetails
-                loanDetail={(data) => setLeadDetails(data)}
-              />
-            }
-          />
-          <Route
-            path="/carDetail"
-            element={
-              <CustomerJourney.CarDetails
-                carDetails={(data) =>
-                  setLeadDetails({ ...leadDetail, carId: data })
-                }
-              />
-            }
-          />
-          <Route
-            path="/workDetail"
-            element={
-              <CustomerJourney.WorkDetails
-                workDetail={(data) =>
-                  setLeadDetails({
-                    ...leadDetail,
-                    user_status: data.user_status,
-                    user_income: data.user_income,
-                  })
-                }
-              />
-            }
-          />
-          <Route
-            path="/loginDetail"
-            element={
-              <CustomerJourney.Login
-                sendMobile={(data) => setContactNo(data)}
-              />
-            }
-          />
-          <Route
-            path="/verifyOTP"
-            element={
-              <CustomerJourney.VerifyOTP
-                ContactNo={ContactNo}
-                verifyOTP={(status) => setStatus(status)}
-              />
-            }
-          />
-          <Route
-            path="/customerDetail"
-            element={<CustomerJourney.CustomerDetails />}
-          />
-          <Route
-            path="/licenseName"
-            element={<CustomerJourney.LicenseName />}
-          />
-          <Route
-            path="/licenseDetail"
-            element={<CustomerJourney.LicenseDetails />}
-          />
-          <Route
-            path="/incomeDetail"
-            element={<CustomerJourney.IncomeDetails />}
-          />
-          <Route
-            path="/expensesDetail"
-            element={<CustomerJourney.ExpensesDetails />}
-          />
+          <Route path="/" element={<CustomerJourney.LeadDetails />} />
+          <Route path="/carDetail" element={<CustomerJourney.CarDetails />} />
+          <Route path="/workDetail" element={<CustomerJourney.WorkDetails />} />
+          <Route path="/loginDetail" element={<CustomerJourney.Login />} />
+          <Route path="/verifyOTP" element={<CustomerJourney.VerifyOTP />} />
+          <Route path="/customerDetail" element={<CustomerJourney.CustomerDetails />} />
+          <Route path="/licenseName" element={<CustomerJourney.LicenseName />} />
+          <Route path="/licenseDetail" element={<CustomerJourney.LicenseDetails />} />
+          <Route path="/incomeDetail" element={<CustomerJourney.IncomeDetails />} />
+          <Route path="/expensesDetail" element={<CustomerJourney.ExpensesDetails />} />
         </Routes>
       </AnimatePresence>
     </>

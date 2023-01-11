@@ -65,7 +65,7 @@ const sendOTP = async (req, res, next) => {
         });
       if (sendOTP.status === "pending") {
         res.locals.response = "OTP sended successfully.";
-        res.locals.verification = result.status;
+        res.locals.verification = sendOTP.status;
         next();
       } else {
         next({ error: { status: 200, message: "Something is wrong!" } });
@@ -85,11 +85,11 @@ const verifyOTP = async (req, res, next) => {
   try {
   } catch (error) {
     if (error.original) {
-      next({ error: { status: 500, message: error.original } });
-    } else next({ error: { status: 500, message: "Invalid token" } });
+      next({ error: { status: 200, message: error.original } });
+    } else next({ error: { status: 200, message: "Invalid token" } });
   }
   if (!req.body && req.body.ContactNo === "") {
-    next({ error: { status: 500, message: "Invalid parameter!" } });
+    next({ error: { status: 200, message: "Invalid parameter!" } });
   } else if (req.body.code === "7777") {
     res.locals.response = "approved";
     next();
@@ -100,12 +100,14 @@ const verifyOTP = async (req, res, next) => {
         code: `${req.body.code}`,
       },
       (error, result) => {
-        if (error) next({ error: { status: 500, message: error } });
+        console.log("error", error);
+        console.log("result", result);
+        if (error) next({ error: { status: 200, message: error } });
         else {
           if (result.status !== "approved") {
             next({
               error: {
-                status: 500,
+                status: 200,
                 message: "Something is wrong, Internal error!",
               },
             });

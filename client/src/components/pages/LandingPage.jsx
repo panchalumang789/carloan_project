@@ -9,14 +9,12 @@ const LandingPage = () => {
         to="/journey"
         className="border border-primary-color-1 dark:bg-primary-color-3 text-2xl p-4 hover:text-3xl transition-all duration-300"
       >
-        <Typewriter
-          onInit={(typewriter) => {
-            typewriter
-              .typeString("Get my Loan options")
-              .changeDelay(100)
-              .start();
-          }}
-        />
+        <Typewriter options={{
+          strings: "Get my Loan options.",
+          autoStart: true,
+          loop: false,
+          delay: 60,
+        }} />
       </Link>
     </div>
   );
