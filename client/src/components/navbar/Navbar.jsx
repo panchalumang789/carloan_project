@@ -32,19 +32,19 @@ const Navbar = () => {
               <span
                 className={
                   Navbar.span1 +
-                  " transition-all after:duration-500 after:w-9 after:my-1 after:rounded-xl after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-2 after:block group-hover:"
+                  " transition-all after:duration-500 after:w-9 after:my-1 after:rounded-xl after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:block group-hover:"
                 }
               ></span>
               <span
                 className={
                   Navbar.span2 +
-                  " transition-all after:duration-500 after:w-5 after:my-1 after:rounded-xl after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-2 after:block"
+                  " transition-all after:duration-500 after:w-5 after:my-1 after:rounded-xl after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:block"
                 }
               ></span>
               <span
                 className={
                   Navbar.span3 +
-                  " transition-all after:duration-500 after:w-9 after:my-1 after:rounded-xl after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-2 after:block"
+                  " transition-all after:duration-500 after:w-9 after:my-1 after:rounded-xl after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:block"
                 }
               ></span>
             </div>
@@ -54,33 +54,33 @@ const Navbar = () => {
       <div
         className={
           Navbar.navbar +
-          " fixed w-screen md:w-2/5 transition-all duration-700 bg-primary-color-5 text-primary-color-4 dark:bg-primary-color-1 dark:text-primary-color-5 z-10 top-0"
+          " fixed w-screen md:w-2/5 transition-all duration-700 bg-primary-color-3 text-primary-color-4 dark:bg-primary-color-6 dark:text-primary-color-5 z-10 top-0"
         }
       >
         <div className="flex flex-col justify-center items-center gap-y-6 h-screen uppercase">
           <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
             <Link to={"/"} className="text-2xl">
-              Hello
+              Get Overview
             </Link>
           </div>
           <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
             <Link to={"/"} className="text-2xl">
-              Hello
+              Services
             </Link>
           </div>
           <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
             <Link to={"/"} className="text-2xl">
-              Hello
+              Partners
             </Link>
           </div>
           <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
             <Link to={"/"} className="text-2xl">
-              Hello
+              About
             </Link>
           </div>
           <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-4 dark:after:bg-primary-color-3 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1">
             <Link to={"/"} className="text-2xl">
-              Hello
+              Contact US
             </Link>
           </div>
         </div>
