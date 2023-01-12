@@ -1,31 +1,29 @@
 import { motion } from "framer-motion";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import Cookies from "universal-cookie";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Typewriter from "typewriter-effect";
+import {
+  FormTitle,
+  Navigator,
+  inputClasses,
+  selectClasses,
+} from "./extra/Widget";
 
 const LeadDetails = () => {
-  const [leadDetail, setLeadDetails] = useState({});
   const cookie = new Cookies();
+  const [leadDetail] = useState(cookie.get("leadDetails"));
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ model: "all" });
+  } = useForm({ model: "all", defaultValues: leadDetail });
   const LeadDetail = (data) => {
     cookie.set("leadDetails", data);
     navigate("carDetail");
   };
-
-  useMemo(() => {
-    if (cookie.get("leadDetails")) {
-      setLeadDetails(cookie.get("leadDetails"));
-    }
-    //eslint-disable-next-line
-  }, [cookie.get("leadDetail")]);
-
   return (
     <motion.div
       initial={{ opacity: 0, width: 0 }}
@@ -51,9 +49,7 @@ const LeadDetails = () => {
           className="w-5/6 lg:w-1/2 md:px-28"
         >
           <div className="flex flex-col gap-y-5">
-            <p className="text-3xl after:w-0 font-semibold hover:after:w-full after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:transition-all after:duration-700 after:rounded-xl after:mt-1.5">
-              Loan Detail
-            </p>
+            <FormTitle formTitle={"Loan Details"} />
             <div className="flex text-md flex-col">
               <label htmlFor="approx_price" className="px-1">
                 Approx Amount
@@ -61,12 +57,15 @@ const LeadDetails = () => {
               <input
                 type="number"
                 id="approx_price"
+                autoFocus
                 placeholder="Approx Amount"
-                value={leadDetail.approx_price}
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
+                className={inputClasses}
                 {...register("approx_price", {
                   required: "Please enter approx amount!",
-                  min: 0,
+                  min: {
+                    value: 0,
+                    message: "Approx amount should be greater than 0!",
+                  },
                 })}
               />
               {errors.approx_price?.type === "required" && (
@@ -76,7 +75,7 @@ const LeadDetails = () => {
               )}
               {errors.approx_price?.type === "min" && (
                 <span className="text-red-500 pt-1 px-1 text-sm">
-                  Enter valid amount.
+                  {errors.approx_price?.message}
                 </span>
               )}
             </div>
@@ -88,11 +87,13 @@ const LeadDetails = () => {
                 type="number"
                 id="deposit"
                 placeholder="Deposit"
-                value={leadDetail.deposit}
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-60"
+                className={inputClasses}
                 {...register("deposit", {
                   required: "Please enter deposit amount!",
-                  min: { value: 0, message: "Deposit must be more than 0 !" },
+                  min: {
+                    value: 0,
+                    message: "Deposit should be greater than 0!",
+                  },
                 })}
               />
               {errors.deposit?.type === "required" && (
@@ -112,8 +113,8 @@ const LeadDetails = () => {
               </label>
               <select
                 id="term"
-                defaultValue={leadDetail.term || ""}
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 text-primary-color-1 font-medium"
+                defaultValue={""}
+                className={selectClasses}
                 {...register("term", { required: "Please select loan term!" })}
               >
                 <option disabled value=""></option>
@@ -142,13 +143,15 @@ const LeadDetails = () => {
                 type="number"
                 id="ballon"
                 placeholder="Ballon"
-                value={leadDetail.ballon}
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-60"
+                className={inputClasses}
                 {...register("ballon", {
-                  min: { value: 0, message: "Minimum amount of ballon in 0." },
+                  min: {
+                    value: 0,
+                    message: "Ballon should be greater than 0!",
+                  },
                   max: {
                     value: 35,
-                    message: "Maximum amount of ballon in 35.",
+                    message: "Ballon should be less than 35!",
                   },
                 })}
               />
@@ -163,22 +166,7 @@ const LeadDetails = () => {
                 </span>
               )}
             </div>
-            <div className="w-full flex justify-around">
-              <Link
-                to={"/"}
-                className="group font-medium flex items-center justify-end gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
-              >
-                <em className="group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left "></em>{" "}
-                Back
-              </Link>
-              <button
-                type="submit"
-                className="group font-medium flex items-center justify-start gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
-              >
-                Next{" "}
-                <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right" />
-              </button>
-            </div>
+            <Navigator prevForm={"/"} />
           </div>
         </form>
       </div>

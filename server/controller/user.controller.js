@@ -32,7 +32,6 @@ const states = [
   "Sikkim",
   "Tamil Nadu",
 ];
-const gender = ["Male", "Female", "Other"];
 const prefix = ["Mr.", "Ms.", "Mrs."];
 
 // Validation rules
@@ -47,9 +46,6 @@ const userValidation = Joi.object().keys({
     .valid(...prefix),
   firstName: Joi.string().min(2).max(20).required(),
   lastName: Joi.string().min(2).max(20).required(),
-  gender: Joi.string()
-    .required()
-    .valid(...gender),
   email: Joi.string()
     .email({
       minDomainSegments: 2,
@@ -59,17 +55,20 @@ const userValidation = Joi.object().keys({
   state: Joi.string()
     .required()
     .valid(...states),
-  medicalcardImage: Joi.string().required(),
-  licenceFname: Joi.string().min(2).max(20).required(),
-  licenceLname: Joi.string().min(2).max(20).required(),
+  medicalcardImage: Joi.string().default(null).optional(),
+  licenseFirstName: Joi.string().min(2).max(20).required(),
+  licenseLastName: Joi.string().min(2).max(20).required(),
+  licenseIssueDate: Joi.string().required(),
   licenceNumber: Joi.string().required(),
   licenceType: Joi.string()
     .required()
     .valid(...licenceType),
   licenceExpireDate: Joi.string().required(),
-  licenceIssueDate: Joi.string().required(),
-  licenceBackImage: Joi.string().required(),
-  licenceFrontImage: Joi.string().required(),
+  licenceIssueState: Joi.string()
+    .required()
+    .valid(...states),
+  licenceBackImage: Joi.string().default(null).optional(),
+  licenceFrontImage: Joi.string().default(null).optional(),
 });
 
 /**
@@ -88,6 +87,25 @@ const getUser = async (req, res, next) => {
       next({ error: { status: 404, message: "Users not found!" } });
     } else {
       res.locals.users = findUsers;
+      next();
+    }
+  } catch (error) {
+    next({ error: { status: 404, message: "Users not found!" } });
+  }
+};
+
+/**
+ * @return users details by contact no
+ */
+const getUserByContactNo = async (req, res, next) => {
+  try {
+    let findUser = await userTable.findOne({
+      where: { contactNo: req.params.contactNo },
+    });
+    if (Object.keys(findUser).length <= 0) {
+      next({ error: { status: 404, message: "Users not found!" } });
+    } else {
+      res.locals.users = findUser;
       next();
     }
   } catch (error) {
@@ -131,7 +149,8 @@ const createUser = async (req, res, next) => {
       next({ error: { status: 400, message: error.message } });
     }
     let addUser = await userTable.build(req.body).save();
-    if (addUser.id) {
+    console.log(addUser);
+    if (req.headers.loanid && req.headers.loanid !== "") {
       await loanTable.update(
         { userId: addUser.id },
         { where: { id: req.headers.loanid } }
@@ -143,6 +162,7 @@ const createUser = async (req, res, next) => {
     };
     next();
   } catch (error) {
+    console.log(error);
     if (error.errors)
       next({ error: { status: 500, message: error.errors[0].message } });
     else next({ error: { status: 500, message: error.original.detail } });
@@ -225,6 +245,7 @@ module.exports = {
   states,
   getUser,
   getUserById,
+  getUserByContactNo,
   createUser,
   updateUser,
   deleteUser,

@@ -27,6 +27,10 @@ const incomeTable = sequalize.define("incomes", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  centralink_benifit: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   foreign_income: {
     type: DataTypes.INTEGER,
     allowNull: false,

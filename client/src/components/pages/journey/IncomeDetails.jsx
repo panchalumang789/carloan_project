@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import Typewriter from "typewriter-effect";
+import { FormTitle, Navigator, inputClasses } from "./extra/Widget";
 
 const IncomeDetails = () => {
   const {
@@ -40,9 +40,7 @@ const IncomeDetails = () => {
             onSubmit={handleSubmit(incomeDetails)}
             className="flex flex-col gap-y-4"
           >
-            <p className="text-3xl after:w-0 font-semibold hover:after:w-full after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:transition-all after:duration-700 after:rounded-xl after:mt-1.5">
-              Additional Income
-            </p>
+            <FormTitle formTitle={"Additional Income"} />
             <div className="flex text-md flex-col">
               <div className="flex gap-x-4">
                 <label>Additional Income</label>
@@ -55,7 +53,9 @@ const IncomeDetails = () => {
                     name="income"
                     id="yes"
                     value="yes"
-                    {...register("additional_income", { required: true })}
+                    {...register("additional_income", {
+                      required: true,
+                    })}
                   />
                 </div>
                 <div>
@@ -67,13 +67,15 @@ const IncomeDetails = () => {
                     name="income"
                     id="no"
                     value="no"
-                    {...register("additional_income", { required: true })}
+                    {...register("additional_income", {
+                      required: true,
+                    })}
                   />
                 </div>
               </div>
               {errors.additional_income && (
                 <span className="text-red-500 px-1 text-sm">
-                  This field is required.
+                  Please select you have any additional income or no?
                 </span>
               )}
             </div>
@@ -81,16 +83,32 @@ const IncomeDetails = () => {
               <label htmlFor="rental_income">
                 Rental income per month (after tax)
               </label>
+              <div className="input-group-prepend">
+                <span className="ml-4 my-1.5 fixed text-lg " id="basic-addon1">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 id="rental_income"
                 type="number"
-                placeholder="Rental income                                                                       ₹"
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-                {...register("rental_income", { required: true })}
+                placeholder="Enter rental income"
+                className={inputClasses + " pl-10"}
+                {...register("rental_income", {
+                  required: "Please enter rental income!",
+                  min: {
+                    value: 0,
+                    message: "Rental income should be greater than 0!",
+                  },
+                })}
               />
-              {errors.rental_income && (
+              {errors.rental_income?.type === "required" && (
                 <span className="text-red-500 px-1 text-sm">
-                  This field is required.
+                  {errors.rental_income?.message}
+                </span>
+              )}
+              {errors.rental_income?.type === "min" && (
+                <span className="text-red-500 px-1 text-sm">
+                  {errors.rental_income?.message}
                 </span>
               )}
             </div>
@@ -98,16 +116,32 @@ const IncomeDetails = () => {
               <label htmlFor="investment_income">
                 Investment income per month (after tax)
               </label>
+              <div className="input-group-prepend">
+                <span className="ml-4 my-1.5 fixed text-lg " id="basic-addon1">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 id="investment_income"
                 type="number"
-                placeholder="Enter investment income                                                ₹"
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-                {...register("investment_income", { required: true })}
+                placeholder="Enter investment income"
+                className={inputClasses + " pl-10"}
+                {...register("investment_income", {
+                  required: "Please enter investment income!",
+                  min: {
+                    value: 0,
+                    message: "Investment income should be greater than 0!",
+                  },
+                })}
               />
-              {errors.investment_income && (
+              {errors.investment_income?.type === "required" && (
                 <span className="text-red-500 px-1 text-sm">
-                  This field is required.
+                  {errors.investment_income?.message}
+                </span>
+              )}
+              {errors.investment_income?.type === "min" && (
+                <span className="text-red-500 px-1 text-sm">
+                  {errors.investment_income?.message}
                 </span>
               )}
             </div>
@@ -115,16 +149,32 @@ const IncomeDetails = () => {
               <label htmlFor="salary_sacrifice">
                 Salary sacrifice per month (after tax)
               </label>
+              <div className="input-group-prepend">
+                <span className="ml-4 my-1.5 fixed text-lg " id="basic-addon1">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 id="salary_sacrifice"
                 type="number"
-                placeholder="Salary sacrifice                                                                     ₹"
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-                {...register("salary_sacrifice", { required: true })}
+                placeholder="Enter salary sacrifice"
+                className={inputClasses + " pl-10"}
+                {...register("salary_sacrifice", {
+                  required: "Please enter salary sacrifice!",
+                  min: {
+                    value: 0,
+                    message: "Salary sacrifice should be greater than 0!",
+                  },
+                })}
               />
-              {errors.salary_sacrifice && (
+              {errors.salary_sacrifice?.type === "required" && (
                 <span className="text-red-500 px-1 text-sm">
-                  This field is required.
+                  {errors.salary_sacrifice?.message}
+                </span>
+              )}
+              {errors.salary_sacrifice?.type === "min" && (
+                <span className="text-red-500 px-1 text-sm">
+                  {errors.salary_sacrifice?.message}
                 </span>
               )}
             </div>
@@ -132,16 +182,32 @@ const IncomeDetails = () => {
               <label htmlFor="centralink_benifit">
                 Centralink benifit per month (after tax)
               </label>
+              <div className="input-group-prepend">
+                <span className="ml-4 my-1.5 fixed text-lg " id="basic-addon1">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 id="centralink_benifit"
                 type="number"
-                placeholder="Enter centralink income                                                   ₹"
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-                {...register("centralink_benifit", { required: true })}
+                placeholder="Enter centralink income"
+                className={inputClasses + " pl-10"}
+                {...register("centralink_benifit", {
+                  required: "Please enter centralink income!",
+                  min: {
+                    value: 0,
+                    message: "Centralink income should be greater than 0!",
+                  },
+                })}
               />
-              {errors.centralink_benifit && (
+              {errors.centralink_benifit?.type === "required" && (
                 <span className="text-red-500 px-1 text-sm">
-                  This field is required.
+                  {errors.centralink_benifit?.message}
+                </span>
+              )}
+              {errors.centralink_benifit?.type === "min" && (
+                <span className="text-red-500 px-1 text-sm">
+                  {errors.centralink_benifit?.message}
                 </span>
               )}
             </div>
@@ -149,35 +215,36 @@ const IncomeDetails = () => {
               <label htmlFor="foreign_income">
                 Foreign income per month (after tax)
               </label>
+              <div className="input-group-prepend">
+                <span className="ml-4 my-1.5 fixed text-lg " id="basic-addon1">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 id="foreign_income"
                 type="number"
-                placeholder="Enter foreign income                                                         ₹"
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-                {...register("foreign_income", { required: true })}
+                placeholder="Enter foreign income"
+                className={inputClasses + " pl-10"}
+                {...register("foreign_income", {
+                  required: "Please enter foreign income!",
+                  min: {
+                    value: 0,
+                    message: "Foreign income should be greater than 0!",
+                  },
+                })}
               />
-              {errors.foreign_income && (
+              {errors.foreign_income?.type === "required" && (
                 <span className="text-red-500 px-1 text-sm">
-                  This field is required.
+                  {errors.foreign_income?.message}
+                </span>
+              )}
+              {errors.foreign_income?.type === "min" && (
+                <span className="text-red-500 px-1 text-sm">
+                  {errors.foreign_income?.message}
                 </span>
               )}
             </div>
-            <div className="w-full flex justify-around">
-              <Link
-                to={"/journey/licenseDetail"}
-                className="group font-medium flex items-center justify-end gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
-              >
-                <em className="group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left "></em>{" "}
-                Back
-              </Link>
-              <button
-                type="submit"
-                className="group font-medium flex items-center justify-start gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
-              >
-                Next
-                <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right" />
-              </button>
-            </div>
+            <Navigator prevForm={"/journey/licenseDetail"} />
           </form>
         </div>
       </div>

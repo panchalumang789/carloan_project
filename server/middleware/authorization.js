@@ -83,41 +83,34 @@ const sendOTP = async (req, res, next) => {
  */
 const verifyOTP = async (req, res, next) => {
   try {
+    if (!req.body && req.body.ContactNo === "") {
+      next({ error: { status: 400, message: "Invalid parameter!" } });
+    } else if (req.body.code === "7777") {
+      res.locals.response = "approved";
+      next();
+    } else {
+      let verifyOTP = await client.verify
+        .services(process.env.SERVICEID)
+        .verificationChecks.create({
+          to: `+91${req.body.ContactNo}`,
+          code: `${req.body.code}`,
+        });
+      if (verifyOTP.status !== "approved") {
+        next({
+          error: {
+            status: 400,
+            message: "Something is wrong, Internal error!",
+          },
+        });
+      } else {
+        res.locals.response = verifyOTP.status;
+        next();
+      }
+    }
   } catch (error) {
     if (error.original) {
       next({ error: { status: 200, message: error.original } });
     } else next({ error: { status: 200, message: "Invalid token" } });
-  }
-  if (!req.body && req.body.ContactNo === "") {
-    next({ error: { status: 200, message: "Invalid parameter!" } });
-  } else if (req.body.code === "7777") {
-    res.locals.response = "approved";
-    next();
-  } else {
-    client.verify.services(process.env.SERVICEID).verificationChecks.create(
-      {
-        to: `+91${req.body.ContactNo}`,
-        code: `${req.body.code}`,
-      },
-      (error, result) => {
-        console.log("error", error);
-        console.log("result", result);
-        if (error) next({ error: { status: 200, message: error } });
-        else {
-          if (result.status !== "approved") {
-            next({
-              error: {
-                status: 200,
-                message: "Something is wrong, Internal error!",
-              },
-            });
-          } else {
-            res.locals.response = result.status;
-            next();
-          }
-        }
-      }
-    );
   }
 };
 

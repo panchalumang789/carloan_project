@@ -1,33 +1,53 @@
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import customerService from "services/customerServices";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Typewriter from "typewriter-effect";
+import { FormTitle, inputClasses, selectClasses } from "./extra/Widget";
+import Cookies from "universal-cookie";
 
 const CustomerDetails = () => {
-  const [States, setStates] = useState([]);
   const userService = new customerService();
+  const cookie = new Cookies();
+  const [States, setStates] = useState([]);
 
+  // const [customerData, setCustomerData] = useState({});
+  const getUser = async () => {
+    const result = await userService.findUserbyContact({
+      path: `user/mobile/${cookie.get("contactNo").mobile}`,
+    });
+    console.log(result);
+    setValue("prefix", result.prefix);
+    setValue("firstName", result.firstName);
+    setValue("lastName", result.lastName);
+    setValue("email", result.email);
+    setValue("state", result.state);
+  };
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm({ model: "all" });
-  useEffect(() => {
+  } = useForm({
+    model: "all",
+  });
+  const getCustomerDetails = (data) => {
+    cookie.set("customerDetail", data);
+    console.log(data);
+  };
+
+  useMemo(() => {
     const getStates = async () => {
       const result = await userService.getState({ data: { url: "states" } });
       setStates(result);
     };
     getStates();
+    getUser();
     return () => {};
     //eslint-disable-next-line
   }, []);
-
-  const customerDetails = (data) => {
-    console.log(data);
-  };
 
   return (
     <>
@@ -59,11 +79,9 @@ const CustomerDetails = () => {
           </div>
           <div className="w-5/6 lg:w-1/2 md:px-28">
             <div className="flex flex-col gap-y-5">
-              <p className="text-3xl after:w-0 font-semibold hover:after:w-full after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:transition-all after:duration-700 after:rounded-xl after:mt-1.5">
-                Details
-              </p>
+              <FormTitle formTitle={"Details"} />
               <form
-                onSubmit={handleSubmit(customerDetails)}
+                onSubmit={handleSubmit(getCustomerDetails)}
                 className="flex flex-col gap-y-5"
               >
                 <div className="flex gap-x-2 w-full">
@@ -74,9 +92,12 @@ const CustomerDetails = () => {
                     <select
                       name="prefix"
                       id="prefix"
-                      className="p-2 w-full h-10 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 text-primary-color-6 font-medium"
-                      {...register("prefix", { required: true })}
-                      defaultValue=""
+                      autoFocus
+                      defaultValue={""}
+                      className={selectClasses + " w-full h-10"}
+                      {...register("prefix", {
+                        required: "Please select prefix!",
+                      })}
                     >
                       <option value="" disabled>
                         Select Prefix
@@ -87,7 +108,7 @@ const CustomerDetails = () => {
                     </select>
                     {errors.prefix && (
                       <span className="text-red-500 pt-1 px-1 text-sm">
-                        This field is required.
+                        {errors.prefix?.message}
                       </span>
                     )}
                   </div>
@@ -99,15 +120,15 @@ const CustomerDetails = () => {
                       id="firstname"
                       type="text"
                       placeholder="FirstName"
-                      className="p-2 w-full rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-                      {...register("firstname", {
-                        required: "FirstName is required.",
+                      className={inputClasses + " w-full"}
+                      {...register("firstName", {
+                        required: "Please enter firstname!",
                         pattern: "",
                       })}
                     />
-                    {errors.firstname && (
+                    {errors.firstName && (
                       <span className="text-red-500 pt-1 px-1 text-sm">
-                        {errors.firstname?.message}
+                        {errors.firstName?.message}
                       </span>
                     )}
                   </div>
@@ -120,12 +141,14 @@ const CustomerDetails = () => {
                     id="lastname"
                     type="text"
                     placeholder="LastName"
-                    className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-                    {...register("lastname", { required: true })}
+                    className={inputClasses}
+                    {...register("lastName", {
+                      required: "Please enter lastname!",
+                    })}
                   />
-                  {errors.lastname && (
+                  {errors.lastName && (
                     <span className="text-red-500 pt-1 px-1 text-sm">
-                      This field is required.
+                      {errors.lastName?.message}
                     </span>
                   )}
                 </div>
@@ -138,7 +161,7 @@ const CustomerDetails = () => {
                     type="text"
                     placeholder="Email"
                     autoComplete="off"
-                    className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
+                    className={inputClasses}
                     {...register("email", {
                       required: "E-Mail is required!",
                       pattern: {
@@ -165,9 +188,9 @@ const CustomerDetails = () => {
                   <select
                     id="state"
                     name="state"
-                    defaultValue=""
-                    className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 text-primary-color-6 font-medium"
-                    {...register("state", { required: true })}
+                    defaultValue={""}
+                    className={selectClasses}
+                    {...register("state", { required: "Please select state!" })}
                   >
                     <option value="" disabled>
                       Select State
@@ -182,7 +205,7 @@ const CustomerDetails = () => {
                   </select>
                   {errors.state && (
                     <span className="text-red-500 pt-1 px-1 text-sm">
-                      This field is required.
+                      {errors.state?.message}
                     </span>
                   )}
                 </div>

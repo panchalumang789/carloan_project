@@ -1,19 +1,20 @@
 import { motion } from "framer-motion";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import carsService from "services/carsServices";
 import Typewriter from "typewriter-effect";
 import Cookies from "universal-cookie";
+import { FormTitle, Navigator, selectClasses } from "./extra/Widget";
 
 const CarDetails = () => {
   const cookie = new Cookies();
-  const [selectedCar, SelectCar] = useState({});
+  const [selectedCar] = useState(cookie.get("carDetail"));
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ model: "all" });
+  } = useForm({ model: "all", defaultValues: selectedCar });
   const navigate = useNavigate();
 
   const [carDetail, setCarDetail] = useState({
@@ -62,13 +63,6 @@ const CarDetails = () => {
     });
     navigate("/journey/workDetail");
   };
-
-  useMemo(() => {
-    if (cookie.get("carDetails")) {
-      SelectCar(cookie.get("carDetails"));
-    }
-    //eslint-disable-next-line
-  }, []);
   return (
     <>
       <motion.div
@@ -98,9 +92,7 @@ const CarDetails = () => {
               className="flex justify-center flex-col mx-auto"
             >
               <div className="flex flex-col gap-y-6">
-                <p className="text-3xl after:w-0 font-semibold hover:after:w-full after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:transition-all after:duration-700 after:rounded-xl after:mt-1.5">
-                  Car Details
-                </p>
+                <FormTitle formTitle={"Car Details"} />
                 <div className="flex flex-col gap-y-5">
                   <div className="flex flex-col">
                     <label htmlFor="maker" className="px-1">
@@ -109,10 +101,13 @@ const CarDetails = () => {
                     <select
                       name="maker"
                       id="maker"
-                      defaultValue={selectedCar.make || ""}
-                      className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7  text-primary-color-1 font-medium "
+                      autoFocus
+                      defaultValue={""}
+                      className={selectClasses}
                       onClick={getMaker}
-                      {...register("make", { required: true })}
+                      {...register("make", {
+                        required: "Please select car maker!",
+                      })}
                     >
                       <option value="" className="" disabled>
                         Select Maker
@@ -127,7 +122,7 @@ const CarDetails = () => {
                     </select>
                     {errors.make && (
                       <span className="text-red-500 pt-1 px-1 text-sm">
-                        Please select car model.
+                        {errors.make?.message}
                       </span>
                     )}
                   </div>
@@ -138,7 +133,7 @@ const CarDetails = () => {
                     <select
                       name="model"
                       id="model"
-                      className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7  text-primary-color-1 font-medium"
+                      className={selectClasses}
                       onClick={getModel}
                     >
                       {Model.map((item) => {
@@ -152,7 +147,7 @@ const CarDetails = () => {
                   </div>
                   {/* <div className="flex flex-col">
                     <label htmlFor="prodution_year" className="px-1">Production Year</label>
-                    <select name="prodution_year" id="prodution_year" className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7  text-primary-color-1 font-medium">
+                    <select name="prodution_year" id="prodution_year" className={selectClasses}>
                       {cars.map(item => {
                         console.log(item.production_year);
                         for (let i = parseInt(item.production_year[0]); i < parseInt(item.production_year[1]); i++) {
@@ -168,8 +163,10 @@ const CarDetails = () => {
                     <select
                       name="model_type"
                       id="model-type"
-                      className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7  text-primary-color-1 font-medium"
-                      {...register("carId", { required: true })}
+                      className={selectClasses}
+                      {...register("carId", {
+                        required: "Please select model-type!",
+                      })}
                     >
                       {cars.map((item) => {
                         return (
@@ -185,26 +182,11 @@ const CarDetails = () => {
                     </select>
                     {errors.carId && (
                       <span className="text-red-500 pt-1 px-1 text-sm">
-                        Please select car model.
+                        {errors.carId?.message}
                       </span>
                     )}
                   </div>
-                  <div className="w-full flex justify-around">
-                    <Link
-                      to={"/journey"}
-                      className="group font-medium flex items-center justify-end gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
-                    >
-                      <em className=" group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left rounded-md "></em>{" "}
-                      Back
-                    </Link>
-                    <button
-                      type="submit"
-                      className="group font-medium flex items-center justify-start gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
-                    >
-                      Next{" "}
-                      <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right rounded-md " />
-                    </button>
-                  </div>
+                  <Navigator prevForm={"/journey"} />
                 </div>
               </div>
             </form>

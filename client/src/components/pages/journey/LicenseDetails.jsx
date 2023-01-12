@@ -1,9 +1,14 @@
 import { motion } from "framer-motion";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import customerService from "services/customerServices";
 import Typewriter from "typewriter-effect";
+import {
+  FormTitle,
+  Navigator,
+  inputClasses,
+  selectClasses,
+} from "./extra/Widget";
 
 const LicenseDetails = () => {
   const {
@@ -53,9 +58,7 @@ const LicenseDetails = () => {
           className="w-5/6 lg:w-1/2 md:px-28"
         >
           <div className="flex flex-col gap-y-5">
-            <p className="text-3xl after:w-0 font-semibold hover:after:w-full after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:transition-all after:duration-700 after:rounded-xl after:mt-1.5">
-              License details
-            </p>
+            <FormTitle formTitle={"License details"} />
             <div className="flex text-md flex-col">
               <label htmlFor="license_number" className="px-1">
                 Number
@@ -63,13 +66,16 @@ const LicenseDetails = () => {
               <input
                 id="license_number"
                 type="number"
+                autoFocus
                 placeholder="License Number"
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-                {...register("license_number", { required: true })}
+                className={inputClasses}
+                {...register("licenceNumber", {
+                  required: "Please enter license number!",
+                })}
               />
-              {errors.license_number && (
+              {errors.licenceNumber && (
                 <span className="text-red-500 pt-1 px-1 text-sm">
-                  This field is required.
+                  {errors.licenceNumber?.message}
                 </span>
               )}
             </div>
@@ -80,12 +86,14 @@ const LicenseDetails = () => {
               <input
                 id="license_expiry"
                 type="date"
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-                {...register("license_expiry", { required: true })}
+                className={inputClasses}
+                {...register("licenceType", {
+                  required: "Please select license expiry date!",
+                })}
               />
-              {errors.license_expiry && (
+              {errors.licenceType && (
                 <span className="text-red-500 pt-1 px-1 text-sm">
-                  This field is required.
+                  {errors.licenceType?.message}
                 </span>
               )}
             </div>
@@ -97,17 +105,19 @@ const LicenseDetails = () => {
                 name="license_type"
                 id="license_type"
                 defaultValue=""
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 text-primary-color-6 font-medium"
-                {...register("license_type", { required: true })}
+                className={selectClasses}
+                {...register("licenceExpireDate", {
+                  required: "Please select your license type!",
+                })}
               >
                 <option value="" disabled>
                   Select License-Type
                 </option>
                 <option value="LMV">LMV</option>
               </select>
-              {errors.license_type && (
+              {errors.licenceExpireDate && (
                 <span className="text-red-500 pt-1 px-1 text-sm">
-                  This field is required.
+                  {errors.licenceExpireDate?.message}
                 </span>
               )}
             </div>
@@ -119,8 +129,10 @@ const LicenseDetails = () => {
                 id="issue_state"
                 name="issue_state"
                 defaultValue=""
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 text-primary-color-6 font-medium"
-                {...register("issue_state", { required: true })}
+                className={selectClasses}
+                {...register("licenceIssueState", {
+                  required: "Please select license issue state!",
+                })}
               >
                 <option value="" disabled>
                   Select State
@@ -133,28 +145,13 @@ const LicenseDetails = () => {
                   );
                 })}
               </select>
-              {errors.issue_state && (
+              {errors.licenceIssueState && (
                 <span className="text-red-500 pt-1 px-1 text-sm">
-                  This field is required.
+                  {errors.licenceIssueState?.message}
                 </span>
               )}
             </div>
-            <div className="w-full flex justify-around">
-              <Link
-                to={"/journey/licenseName"}
-                className="group font-medium flex items-center justify-end gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
-              >
-                <em className="group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left "></em>{" "}
-                Back
-              </Link>
-              <button
-                type="submit"
-                className="group font-medium flex items-center justify-start gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
-              >
-                Next
-                <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right" />
-              </button>
-            </div>
+            <Navigator prevForm={"/journey/licenseName"} />
           </div>
         </form>
       </div>

@@ -1,31 +1,32 @@
 import { motion } from "framer-motion";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Typewriter from "typewriter-effect";
 import Cookies from "universal-cookie";
+import {
+  FormTitle,
+  Navigator,
+  inputClasses,
+  selectClasses,
+} from "./extra/Widget";
 
 const WorkDetails = () => {
   const cookie = new Cookies();
   const navigate = useNavigate();
-  const [workDetail, setWorkDetail] = useState({});
+  const [workDetail] = useState(cookie.get("leadDetails"));
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ model: "all" });
+  } = useForm({ model: "all", defaultValues: workDetail });
 
   const WorkDetails = (data) => {
     let leadCookie = cookie.get("leadDetails");
     cookie.set("leadDetails", { ...leadCookie, ...data });
     navigate("/journey/loginDetail");
   };
-  useMemo(() => {
-    if (cookie.get("leadDetails")) {
-      setWorkDetail(cookie.get("leadDetails"));
-    }
-    //eslint-disable-next-line
-  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0, width: 0 }}
@@ -54,9 +55,7 @@ const WorkDetails = () => {
             className="flex justify-center flex-col mx-auto"
           >
             <div className="flex flex-col gap-y-6">
-              <p className="text-3xl after:w-0 font-semibold hover:after:w-full after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:transition-all after:duration-700 after:rounded-xl after:mt-1.5">
-                Loan Detail
-              </p>
+              <FormTitle formTitle={"Work Details"} />
               <div className="flex flex-col gap-y-5">
                 <div className="flex flex-col">
                   <label htmlFor="user_status" className="px-1">
@@ -65,9 +64,12 @@ const WorkDetails = () => {
                   <select
                     name="user_status"
                     id="user_status"
-                    defaultValue={workDetail.user_status || ""}
-                    className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7  text-primary-color-1 font-medium \"
-                    {...register("user_status", { required: true })}
+                    autoFocus
+                    defaultValue={""}
+                    className={selectClasses}
+                    {...register("user_status", {
+                      required: "Please select your work status!",
+                    })}
                   >
                     <option value="" disabled>
                       Select work status
@@ -77,7 +79,7 @@ const WorkDetails = () => {
                   </select>
                   {errors.user_status && (
                     <span className="text-red-500 pt-1 px-1 text-sm">
-                      This field is required.
+                      {errors.user_status?.message}
                     </span>
                   )}
                 </div>
@@ -88,39 +90,29 @@ const WorkDetails = () => {
                   <input
                     type="number"
                     id="user_income"
-                    placeholder="Income"
-                    value={workDetail.user_income}
-                    className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-60"
-                    {...register("user_income", { required: true, min: 10000 })}
+                    placeholder="Enter your income"
+                    className={inputClasses}
+                    {...register("user_income", {
+                      required: "Please enter your income!",
+                      min: {
+                        value: 10000,
+                        message: "Income should be greater than 10000!",
+                      },
+                    })}
                   />
                   {errors.user_income?.type === "required" && (
                     <span className="text-red-500 pt-1 px-1 text-sm">
-                      This field is required.
+                      {errors.user_income?.message}
                     </span>
                   )}
                   {errors.user_income?.type === "min" && (
                     <span className="text-red-500 pt-1 px-1 text-sm">
-                      Income should be greater than 10000.
+                      {errors.user_income?.message}
                     </span>
                   )}
                 </div>
               </div>
-              <div className="w-full flex justify-around">
-                <Link
-                  to={"/journey/carDetail"}
-                  className="group font-medium flex items-center justify-end gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
-                >
-                  <em className=" group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left "></em>{" "}
-                  Back
-                </Link>
-                <button
-                  type="submit"
-                  className="group font-medium flex items-center justify-start gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
-                >
-                  Next{" "}
-                  <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right rounded-md dark:bg-primary-color-6 dark:hover:bg-primary-color-4" />
-                </button>
-              </div>
+              <Navigator prevForm={"/journey/carDetail"} />
             </div>
           </form>
         </div>

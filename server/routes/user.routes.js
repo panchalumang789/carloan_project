@@ -19,7 +19,16 @@ userRoutes.get(
   }
 );
 
-// @admin user list by id
+// get user by contact no
+userRoutes.get(
+  "/user/mobile/:contactNo",
+  userController.getUserByContactNo,
+  (req, res) => {
+    res.status(200).send(res.locals.users);
+  }
+);
+
+// @admin user details by id
 userRoutes.get(
   "/user/:id",
   authorization.verifyToken,
@@ -34,6 +43,7 @@ userRoutes.post(
   authorization.generateToken("User"),
   userController.createUser,
   (req, res) => {
+    console.log(res.locals);
     res.status(200).send(res.locals.user);
   }
 );

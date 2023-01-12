@@ -2,22 +2,7 @@ import { motion } from "framer-motion";
 import React from "react";
 import { useForm } from "react-hook-form";
 import Typewriter from "typewriter-effect";
-import FormTitle from "./extra/FormTitle";
-import { Navigator } from "./extra/Navigator";
-
-const InputField = (data, type, placeholder, registerField) => {
-  console.log(data);
-  const { register } = useForm({ model: "all" });
-  return (
-    <input
-      id={data.id}
-      type={data.type}
-      placeholder={data.placeholder}
-      className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-      {...register("license_first_name", { required: true })}
-    />
-  );
-};
+import { FormTitle, Navigator, inputClasses } from "./extra/Widget";
 
 const LicenseName = () => {
   const {
@@ -25,7 +10,10 @@ const LicenseName = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({ model: "all" });
-  const licenseDetail = () => {};
+  const licenseDetail = (data) => {
+    console.log(data);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, width: 0 }}
@@ -63,22 +51,19 @@ const LicenseName = () => {
               <label htmlFor="license_first_name" className="px-1">
                 First name in driver's licenses
               </label>
-              <InputField
+              <input
                 id="license_first_name"
                 type="text"
+                autoFocus
                 placeholder="License FirstName"
-                {...register("license_first_name", { required: true })}
+                className={inputClasses}
+                {...register("licenseFirstName", {
+                  required: "Please enter license firstname!",
+                })}
               />
-              {/* <input
-                id="license_first_name"
-                type="text"
-                placeholder="License FirstName"
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-                {...register("license_first_name", { required: true })}
-              /> */}
-              {errors.license_first_name && (
+              {errors.licenseFirstName && (
                 <span className="text-red-500 pt-1 px-1 text-sm">
-                  This field is required.
+                  {errors.licenseFirstName?.message}
                 </span>
               )}
             </div>
@@ -90,28 +75,32 @@ const LicenseName = () => {
                 id="license_last_name"
                 type="text"
                 placeholder="License LastName"
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-                {...register("license_last_name", { required: true })}
+                className={inputClasses}
+                {...register("licenseLastName", {
+                  required: "Please enter license lastname!",
+                })}
               />
-              {errors.license_last_name && (
+              {errors.licenseLastName && (
                 <span className="text-red-500 pt-1 px-1 text-sm">
-                  This field is required.
+                  {errors.licenseLastName?.message}
                 </span>
               )}
             </div>
             <div className="flex text-md flex-col">
-              <label htmlFor="birth_date" className="px-1">
-                Date of birth
+              <label htmlFor="issue_date" className="px-1">
+                License issue date
               </label>
               <input
-                id="birth_date"
+                id="issue_date"
                 type="date"
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6"
-                {...register("birth_date", { required: true })}
+                className={inputClasses}
+                {...register("licenseIssueDate", {
+                  required: "Please select license issue date!",
+                })}
               />
-              {errors.birth_date && (
+              {errors.licenseIssueDate && (
                 <span className="text-red-500 pt-1 px-1 text-sm">
-                  This field is required.
+                  {errors.licenseIssueDate?.message}
                 </span>
               )}
             </div>

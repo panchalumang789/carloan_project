@@ -26,10 +26,6 @@ const userTable = sequalize.define("users", {
       len: [2, 20],
     },
   },
-  gender: {
-    type: DataTypes.STRING(6),
-    allowNull: false,
-  },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -42,23 +38,30 @@ const userTable = sequalize.define("users", {
   },
   medicalcardImage: {
     type: DataTypes.STRING,
-    allowNull: false,
     unique: true,
     isUrl: true,
   },
-  licenceFname: {
+  licenseFirstName: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
       len: [2, 20],
     },
   },
-  licenceLname: {
+  licenseLastName: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
       len: [2, 20],
     },
+  },
+  licenseIssueDate: {
+    type: DataTypes.STRING,
+    validate: {
+      isAfter: "1980-01-01",
+      isBefore: "2024-01-01",
+    },
+    allowNull: false,
   },
   licenceNumber: {
     type: DataTypes.STRING,
@@ -69,14 +72,6 @@ const userTable = sequalize.define("users", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  licenceIssueDate: {
-    type: DataTypes.STRING,
-    validate: {
-      isAfter: "1980-01-01",
-      isBefore: "2024-01-01",
-    },
-    allowNull: false,
-  },
   licenceExpireDate: {
     type: DataTypes.STRING,
     validate: {
@@ -84,15 +79,17 @@ const userTable = sequalize.define("users", {
     },
     allowNull: false,
   },
-  licenceBackImage: {
+  licenceIssueState: {
     type: DataTypes.STRING,
     allowNull: false,
+  },
+  licenceBackImage: {
+    type: DataTypes.STRING,
     unique: true,
     isUrl: true,
   },
   licenceFrontImage: {
     type: DataTypes.STRING,
-    allowNull: false,
     unique: true,
     isUrl: true,
   },

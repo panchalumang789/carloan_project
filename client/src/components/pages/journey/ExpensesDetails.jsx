@@ -1,15 +1,11 @@
 import { motion } from "framer-motion";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import Typewriter from "typewriter-effect";
+import { FormTitle, Navigator, inputClasses } from "./extra/Widget";
 
 const ExpensesDetails = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ model: "all" });
+  const { register, handleSubmit } = useForm({ model: "all" });
   const expensesDetails = (data) => {
     console.log(data);
   };
@@ -40,127 +36,111 @@ const ExpensesDetails = () => {
             onSubmit={handleSubmit(expensesDetails)}
             className="flex flex-col gap-y-3"
           >
-            <p className="text-3xl after:w-0 font-semibold hover:after:w-full after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:transition-all after:duration-700 after:rounded-xl after:mt-1.5">
-              Expenses
-            </p>
+            <FormTitle formTitle={"Expenses"} />
             <div className="flex text-md flex-col">
               <label htmlFor="vehicle_running_cost" className="px-1">
                 Moter vehicle running costs
               </label>
+              <div className="input-group-prepend">
+                <span className="ml-4 my-1.5 fixed text-lg " id="basic-addon1">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 id="vehicle_running_cost"
                 type="number"
-                placeholder="Enter vehicle running cost                                              ₹"
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-                {...register("vehicle_running_cost", { required: true })}
+                autoFocus
+                placeholder="Enter vehicle running cost"
+                className={inputClasses + " pl-10"}
+                {...register("vehicle_running_cost")}
               />
-              {errors.vehicle_running_cost && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  This field is required.
-                </span>
-              )}
             </div>
             <div className="flex text-md flex-col">
               <label htmlFor="travel" className="px-1">
                 Travel
               </label>
+              <div className="input-group-prepend">
+                <span className="ml-4 my-1.5 fixed text-lg" id="basic-addon1">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 id="travel"
                 type="number"
-                placeholder="Enter travel cost                                                                  ₹"
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-                {...register("travel", { required: true })}
+                placeholder="Enter travel cost"
+                className={inputClasses + " pl-10"}
+                {...register("travel_cost")}
               />
-              {errors.travel && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  This field is required.
-                </span>
-              )}
             </div>
             <div className="flex text-md flex-col">
               <label htmlFor="utilities" className="px-1">
                 Utilities
               </label>
+              <div className="input-group-prepend">
+                <span className="ml-4 my-1.5 fixed text-lg" id="basic-addon1">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 id="utilities"
                 type="number"
-                placeholder="Enter utilities cost                                                              ₹"
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-                {...register("utilities", { required: true })}
+                placeholder="Enter utilities cost"
+                className={inputClasses + " pl-10"}
+                {...register("utilities_cost")}
               />
-              {errors.utilities && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  This field is required.
-                </span>
-              )}
             </div>
             <div className="flex text-md flex-col">
               <label htmlFor="insurances" className="px-1">
                 Insurances
               </label>
+              <div className="input-group-prepend">
+                <span className="ml-4 my-1.5 fixed text-lg" id="basic-addon1">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 id="insurances"
                 type="number"
-                placeholder="Enter insurances amount                                                ₹"
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-                {...register("insurances", { required: true })}
+                placeholder="Enter insurances amount"
+                className={inputClasses + " pl-10"}
+                {...register("insurance")}
               />
-              {errors.insurances && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  This field is required.
-                </span>
-              )}
             </div>
             <div className="flex text-md flex-col">
               <label htmlFor="telephone_internet" className="px-1">
                 Telephone and Internet
               </label>
+              <div className="input-group-prepend">
+                <span className="ml-4 my-1.5 fixed text-lg" id="basic-addon1">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 id="telephone_internet"
                 type="number"
-                placeholder="Enter telephone and internet charges                      ₹"
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-                {...register("telephone_internet", { required: true })}
+                placeholder="Enter telephone and internet charges"
+                className={inputClasses + " pl-10"}
+                {...register("tel_internet")}
               />
-              {errors.telephone_internet && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  This field is required.
-                </span>
-              )}
             </div>
             <div className="flex text-md flex-col">
               <label htmlFor="entertainment" className="px-1">
                 Entertainment
               </label>
+              <div className="input-group-prepend">
+                <span className="ml-4 my-1.5 fixed text-lg" id="basic-addon1">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 id="entertainment"
                 type="number"
-                placeholder="Enter entertainment cost                                               ₹"
-                className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-6 font-medium placeholder:text-primary-color-6 placeholder:opacity-60"
-                {...register("entertainment", { required: true })}
+                placeholder="Enter entertainment cost"
+                className={inputClasses + " pl-10"}
+                {...register("entertainment")}
               />
-              {errors.entertainment && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  This field is required.
-                </span>
-              )}
             </div>
-            <div className="w-full flex justify-around">
-              <Link
-                to={"/journey/incomeDetail"}
-                className="group font-medium flex items-center justify-end gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
-              >
-                <em className="group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left "></em>{" "}
-                Back
-              </Link>
-              <button
-                type="submit"
-                className="group font-medium flex items-center justify-start gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
-              >
-                Next
-                <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right" />
-              </button>
-            </div>
+            <Navigator prevForm={"/journey/incomeDetail"} />
           </form>
         </div>
       </div>
