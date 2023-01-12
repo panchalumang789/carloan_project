@@ -1,0 +1,29 @@
+import React from "react";
+import { Link } from "react-router-dom";
+
+const Navigator = (props) => {
+  return (
+    <div className="w-full flex justify-around">
+      <Link
+        to={props.prevForm}
+        className="group font-medium flex items-center justify-end gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
+      >
+        <em className="group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left "></em>{" "}
+        Back
+      </Link>
+      <button
+        type="submit"
+        className="group font-medium flex items-center justify-start gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
+      >
+        Next
+        <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right" />
+      </button>
+    </div>
+  );
+};
+
+const MotionDiv = () => {
+  return <div>MotionDiv</div>;
+};
+
+export { Navigator, MotionDiv };

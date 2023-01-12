@@ -8,7 +8,7 @@ import Cookies from "universal-cookie";
 
 const CarDetails = () => {
   const cookie = new Cookies();
-  const [selectedCar, SelectCar] = useState({})
+  const [selectedCar, SelectCar] = useState({});
   const {
     register,
     handleSubmit,
@@ -54,21 +54,21 @@ const CarDetails = () => {
   const getCar = async (data) => {
     cars.map((car) => {
       if (car.id === parseInt(data.carId)) {
-        let leadCookie = cookie.get('leadDetails');
-        cookie.remove('leadDetails')
-        cookie.set('leadDetails', { ...leadCookie, carId: car.id })
-        return cookie.set('carDetails', car);
-      } else return false
-    })
+        let leadCookie = cookie.get("leadDetails");
+        cookie.remove("leadDetails");
+        cookie.set("leadDetails", { ...leadCookie, carId: car.id });
+        return cookie.set("carDetails", car);
+      } else return false;
+    });
     navigate("/journey/workDetail");
   };
 
   useMemo(() => {
-    if (cookie.get('carDetails')) {
-      SelectCar(cookie.get('carDetails'))
+    if (cookie.get("carDetails")) {
+      SelectCar(cookie.get("carDetails"));
     }
     //eslint-disable-next-line
-  }, [])
+  }, []);
   return (
     <>
       <motion.div
@@ -83,12 +83,14 @@ const CarDetails = () => {
       >
         <div className="flex flex-col lg:flex-row items-center justify-center gap-y-14 max-w-screen-xl h-full mx-auto">
           <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl md:px-20">
-            <Typewriter options={{
-              strings: "Please Tell us what car you want?",
-              autoStart: true,
-              loop: false,
-              delay: 60,
-            }} />
+            <Typewriter
+              options={{
+                strings: "Please tell us what car you want?",
+                autoStart: true,
+                loop: false,
+                delay: 50,
+              }}
+            />
           </div>
           <div className="w-5/6 lg:w-1/2 md:px-28">
             <form
@@ -101,12 +103,14 @@ const CarDetails = () => {
                 </p>
                 <div className="flex flex-col gap-y-5">
                   <div className="flex flex-col">
-                    <label htmlFor="maker" className="px-1">Car Maker</label>
+                    <label htmlFor="maker" className="px-1">
+                      Car Maker
+                    </label>
                     <select
                       name="maker"
                       id="maker"
                       defaultValue={selectedCar.make || ""}
-                      className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 font-medium placeholder:text-primary-color-1"
+                      className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7  text-primary-color-1 font-medium "
                       onClick={getMaker}
                       {...register("make", { required: true })}
                     >
@@ -121,12 +125,22 @@ const CarDetails = () => {
                         );
                       })}
                     </select>
-                    {errors.make && <span className="text-red-500 pt-1 px-1 text-sm">Please select car model.</span>}
+                    {errors.make && (
+                      <span className="text-red-500 pt-1 px-1 text-sm">
+                        Please select car model.
+                      </span>
+                    )}
                   </div>
                   <div className="flex flex-col">
-                    <label htmlFor="model" className="px-1">Car Model</label>
-                    <select name="model" id="model"
-                      className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 font-medium placeholder:text-primary-color-1" onClick={getModel} >
+                    <label htmlFor="model" className="px-1">
+                      Car Model
+                    </label>
+                    <select
+                      name="model"
+                      id="model"
+                      className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7  text-primary-color-1 font-medium"
+                      onClick={getModel}
+                    >
                       {Model.map((item) => {
                         return (
                           <option key={item.model} value={item.model}>
@@ -138,7 +152,7 @@ const CarDetails = () => {
                   </div>
                   {/* <div className="flex flex-col">
                     <label htmlFor="prodution_year" className="px-1">Production Year</label>
-                    <select name="prodution_year" id="prodution_year" className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 font-medium placeholder:text-primary-color-1">
+                    <select name="prodution_year" id="prodution_year" className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7  text-primary-color-1 font-medium">
                       {cars.map(item => {
                         console.log(item.production_year);
                         for (let i = parseInt(item.production_year[0]); i < parseInt(item.production_year[1]); i++) {
@@ -148,33 +162,55 @@ const CarDetails = () => {
                     </select>
                   </div> */}
                   <div className="flex flex-col">
-                    <label htmlFor="model_type" className="px-1">Car Mode-Type</label>
+                    <label htmlFor="model_type" className="px-1">
+                      Car Mode-Type
+                    </label>
                     <select
                       name="model_type"
                       id="model-type"
-                      className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 font-medium placeholder:text-primary-color-1" {...register("carId", { required: true })}
+                      className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7  text-primary-color-1 font-medium"
+                      {...register("carId", { required: true })}
                     >
                       {cars.map((item) => {
                         return (
-                          <option key={item.model_type} id={item.model_type} value={item.id}>
+                          <option
+                            key={item.model_type}
+                            id={item.model_type}
+                            value={item.id}
+                          >
                             {item.model_type}
                           </option>
                         );
                       })}
                     </select>
-                    {errors.carId && <span className="text-red-500 pt-1 px-1 text-sm">Please select car model.</span>}
+                    {errors.carId && (
+                      <span className="text-red-500 pt-1 px-1 text-sm">
+                        Please select car model.
+                      </span>
+                    )}
                   </div>
                   <div className="w-full flex justify-around">
-                    <Link to={'/journey'} className="group font-medium flex items-center justify-end gap-x-2 w-24 text-center p-3 border border-primary-color-1"><em className=" group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left rounded-md dark:bg-primary-color-6 dark:hover:bg-primary-color-4"></em> Back</Link>
-                    <button type="submit" className="group font-medium flex items-center justify-start gap-x-2 w-24 text-center p-3 border border-primary-color-1">Next <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right rounded-md dark:bg-primary-color-6 dark:hover:bg-primary-color-4" /></button>
+                    <Link
+                      to={"/journey"}
+                      className="group font-medium flex items-center justify-end gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
+                    >
+                      <em className=" group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left rounded-md "></em>{" "}
+                      Back
+                    </Link>
+                    <button
+                      type="submit"
+                      className="group font-medium flex items-center justify-start gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
+                    >
+                      Next{" "}
+                      <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right rounded-md " />
+                    </button>
                   </div>
                 </div>
               </div>
-
             </form>
           </div>
         </div>
-      </motion.div >
+      </motion.div>
     </>
   );
 };
