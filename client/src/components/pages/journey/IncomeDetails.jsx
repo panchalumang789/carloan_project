@@ -2,16 +2,48 @@ import { motion } from "framer-motion";
 import React from "react";
 import { useForm } from "react-hook-form";
 import Typewriter from "typewriter-effect";
+import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
+import { ToastContainer, toast } from "react-toastify";
 import { FormTitle, Navigator, inputClasses } from "./extra/Widget";
+import customerService from "services/customerServices";
 
 const IncomeDetails = () => {
+  let incomeService = new customerService();
+  const cookie = new Cookies();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ model: "all" });
-  const incomeDetails = (data) => {
+  } = useForm({ mode: "all" });
+  const incomeDetails = async (data) => {
     console.log(data);
+    let loanId = cookie.get("loanDetail");
+    try {
+      const addIncome = incomeService.addIncome({
+        path: "income",
+        details: { ...data, ...loanId },
+      });
+      setTimeout(() => {
+        navigate("/journey/expensesDetail");
+      }, 4000);
+      const functionThatReturnPromise = () =>
+        new Promise((resolve) => setTimeout(resolve, 3000));
+      toast.promise(functionThatReturnPromise, {
+        pending: "Storing Additional Incomes",
+        success: `${addIncome.message}`,
+        error: "Something is wrong !",
+      });
+    } catch (error) {
+      toast.error(error.message, {
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
   return (
     <motion.div
@@ -24,6 +56,7 @@ const IncomeDetails = () => {
       }}
       className="h-screen bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7"
     >
+      <ToastContainer />
       <div className="flex flex-col lg:flex-row items-center justify-center gap-y-14 max-w-screen-xl h-full mx-auto">
         <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl md:px-20">
           <Typewriter
@@ -38,7 +71,7 @@ const IncomeDetails = () => {
         <div className="w-5/6 lg:w-1/2 md:px-28">
           <form
             onSubmit={handleSubmit(incomeDetails)}
-            className="flex flex-col gap-y-4"
+            className="flex flex-col gap-y-8"
           >
             <FormTitle formTitle={"Additional Income"} />
             <div className="flex text-md flex-col">
@@ -80,9 +113,6 @@ const IncomeDetails = () => {
               )}
             </div>
             <div className="flex text-md flex-col">
-              <label htmlFor="rental_income">
-                Rental income per month (after tax)
-              </label>
               <div className="input-group-prepend">
                 <span className="ml-4 my-1.5 fixed text-lg " id="basic-addon1">
                   &#x20B9;
@@ -99,23 +129,20 @@ const IncomeDetails = () => {
                     value: 0,
                     message: "Rental income should be greater than 0!",
                   },
+                  max: {
+                    value: 1000000000,
+                    message:
+                      "Rental income should be less than 1,00,00,00,000!",
+                  },
                 })}
               />
-              {errors.rental_income?.type === "required" && (
-                <span className="text-red-500 px-1 text-sm">
-                  {errors.rental_income?.message}
-                </span>
-              )}
-              {errors.rental_income?.type === "min" && (
+              {errors.rental_income && (
                 <span className="text-red-500 px-1 text-sm">
                   {errors.rental_income?.message}
                 </span>
               )}
             </div>
             <div className="flex text-md flex-col">
-              <label htmlFor="investment_income">
-                Investment income per month (after tax)
-              </label>
               <div className="input-group-prepend">
                 <span className="ml-4 my-1.5 fixed text-lg " id="basic-addon1">
                   &#x20B9;
@@ -132,23 +159,20 @@ const IncomeDetails = () => {
                     value: 0,
                     message: "Investment income should be greater than 0!",
                   },
+                  max: {
+                    value: 1000000000,
+                    message:
+                      "Investment income should be less than 1,00,00,00,000!",
+                  },
                 })}
               />
-              {errors.investment_income?.type === "required" && (
-                <span className="text-red-500 px-1 text-sm">
-                  {errors.investment_income?.message}
-                </span>
-              )}
-              {errors.investment_income?.type === "min" && (
+              {errors.investment_income && (
                 <span className="text-red-500 px-1 text-sm">
                   {errors.investment_income?.message}
                 </span>
               )}
             </div>
             <div className="flex text-md flex-col">
-              <label htmlFor="salary_sacrifice">
-                Salary sacrifice per month (after tax)
-              </label>
               <div className="input-group-prepend">
                 <span className="ml-4 my-1.5 fixed text-lg " id="basic-addon1">
                   &#x20B9;
@@ -165,23 +189,20 @@ const IncomeDetails = () => {
                     value: 0,
                     message: "Salary sacrifice should be greater than 0!",
                   },
+                  max: {
+                    value: 1000000000,
+                    message:
+                      "Salary sacrifice should be less than 1,00,00,00,000!",
+                  },
                 })}
               />
-              {errors.salary_sacrifice?.type === "required" && (
-                <span className="text-red-500 px-1 text-sm">
-                  {errors.salary_sacrifice?.message}
-                </span>
-              )}
-              {errors.salary_sacrifice?.type === "min" && (
+              {errors.salary_sacrifice && (
                 <span className="text-red-500 px-1 text-sm">
                   {errors.salary_sacrifice?.message}
                 </span>
               )}
             </div>
             <div className="flex text-md flex-col">
-              <label htmlFor="centralink_benifit">
-                Centralink benifit per month (after tax)
-              </label>
               <div className="input-group-prepend">
                 <span className="ml-4 my-1.5 fixed text-lg " id="basic-addon1">
                   &#x20B9;
@@ -198,23 +219,20 @@ const IncomeDetails = () => {
                     value: 0,
                     message: "Centralink income should be greater than 0!",
                   },
+                  max: {
+                    value: 1000000000,
+                    message:
+                      "Centralink income should be less than 1,00,00,00,000!",
+                  },
                 })}
               />
-              {errors.centralink_benifit?.type === "required" && (
-                <span className="text-red-500 px-1 text-sm">
-                  {errors.centralink_benifit?.message}
-                </span>
-              )}
-              {errors.centralink_benifit?.type === "min" && (
+              {errors.centralink_benifit && (
                 <span className="text-red-500 px-1 text-sm">
                   {errors.centralink_benifit?.message}
                 </span>
               )}
             </div>
             <div className="flex text-md flex-col">
-              <label htmlFor="foreign_income">
-                Foreign income per month (after tax)
-              </label>
               <div className="input-group-prepend">
                 <span className="ml-4 my-1.5 fixed text-lg " id="basic-addon1">
                   &#x20B9;
@@ -231,14 +249,14 @@ const IncomeDetails = () => {
                     value: 0,
                     message: "Foreign income should be greater than 0!",
                   },
+                  max: {
+                    value: 1000000000,
+                    message:
+                      "Foreign income should be less than 1,00,00,00,000!",
+                  },
                 })}
               />
-              {errors.foreign_income?.type === "required" && (
-                <span className="text-red-500 px-1 text-sm">
-                  {errors.foreign_income?.message}
-                </span>
-              )}
-              {errors.foreign_income?.type === "min" && (
+              {errors.foreign_income && (
                 <span className="text-red-500 px-1 text-sm">
                   {errors.foreign_income?.message}
                 </span>

@@ -14,7 +14,7 @@ const CarDetails = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ model: "all", defaultValues: selectedCar });
+  } = useForm({ mode: "all", defaultValues: selectedCar });
   const navigate = useNavigate();
 
   const [carDetail, setCarDetail] = useState({
@@ -57,8 +57,7 @@ const CarDetails = () => {
       if (car.id === parseInt(data.carId)) {
         let leadCookie = cookie.get("leadDetails");
         cookie.remove("leadDetails");
-        cookie.set("leadDetails", { ...leadCookie, carId: car.id });
-        return cookie.set("carDetails", car);
+        return cookie.set("leadDetails", { ...leadCookie, carId: car.id });
       } else return false;
     });
     navigate("/journey/workDetail");
@@ -185,8 +184,8 @@ const CarDetails = () => {
                     </span>
                   )}
                 </div>
-                <Navigator prevForm={"/journey"} />
               </div>
+              <Navigator prevForm={"/journey"} />
             </div>
           </form>
         </div>

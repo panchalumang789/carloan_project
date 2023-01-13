@@ -24,7 +24,10 @@ const generateToken = (role) => {
  */
 const verifyToken = async (req, res, next) => {
   try {
-    let verify = jwt.verify(req.headers.token, process.env.JWT_SECRET_KEY);
+    let verify = jwt.verify(
+      req.headers.authorization,
+      process.env.JWT_SECRET_KEY
+    );
     if (verify.role === "Admin") {
       res.locals.role = verify.role;
       next();

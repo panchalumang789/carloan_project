@@ -2,16 +2,23 @@ import { motion } from "framer-motion";
 import React from "react";
 import { useForm } from "react-hook-form";
 import Typewriter from "typewriter-effect";
+import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 import { FormTitle, Navigator, inputClasses } from "./extra/Widget";
 
 const LicenseName = () => {
+  const cookie = new Cookies();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ model: "all" });
+  } = useForm({ mode: "all" });
   const licenseDetail = (data) => {
-    console.log(data);
+    let customerCookie = cookie.get("customerDetail");
+    cookie.remove("customerDetail");
+    cookie.set("customerDetail", { ...customerCookie, ...data });
+    navigate("/journey/licenseDetail");
   };
 
   return (

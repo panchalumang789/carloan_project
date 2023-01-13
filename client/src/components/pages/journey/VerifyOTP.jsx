@@ -7,11 +7,13 @@ import Cookies from "universal-cookie";
 import customerService from "services/customerServices";
 import loanService from "services/loanService";
 import Typewriter from "typewriter-effect";
+import LoadingPage from "./extra/LoadingPage";
 
 const VerifyOTP = () => {
   const cookie = new Cookies();
   const loanServices = new loanService();
   const navigate = useNavigate();
+  const [Loading, setLoading] = useState(false);
   const [OTP, setOTP] = useState(new Array(4).fill(""));
   const inputRef = useRef(null);
 
@@ -33,11 +35,12 @@ const VerifyOTP = () => {
       var next = e.target;
       if (OTP.join("").length === 4 && called === false) {
         called = true;
+        setLoading(true);
         let result = await verifyService
           .verifyOTP({
             path: "verify",
             details: {
-              ContactNo: cookie.get("contactNo").mobile,
+              ContactNo: cookie.get("contactNo").contactNo,
               code: OTP.join(""),
             },
           })
@@ -78,6 +81,7 @@ const VerifyOTP = () => {
               console.error(error);
             });
         } else {
+          setLoading(false);
           toast.error("Invalid OTP !", {
             closeOnClick: true,
             pauseOnHover: true,
@@ -111,6 +115,12 @@ const VerifyOTP = () => {
       }}
       className="h-screen bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7"
     >
+      {Loading && (
+        <div className="h-screen w-screen flex justify-center items-center mx-auto bg-transparent/30 dark:bg-transparent/60 fixed">
+          <LoadingPage stroke={"#023641"} wheel={"#ffffff"} />
+          {/* <LoadingPage stroke={"#A3BEBE"} wheel={"#023641"} /> */}
+        </div>
+      )}
       <ToastContainer />
       <div className="flex flex-col lg:flex-row items-center justify-center gap-y-14 max-w-screen-xl h-full mx-auto">
         <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl md:px-20">
@@ -119,7 +129,7 @@ const VerifyOTP = () => {
             {cookie.get("contactNo") && (
               <Typewriter
                 options={{
-                  strings: cookie.get("contactNo").mobile,
+                  strings: cookie.get("contactNo").contactNo,
                   autoStart: true,
                   loop: false,
                   delay: 80,

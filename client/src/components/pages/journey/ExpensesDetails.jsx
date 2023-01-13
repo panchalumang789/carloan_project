@@ -2,12 +2,45 @@ import { motion } from "framer-motion";
 import React from "react";
 import { useForm } from "react-hook-form";
 import Typewriter from "typewriter-effect";
+import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
+import { ToastContainer, toast } from "react-toastify";
 import { FormTitle, Navigator, inputClasses } from "./extra/Widget";
+import customerService from "services/customerServices";
 
 const ExpensesDetails = () => {
-  const { register, handleSubmit } = useForm({ model: "all" });
-  const expensesDetails = (data) => {
-    console.log(data);
+  let expensesService = new customerService();
+  const cookie = new Cookies();
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm({ mode: "all" });
+  const expensesDetails = async (data) => {
+    let loanId = cookie.get("loanDetail");
+    try {
+      const addExpenses = await expensesService.addExpenses({
+        path: "expenses",
+        details: { ...data, ...loanId },
+        headerData: localStorage.getItem("token"),
+      });
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 4000);
+      const functionThatReturnPromise = () =>
+        new Promise((resolve) => setTimeout(resolve, 3000));
+      toast.promise(functionThatReturnPromise, {
+        pending: "Storing Monthly Expenses",
+        success: `${addExpenses.message}`,
+        error: "Something is wrong !",
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message, {
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
   return (
     <motion.div
@@ -20,6 +53,7 @@ const ExpensesDetails = () => {
       }}
       className="h-screen bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7"
     >
+      <ToastContainer />
       <div className="flex flex-col lg:flex-row items-center justify-center gap-y-14 max-w-screen-xl h-full mx-auto">
         <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl md:px-20">
           <Typewriter
@@ -50,6 +84,7 @@ const ExpensesDetails = () => {
                 id="vehicle_running_cost"
                 type="number"
                 autoFocus
+                defaultValue="0"
                 placeholder="Enter vehicle running cost"
                 className={inputClasses + " pl-10"}
                 {...register("vehicle_running_cost")}
@@ -67,6 +102,7 @@ const ExpensesDetails = () => {
               <input
                 id="travel"
                 type="number"
+                defaultValue="0"
                 placeholder="Enter travel cost"
                 className={inputClasses + " pl-10"}
                 {...register("travel_cost")}
@@ -84,6 +120,7 @@ const ExpensesDetails = () => {
               <input
                 id="utilities"
                 type="number"
+                defaultValue="0"
                 placeholder="Enter utilities cost"
                 className={inputClasses + " pl-10"}
                 {...register("utilities_cost")}
@@ -101,6 +138,7 @@ const ExpensesDetails = () => {
               <input
                 id="insurances"
                 type="number"
+                defaultValue="0"
                 placeholder="Enter insurances amount"
                 className={inputClasses + " pl-10"}
                 {...register("insurance")}
@@ -118,6 +156,7 @@ const ExpensesDetails = () => {
               <input
                 id="telephone_internet"
                 type="number"
+                defaultValue="0"
                 placeholder="Enter telephone and internet charges"
                 className={inputClasses + " pl-10"}
                 {...register("tel_internet")}
@@ -135,6 +174,7 @@ const ExpensesDetails = () => {
               <input
                 id="entertainment"
                 type="number"
+                defaultValue="0"
                 placeholder="Enter entertainment cost"
                 className={inputClasses + " pl-10"}
                 {...register("entertainment")}

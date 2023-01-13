@@ -149,11 +149,10 @@ const createUser = async (req, res, next) => {
       next({ error: { status: 400, message: error.message } });
     }
     let addUser = await userTable.build(req.body).save();
-    console.log(addUser);
-    if (req.headers.loanid && req.headers.loanid !== "") {
+    if (req.params.loanid && req.params.loanid !== "") {
       await loanTable.update(
         { userId: addUser.id },
-        { where: { id: req.headers.loanid } }
+        { where: { id: req.params.loanid } }
       );
     }
     res.locals.user = {
@@ -162,7 +161,6 @@ const createUser = async (req, res, next) => {
     };
     next();
   } catch (error) {
-    console.log(error);
     if (error.errors)
       next({ error: { status: 500, message: error.errors[0].message } });
     else next({ error: { status: 500, message: error.original.detail } });

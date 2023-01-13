@@ -3,6 +3,9 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import customerService from "services/customerServices";
 import Typewriter from "typewriter-effect";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 import {
   FormTitle,
   Navigator,
@@ -11,12 +14,14 @@ import {
 } from "./extra/Widget";
 
 const LicenseDetails = () => {
+  const cookie = new Cookies();
+  const navigate = useNavigate();
+  const userService = new customerService();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ model: "all" });
-  const userService = new customerService();
+  } = useForm({ mode: "all" });
 
   const [States, setStates] = useState([]);
   const getStates = async () => {
@@ -26,10 +31,43 @@ const LicenseDetails = () => {
   useEffect(() => {
     getStates();
     return () => {};
-  });
+    //eslint-disable-next-line
+  }, []);
 
-  const licenseDetail = (data) => {
-    console.log(data);
+  const licenseDetail = async (data) => {
+    let customerCookie = cookie.get("customerDetail");
+    let contactNo = cookie.get("contactNo");
+    let loanId = cookie.get("loanDetail");
+
+    try {
+      const registerUser = await userService.registerUser({
+        path: "user",
+        details: { ...customerCookie, ...data, ...contactNo },
+        headerData: { ...loanId },
+      });
+      cookie.remove("customerDetail");
+      setTimeout(() => {
+        navigate("/journey/incomeDetail");
+      }, 4000);
+
+      console.log("registerUser", registerUser);
+      const functionThatReturnPromise = () =>
+        new Promise((resolve) => setTimeout(resolve, 3000));
+      toast.promise(functionThatReturnPromise, {
+        pending: "Registering User",
+        success: `${registerUser.message}`,
+        error: "Something is wrong !",
+      });
+      localStorage.setItem("token", registerUser.token);
+    } catch (error) {
+      toast.error(error.message, {
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
   return (
     <motion.div
@@ -42,6 +80,7 @@ const LicenseDetails = () => {
       }}
       className="h-screen bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7"
     >
+      <ToastContainer />
       <div className="flex flex-col lg:flex-row items-center justify-center gap-y-14 max-w-screen-xl h-full mx-auto">
         <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl md:px-20">
           <Typewriter
@@ -65,12 +104,16 @@ const LicenseDetails = () => {
               </label>
               <input
                 id="license_number"
-                type="number"
+                type="text"
                 autoFocus
                 placeholder="License Number"
                 className={inputClasses}
                 {...register("licenceNumber", {
                   required: "Please enter license number!",
+                  pattern: {
+                    value: /^[A-Za-z0-9]{15}$/,
+                    message: "Please entre valid license number",
+                  },
                 })}
               />
               {errors.licenceNumber && (
@@ -87,13 +130,13 @@ const LicenseDetails = () => {
                 id="license_expiry"
                 type="date"
                 className={inputClasses}
-                {...register("licenceType", {
+                {...register("licenceExpireDate", {
                   required: "Please select license expiry date!",
                 })}
               />
-              {errors.licenceType && (
+              {errors.licenceExpireDate && (
                 <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.licenceType?.message}
+                  {errors.licenceExpireDate?.message}
                 </span>
               )}
             </div>
@@ -106,18 +149,20 @@ const LicenseDetails = () => {
                 id="license_type"
                 defaultValue=""
                 className={selectClasses}
-                {...register("licenceExpireDate", {
+                {...register("licenceType", {
                   required: "Please select your license type!",
                 })}
               >
                 <option value="" disabled>
                   Select License-Type
                 </option>
-                <option value="LMV">LMV</option>
+                <option value="LMV-NT">LMV-NT</option>
+                <option value="HPMV">HPMV</option>
+                <option value="HGMV">HGMV</option>
               </select>
-              {errors.licenceExpireDate && (
+              {errors.licenceType && (
                 <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.licenceExpireDate?.message}
+                  {errors.licenceType?.message}
                 </span>
               )}
             </div>

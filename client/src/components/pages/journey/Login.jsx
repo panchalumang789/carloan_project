@@ -8,6 +8,8 @@ import customerService from "services/customerServices";
 import Typewriter from "typewriter-effect";
 import Cookies from "universal-cookie";
 import { Navigator } from "./extra/Widget";
+import "./extra/LoadingPage.css";
+import LoadingPage from "./extra/LoadingPage";
 
 const Login = () => {
   const cookie = new Cookies();
@@ -17,7 +19,7 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ model: "all" });
+  } = useForm({ mode: "all" });
 
   const loginService = new customerService();
 
@@ -26,21 +28,31 @@ const Login = () => {
       path: "login",
       details: { ContactNo: contactNo },
     });
-    setTimeout(() => {
-      navigate("/journey/verifyOTP");
-    }, 6000);
-    const functionThatReturnPromise = () =>
-      new Promise((resolve) => setTimeout(resolve, 3000));
-    toast.promise(functionThatReturnPromise, {
-      pending: "Sending OTP",
-      success: `${result.message} Verification: ${result.verification}`,
-      error: "Something is wrong !",
-    });
+    if (result.message && result.verification) {
+      setTimeout(() => {
+        navigate("/journey/verifyOTP");
+      }, 6000);
+      const functionThatReturnPromise = () =>
+        new Promise((resolve) => setTimeout(resolve, 3000));
+      toast.promise(functionThatReturnPromise, {
+        pending: "Sending OTP",
+        success: `${result.message} Verification: ${result.verification}`,
+        error: "Something is wrong !",
+      });
+    } else {
+      toast.error(result.message, {
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   const getMobile = (data) => {
     setLoading(true);
-    cookie.set("contactNo", { ContactNo: data.mobile });
+    cookie.set("contactNo", { contactNo: data.mobile });
     sendOTP(data.mobile);
   };
   return (
@@ -50,70 +62,11 @@ const Login = () => {
       exit={{ opacity: 0, x: window.innerWidth, transition: { duration: 0.3 } }}
       className="h-screen bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7"
     >
-      {Loading &&
-        {
-          /* <div className="h-screen w-screen flex justify-center items-center mx-auto fixed">
-        <div className="fixed z-10 backdrop-blur-3xl bg-opacity-20">
-          <svg
-            className="car"
-            width="102"
-            height="40"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g
-              transform="translate(2 1)"
-              stroke="#002742"
-              fill="none"
-              fillRule="evenodd"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path
-                className="car__body"
-                d="M47.293 2.375C52.927.792 54.017.805 54.017.805c2.613-.445 6.838-.337 9.42.237l8.381 1.863c2.59.576 6.164 2.606 7.98 4.531l6.348 6.732 6.245 1.877c3.098.508 5.609 3.431 5.609 6.507v4.206c0 .29-2.536 4.189-5.687 4.189H36.808c-2.655 0-4.34-2.1-3.688-4.67 0 0 3.71-19.944 14.173-23.902zM36.5 15.5h54.01"
-                strokeWidth="3"
-              />
-              <ellipse
-                className="car__wheel--left"
-                strokeWidth="3.2"
-                fill="#FFF"
-                cx="83.493"
-                cy="30.25"
-                rx="6.922"
-                ry="6.808"
-              />
-              <ellipse
-                className="car__wheel--right"
-                strokeWidth="3.2"
-                fill="#FFF"
-                cx="46.511"
-                cy="30.25"
-                rx="6.922"
-                ry="6.808"
-              />
-              <path
-                className="car__line car__line--top"
-                d="M22.5 16.5H2.475"
-                strokeWidth="3"
-              />
-              <path
-                className="car__line car__line--middle"
-                d="M20.5 23.5H.4755"
-                strokeWidth="3"
-              />
-              <path
-                className="car__line car__line--bottom"
-                d="M25.5 9.5h-19"
-                strokeWidth="3"
-              />
-            </g>
-          </svg>
-          <span className="text-xl font-semibold pl-6 animate-pulse duration-50 py-2">
-            Loading ...
-          </span>
+      {Loading && (
+        <div className="h-screen w-screen flex justify-center items-center mx-auto bg-transparent/30 dark:bg-transparent/60 fixed">
+          <LoadingPage stroke={"#A3BEBE"} wheel={"#023641"} />
         </div>
-      </div> */
-        }}
+      )}
       <ToastContainer />
       <div className="flex flex-col lg:flex-row items-center justify-center gap-y-14 max-w-screen-xl h-full mx-auto">
         <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl md:px-20">

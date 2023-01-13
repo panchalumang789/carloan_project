@@ -15,22 +15,24 @@
 	animation: line 0.8s ease-in-out infinite;
 	animation-fill-mode: both;
 }
+
 .car--top {
-animation-delay: 0s;
+	animation-delay: 0s;
 }
 
 .car--middle {
-animation-delay: 0.2s;
+	animation-delay: 0.2s;
 }
 
 .car--bottom {
-animation-delay: 0.4s;
+	animation-delay: 0.4s;
 }
 
 @keyframes shake {
 	0% {
 		transform: translateY(-1%);
 	}
+
 	100% {
 		transform: translateY(3%);
 	}
@@ -40,23 +42,23 @@ animation-delay: 0.4s;
 	0% {
 		stroke-dashoffset: 22;
 	}
-	
+
 	25% {
 		stroke-dashoffset: 22;
 	}
-	
+
 	50% {
 		stroke-dashoffset: 0;
 	}
-	
+
 	51% {
 		stroke-dashoffset: 0;
 	}
-	
+
 	80% {
 		stroke-dashoffset: -22;
 	}
-	
+
 	100% {
 		stroke-dashoffset: -22;
 	}

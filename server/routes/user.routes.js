@@ -39,11 +39,10 @@ userRoutes.get(
 );
 
 userRoutes.post(
-  "/user",
+  "/user/:loanid",
   authorization.generateToken("User"),
   userController.createUser,
   (req, res) => {
-    console.log(res.locals);
     res.status(200).send(res.locals.user);
   }
 );

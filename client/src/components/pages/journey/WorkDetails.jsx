@@ -19,10 +19,11 @@ const WorkDetails = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ model: "all", defaultValues: workDetail });
+  } = useForm({ mode: "all", defaultValues: workDetail });
 
   const WorkDetails = (data) => {
     let leadCookie = cookie.get("leadDetails");
+    cookie.remove("leadDetails");
     cookie.set("leadDetails", { ...leadCookie, ...data });
     navigate("/journey/loginDetail");
   };
@@ -34,6 +35,7 @@ const WorkDetails = () => {
       exit={{
         opacity: 0,
         x: window.innerWidth,
+        y: window.innerHeight,
         transition: { duration: 0.3 },
       }}
       className="h-screen bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7"
@@ -98,14 +100,13 @@ const WorkDetails = () => {
                         value: 10000,
                         message: "Income should be greater than 10000!",
                       },
+                      max: {
+                        value: 1000000000,
+                        message: "Income should be less than 1,00,00,00,000!",
+                      },
                     })}
                   />
-                  {errors.user_income?.type === "required" && (
-                    <span className="text-red-500 pt-1 px-1 text-sm">
-                      {errors.user_income?.message}
-                    </span>
-                  )}
-                  {errors.user_income?.type === "min" && (
+                  {errors.user_income && (
                     <span className="text-red-500 pt-1 px-1 text-sm">
                       {errors.user_income?.message}
                     </span>
