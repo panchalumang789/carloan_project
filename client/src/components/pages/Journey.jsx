@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AnimatePresence } from "framer-motion";
 
 import CustomerJourney from "./journey/index";
+// import LoadingPage from "./journey/extra/LoadingPage";
 
 
 const Journey = () => {
@@ -13,6 +14,7 @@ const Journey = () => {
     <>
       <ToastContainer />
       <AnimatePresence>
+        {/* <LoadingPage/> */}
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<CustomerJourney.LeadDetails />} />
           <Route path="/carDetail" element={<CustomerJourney.CarDetails />} />

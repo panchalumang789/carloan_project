@@ -64,88 +64,87 @@ const CarDetails = () => {
     navigate("/journey/workDetail");
   };
   return (
-    <>
-      <motion.div
-        initial={{ opacity: 0, width: 0 }}
-        animate={{ opacity: 1, width: "100%" }}
-        exit={{
-          opacity: 0,
-          x: window.innerWidth,
-          transition: { duration: 0.3 },
-        }}
-        className="h-screen bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7"
-      >
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-y-14 max-w-screen-xl h-full mx-auto">
-          <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl md:px-20">
-            <Typewriter
-              options={{
-                strings: "Please tell us what car you want?",
-                autoStart: true,
-                loop: false,
-                delay: 50,
-              }}
-            />
-          </div>
-          <div className="w-5/6 lg:w-1/2 md:px-28">
-            <form
-              onSubmit={handleSubmit(getCar)}
-              className="flex justify-center flex-col mx-auto"
-            >
-              <div className="flex flex-col gap-y-6">
-                <FormTitle formTitle={"Car Details"} />
-                <div className="flex flex-col gap-y-5">
-                  <div className="flex flex-col">
-                    <label htmlFor="maker" className="px-1">
-                      Car Maker
-                    </label>
-                    <select
-                      name="maker"
-                      id="maker"
-                      autoFocus
-                      defaultValue={""}
-                      className={selectClasses}
-                      onClick={getMaker}
-                      {...register("make", {
-                        required: "Please select car maker!",
-                      })}
-                    >
-                      <option value="" className="" disabled>
-                        Select Maker
-                      </option>
-                      {Maker.map((item) => {
-                        return (
-                          <option key={item.make} value={item.make}>
-                            {item.make}
-                          </option>
-                        );
-                      })}
-                    </select>
-                    {errors.make && (
-                      <span className="text-red-500 pt-1 px-1 text-sm">
-                        {errors.make?.message}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex flex-col">
-                    <label htmlFor="model" className="px-1">
-                      Car Model
-                    </label>
-                    <select
-                      name="model"
-                      id="model"
-                      className={selectClasses}
-                      onClick={getModel}
-                    >
-                      {Model.map((item) => {
-                        return (
-                          <option key={item.model} value={item.model}>
-                            {item.model}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                  {/* <div className="flex flex-col">
+    <motion.div
+      initial={{ opacity: 0, width: 0 }}
+      animate={{ opacity: 1, width: "100%" }}
+      exit={{
+        opacity: 0,
+        x: window.innerWidth,
+        transition: { duration: 0.3 },
+      }}
+      className="h-screen bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7"
+    >
+      <div className="flex flex-col lg:flex-row items-center justify-center gap-y-14 max-w-screen-xl h-full mx-auto">
+        <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl md:px-20">
+          <Typewriter
+            options={{
+              strings: "Please tell us what car you want?",
+              autoStart: true,
+              loop: false,
+              delay: 50,
+            }}
+          />
+        </div>
+        <div className="w-5/6 lg:w-1/2 md:px-28">
+          <form
+            onSubmit={handleSubmit(getCar)}
+            className="flex justify-center flex-col mx-auto"
+          >
+            <div className="flex flex-col gap-y-6">
+              <FormTitle formTitle={"Car Details"} />
+              <div className="flex flex-col gap-y-5">
+                <div className="flex flex-col">
+                  <label htmlFor="maker" className="px-1">
+                    Car Maker
+                  </label>
+                  <select
+                    name="maker"
+                    id="maker"
+                    autoFocus
+                    defaultValue={""}
+                    className={selectClasses}
+                    onClick={getMaker}
+                    {...register("make", {
+                      required: "Please select car maker!",
+                    })}
+                  >
+                    <option value="" className="" disabled>
+                      Select Maker
+                    </option>
+                    {Maker.map((item) => {
+                      return (
+                        <option key={item.make} value={item.make}>
+                          {item.make}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  {errors.make && (
+                    <span className="text-red-500 pt-1 px-1 text-sm">
+                      {errors.make?.message}
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="model" className="px-1">
+                    Car Model
+                  </label>
+                  <select
+                    name="model"
+                    id="model"
+                    className={selectClasses}
+                    onClick={getModel}
+                  >
+                    {Model.map((item) => {
+                      return (
+                        <option key={item.model} value={item.model}>
+                          {item.model}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+                {/* <div className="flex flex-col">
                     <label htmlFor="prodution_year" className="px-1">Production Year</label>
                     <select name="prodution_year" id="prodution_year" className={selectClasses}>
                       {cars.map(item => {
@@ -156,44 +155,43 @@ const CarDetails = () => {
                       })}
                     </select>
                   </div> */}
-                  <div className="flex flex-col">
-                    <label htmlFor="model_type" className="px-1">
-                      Car Mode-Type
-                    </label>
-                    <select
-                      name="model_type"
-                      id="model-type"
-                      className={selectClasses}
-                      {...register("carId", {
-                        required: "Please select model-type!",
-                      })}
-                    >
-                      {cars.map((item) => {
-                        return (
-                          <option
-                            key={item.model_type}
-                            id={item.model_type}
-                            value={item.id}
-                          >
-                            {item.model_type}
-                          </option>
-                        );
-                      })}
-                    </select>
-                    {errors.carId && (
-                      <span className="text-red-500 pt-1 px-1 text-sm">
-                        {errors.carId?.message}
-                      </span>
-                    )}
-                  </div>
-                  <Navigator prevForm={"/journey"} />
+                <div className="flex flex-col">
+                  <label htmlFor="model_type" className="px-1">
+                    Car Mode-Type
+                  </label>
+                  <select
+                    name="model_type"
+                    id="model-type"
+                    className={selectClasses}
+                    {...register("carId", {
+                      required: "Please select model-type!",
+                    })}
+                  >
+                    {cars.map((item) => {
+                      return (
+                        <option
+                          key={item.model_type}
+                          id={item.model_type}
+                          value={item.id}
+                        >
+                          {item.model_type}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  {errors.carId && (
+                    <span className="text-red-500 pt-1 px-1 text-sm">
+                      {errors.carId?.message}
+                    </span>
+                  )}
                 </div>
+                <Navigator prevForm={"/journey"} />
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
-      </motion.div>
-    </>
+      </div>
+    </motion.div>
   );
 };
 
