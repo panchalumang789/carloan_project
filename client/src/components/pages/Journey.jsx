@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AnimatePresence } from "framer-motion";
 
 import CustomerJourney from "./journey/index";
-// import LoadingPage from "./journey/extra/LoadingPage";
+import PageNotFound from "./PageNotFound";
 
 const Journey = () => {
   const location = useLocation();
@@ -13,7 +13,6 @@ const Journey = () => {
     <>
       <ToastContainer />
       <AnimatePresence initial={false}>
-        {/* <LoadingPage/> */}
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<CustomerJourney.LeadDetails />} />
           <Route path="/carDetail" element={<CustomerJourney.CarDetails />} />
@@ -40,6 +39,7 @@ const Journey = () => {
             path="/expensesDetail"
             element={<CustomerJourney.ExpensesDetails />}
           />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </AnimatePresence>
     </>

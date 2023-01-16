@@ -57,7 +57,7 @@ const Navbar = () => {
           " fixed w-screen md:w-2/5 transition-all duration-700 bg-primary-color-3 text-primary-color-4 dark:bg-primary-color-6 dark:text-primary-color-5 z-10 top-0"
         }
       >
-        <div className="flex flex-col justify-center items-center gap-y-6 h-screen uppercase">
+        <div className="flex flex-col justify-center items-center gap-y-5 h-screen uppercase">
           <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
             <Link to={"/"} className="text-2xl">
               Get Overview
@@ -83,6 +83,26 @@ const Navbar = () => {
               Contact US
             </Link>
           </div>
+          {localStorage.getItem("token") ? (
+            <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
+              <Link
+                to={"/"}
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  toggleNav();
+                }}
+                className="text-2xl"
+              >
+                LOGOUT
+              </Link>
+            </div>
+          ) : (
+            <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
+              <Link to={"/login"} onClick={toggleNav} className="text-2xl">
+                LOGIN
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>

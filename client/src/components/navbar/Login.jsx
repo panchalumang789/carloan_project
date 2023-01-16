@@ -1,27 +1,24 @@
-import { motion } from "framer-motion";
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import customerService from "services/customerServices";
-import Typewriter from "typewriter-effect";
 import Cookies from "universal-cookie";
-import { Navigator } from "./extra/Widget";
-import "./extra/LoadingPage.css";
-import LoadingPage from "./extra/LoadingPage";
+import customerService from "services/customerServices";
+import LoadingPage from "components/pages/journey/extra/LoadingPage";
 
 const Login = () => {
   const cookie = new Cookies();
   const [Loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const loginService = new customerService();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: "all" });
-
-  const loginService = new customerService();
+  } = useForm({
+    mode: "all",
+    defaultValues: cookie.get("contactNo"),
+  });
 
   const sendOTP = async (contactNo) => {
     const result = await loginService.sendOTP({
@@ -30,8 +27,8 @@ const Login = () => {
     });
     if (result.message && result.verification) {
       setTimeout(() => {
-        navigate("/journey/verifyOTP");
-      }, 6000);
+        navigate("/verify");
+      }, 4000);
       const functionThatReturnPromise = () =>
         new Promise((resolve) => setTimeout(resolve, 3000));
       toast.promise(functionThatReturnPromise, {
@@ -52,34 +49,18 @@ const Login = () => {
 
   const getMobile = (data) => {
     setLoading(true);
-    cookie.set("contactNo", { contactNo: data.mobile });
-    sendOTP(data.mobile);
+    cookie.set("contactNo", { contactNo: data.contactNo });
+    sendOTP(data.contactNo);
   };
   return (
-    <motion.div
-      initial={{ opacity: 0, width: 0 }}
-      animate={{ opacity: 1, width: "100%" }}
-      exit={{ opacity: 0, x: window.innerWidth, transition: { duration: 0.3 } }}
-      className="h-screen bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7"
-    >
+    <div className="absolute top-0 left-0 h-full w-full bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7">
       {Loading && (
-        <div className="h-screen w-screen flex justify-center items-center mx-auto bg-transparent/30 dark:bg-transparent/60 fixed">
-          <LoadingPage stroke={"#A3BEBE"} wheel={"#023641"} />
+        <div className="h-screen w-screen flex justify-center items-center mx-auto bg-transparent/50 dark:bg-transparent/60 fixed">
+          <LoadingPage stroke={"#e0f5f5"} wheel={"#A3BEBE"} />
         </div>
       )}
       <ToastContainer />
       <div className="flex flex-col lg:flex-row items-center justify-center gap-y-14 max-w-screen-xl h-full mx-auto">
-        <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl md:px-20">
-          <p>Please protect your account with SMS authentication.</p>
-          <Typewriter
-            options={{
-              strings: "Your privacy and security is important for us.",
-              autoStart: true,
-              loop: false,
-              delay: 60,
-            }}
-          />
-        </div>
         <div className="w-5/6 lg:w-1/2 md:px-28">
           <form
             onSubmit={handleSubmit(getMobile)}
@@ -96,40 +77,38 @@ const Login = () => {
                   autoFocus
                   placeholder="Contact No"
                   className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-60"
-                  {...register("mobile", {
-                    required: "Please enter your Contact-No !",
+                  {...register("contactNo", {
+                    required: "Please enter your contact no !",
                     minLength: {
                       value: 10,
-                      message: "Please enter valid Contact-No !",
+                      message: "Please enter valid contact no !",
                     },
                     maxLength: {
                       value: 10,
-                      message: "Please enter valid Contact-No !",
+                      message: "Please enter valid contact no !",
                     },
                   })}
                 />
-                {errors.mobile?.type === "required" && (
+                {errors.contactNo && (
                   <span className="text-red-500 pt-1 px-1 text-sm">
-                    {errors.mobile?.message}
-                  </span>
-                )}
-                {errors.mobile?.type === "minLength" && (
-                  <span className="text-red-500 pt-1 px-1 text-sm">
-                    {errors.mobile?.message}
-                  </span>
-                )}
-                {errors.mobile?.type === "maxLength" && (
-                  <span className="text-red-500 pt-1 px-1 text-sm">
-                    {errors.mobile?.message}
+                    {errors.contactNo?.message}
                   </span>
                 )}
               </div>
-              <Navigator prevForm={"/journey/workDetail"} />
+              <div className="ml-auto">
+                <button
+                  type="submit"
+                  className="group font-medium flex items-center justify-start gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
+                >
+                  Next
+                  <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right" />
+                </button>
+              </div>
             </div>
           </form>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

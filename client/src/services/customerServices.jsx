@@ -14,7 +14,6 @@ class customerService {
   };
 
   sendOTP = async (data) => {
-    // console.log(data);
     try {
       let output = await axios.post(
         `${process.env.REACT_APP_HOST_URL}${data.path}`,
@@ -23,7 +22,7 @@ class customerService {
       );
       return output.data;
     } catch (error) {
-      return error;
+      return error.response;
     }
   };
 
@@ -44,6 +43,7 @@ class customerService {
     try {
       const output = await axios.get(
         `${process.env.REACT_APP_HOST_URL}${data.path}`,
+        data.details,
         { headers }
       );
       return output.data;
@@ -53,11 +53,13 @@ class customerService {
   };
 
   registerUser = async (data) => {
+    console.log(data);
     try {
       const output = await axios.post(
         `${process.env.REACT_APP_HOST_URL}${data.path}/${data.headerData.loanId}`,
         data.details
       );
+      console.log(output.data);
       return output.data;
     } catch (error) {
       return error.response;
@@ -68,7 +70,12 @@ class customerService {
     try {
       const output = await axios.post(
         `${process.env.REACT_APP_HOST_URL}${data.path}`,
-        data.details
+        data.details,
+        {
+          headers: {
+            Authorization: `${data.headerData}`,
+          },
+        }
       );
       return output.data;
     } catch (error) {
@@ -90,7 +97,19 @@ class customerService {
       );
       return output.data;
     } catch (error) {
-      console.log(error.response);
+      return error.response;
+    }
+  };
+
+  verifyUser = async (data) => {
+    try {
+      const result = await axios.post(
+        `${process.env.REACT_APP_HOST_URL}${data.path}`,
+        data.details,
+        { headers }
+      );
+      return result.data;
+    } catch (error) {
       return error.response;
     }
   };

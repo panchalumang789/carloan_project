@@ -63,7 +63,16 @@ const CarDetails = () => {
     navigate("/journey/workDetail");
   };
   return (
-    <div className="absolute top-0 left-0 h-full w-full bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7">
+    <motion.div
+      initial={{ opacity: 0, width: 0 }}
+      animate={{ opacity: 1, width: "100%" }}
+      exit={{
+        opacity: 0,
+        x: window.innerWidth,
+        transition: { duration: 0.3 },
+      }}
+      className="absolute top-0 left-0 h-full w-full bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7"
+    >
       <div className="flex flex-col lg:flex-row items-center justify-center gap-y-14 max-w-screen-xl h-full mx-auto">
         <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl md:px-20">
           <Typewriter
@@ -85,7 +94,7 @@ const CarDetails = () => {
               <div className="flex flex-col gap-y-5">
                 <div className="flex flex-col">
                   <label htmlFor="maker" className="px-1">
-                    Car Maker
+                    Car make <span className="text-red-500">*</span>
                   </label>
                   <select
                     name="maker"
@@ -99,7 +108,7 @@ const CarDetails = () => {
                     })}
                   >
                     <option value="" className="" disabled>
-                      Select Maker
+                      Select maker
                     </option>
                     {Maker.map((item) => {
                       return (
@@ -117,14 +126,18 @@ const CarDetails = () => {
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="model" className="px-1">
-                    Car Model
+                    Car model <span className="text-red-500">*</span>
                   </label>
                   <select
                     name="model"
                     id="model"
+                    defaultValue={""}
                     className={selectClasses}
                     onClick={getModel}
                   >
+                    <option value="" className="opacity-50" disabled>
+                      Select model
+                    </option>
                     {Model.map((item) => {
                       return (
                         <option key={item.model} value={item.model}>
@@ -147,16 +160,20 @@ const CarDetails = () => {
                   </div> */}
                 <div className="flex flex-col">
                   <label htmlFor="model_type" className="px-1">
-                    Car Mode-Type
+                    Car model type <span className="text-red-500">*</span>
                   </label>
                   <select
                     name="model_type"
                     id="model-type"
                     className={selectClasses}
+                    defaultValue=""
                     {...register("carId", {
                       required: "Please select model-type!",
                     })}
                   >
+                    <option value="" className="" disabled>
+                      Select model type
+                    </option>
                     {cars.map((item) => {
                       return (
                         <option
@@ -181,7 +198,7 @@ const CarDetails = () => {
           </form>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -194,7 +211,3 @@ const index = () => {
 };
 
 export default index;
-// initial={{ y: "100%" }}
-//       animate={{ y: "0%" }}
-//       transition={{ duration: 0.75, ease: "easeOut" }}
-//       exit={{ opacity: 1 }}

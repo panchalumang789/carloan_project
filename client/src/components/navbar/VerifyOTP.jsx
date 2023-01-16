@@ -1,17 +1,15 @@
-import { motion } from "framer-motion";
+import LoadingPage from "components/pages/journey/extra/LoadingPage";
 import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Cookies from "universal-cookie";
 import customerService from "services/customerServices";
-import loanService from "services/loanService";
 import Typewriter from "typewriter-effect";
-import LoadingPage from "./extra/LoadingPage";
+import Cookies from "universal-cookie";
 
 const VerifyOTP = () => {
   const cookie = new Cookies();
-  const loanServices = new loanService();
+
+  const userService = new customerService();
   const navigate = useNavigate();
   const [Loading, setLoading] = useState(false);
   const [OTP, setOTP] = useState(new Array(4).fill(""));
@@ -26,73 +24,62 @@ const VerifyOTP = () => {
     setOTP(nextOTP);
     event.target.value = result;
   };
+
   let called = false;
-  async function handleInput(e) {
-    let verifyService = new customerService();
-    var maxLength = parseInt(e.target.attributes["maxlength"].value);
-    var myLength = e.target.value.length;
-    if (myLength >= maxLength) {
-      var next = e.target;
-      if (OTP.join("").length === 4 && called === false) {
-        called = true;
-        setLoading(true);
-        let result = await verifyService
-          .verifyOTP({
-            path: "verify",
-            details: {
-              ContactNo: cookie.get("contactNo").contactNo,
-              code: OTP.join(""),
-            },
-          })
-          .catch(() => {
-            toast.error("Invalid OTP !", {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
+  const verifyUser = async () => {
+    if (OTP.join("").length === 4 && called === false) {
+      called = true;
+      setLoading(true);
+      let result = await userService.verifyOTP({
+        path: "verify",
+        details: {
+          ContactNo: cookie.get("contactNo").contactNo,
+          code: OTP.join(""),
+        },
+      });
+      if (result.message === "approved") {
+        toast.success(`OTP: ${result.message}`);
+
+        try {
+          const findUser = await userService.verifyUser({
+            path: `verifyUser`,
+            details: cookie.get("contactNo"),
           });
-        if (result.message === "approved") {
-          toast.success(`OTP: ${result.message}`);
-          loanServices
-            .applyLoan({
-              path: "loan",
-              details: { loanData: cookie.get("leadDetails") },
-            })
-            .then((loanResult) => {
-              cookie.remove("leadDetails");
-              cookie.set("loanDetail", { loanId: loanResult.loanId });
-              const functionThatReturnPromise = () =>
-                new Promise((resolve) => setTimeout(resolve, 3000)).then(() => {
-                  setTimeout(() => {
-                    navigate("/journey/customerDetail");
-                  }, 500);
-                });
-              toast.promise(functionThatReturnPromise, {
-                pending: "Applying Loan...",
-                success: loanResult.message,
-              });
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-        } else {
-          setLoading(false);
-          toast.error("Invalid OTP !", {
+          localStorage.setItem("token", findUser.message);
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 2000);
+          cookie.remove("contactNo");
+        } catch (error) {
+          toast.error(error.message, {
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
             theme: "light",
           });
-          setOTP(["", "", "", ""]);
-          inputRef.current.focus();
         }
+      } else {
+        setLoading(false);
+        toast.error("Invalid OTP !", {
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setOTP(["", "", "", ""]);
+        inputRef.current.focus();
       }
+    }
+  };
+
+  async function handleInput(e) {
+    var maxLength = parseInt(e.target.attributes["maxlength"].value);
+    var myLength = e.target.value.length;
+    if (myLength >= maxLength) {
+      var next = e.target;
+      verifyUser();
       while ((next = next.nextElementSibling)) {
         if (next == null) {
           break;
@@ -104,17 +91,9 @@ const VerifyOTP = () => {
       }
     }
   }
+
   return (
-    <motion.div
-      initial={{ opacity: 0, width: 0 }}
-      animate={{ opacity: 1, width: "100%" }}
-      exit={{
-        opacity: 0,
-        x: window.innerWidth,
-        transition: { duration: 0.3 },
-      }}
-      className="h-screen bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7"
-    >
+    <div className="absolute top-0 left-0 h-full w-full bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7">
       {Loading && (
         <div className="h-screen w-screen flex justify-center items-center mx-auto bg-transparent/30 dark:bg-transparent/60 fixed">
           <LoadingPage stroke={"#023641"} wheel={"#ffffff"} />
@@ -140,9 +119,6 @@ const VerifyOTP = () => {
           <p>Please enter it to verify yourself.</p>
         </div>
         <div className="w-5/6 lg:w-1/2 md:px-28">
-          <Link className="text-md font-medium after:w-0 hover:after:w-24 after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-5 after:transition-all after:duration-700 after:rounded-xl after:mb-3">
-            Edit number
-          </Link>
           <p className="px-6 py-1">SMS Code</p>
           <div
             className="flex gap-x-4 justify-center pb-8"
@@ -189,16 +165,16 @@ const VerifyOTP = () => {
           </div>
           <div className="w-full flex mx-auto justify-start">
             <Link
-              to={"/journey/loginDetail"}
-              className="group font-medium flex items-center justify-end gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
+              to={"/login"}
+              className="group font-medium flex items-center justify-end gap-x-2 w-28 h-14 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
             >
               <em className=" group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left"></em>{" "}
-              Back
+              Edit Number
             </Link>
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

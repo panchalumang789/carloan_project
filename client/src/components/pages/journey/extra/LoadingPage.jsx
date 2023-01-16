@@ -56,7 +56,7 @@ const LoadingPage = (props) => {
           />
         </g>
       </svg>
-      <span className="text-xl font-semibold text-[#002742] dark:text-primary-color-5 pl-6 animate-pulse duration-50 py-2">
+      <span className="text-xl font-semibold text-primary-color-7 pl-6 animate-pulse duration-50 py-2">
         Loading ...
       </span>
     </div>
