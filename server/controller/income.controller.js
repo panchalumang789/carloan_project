@@ -6,12 +6,12 @@ const loanTable = require("../models/loan");
 const incomeValidation = Joi.object().keys({
   userId: Joi.number().required(),
   loanId: Joi.number().required(),
-  additional_income: Joi.number().min(0).default(0).required(),
-  rental_income: Joi.number().min(0).default(0).required(),
-  investment_income: Joi.number().min(0).default(0).required(),
-  salary_secrifice: Joi.number().min(0).default(0).required(),
-  centralink_benifit: Joi.number().min(0).default(0).required(),
-  foreign_income: Joi.number().min(0).default(0).required(),
+  additional_income: Joi.boolean().required(),
+  rental_income: Joi.number().default(null),
+  investment_income: Joi.number().default(null),
+  salary_sacrifice: Joi.number().default(null),
+  centralink_benifit: Joi.number().default(null),
+  foreign_income: Joi.number().default(null),
 });
 
 /**

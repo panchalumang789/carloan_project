@@ -12,28 +12,28 @@ const incomeTable = sequalize.define("incomes", {
     unique: true,
   },
   additional_income: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BOOLEAN,
     allowNull: false,
   },
   rental_income: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   investment_income: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
-  salary_secrifice: {
+  salary_sacrifice: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   centralink_benifit: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   foreign_income: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
 });
 

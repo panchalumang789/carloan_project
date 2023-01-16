@@ -100,12 +100,13 @@ const getUser = async (req, res, next) => {
 const getUserByContactNo = async (req, res, next) => {
   try {
     let findUser = await userTable.findOne({
-      where: { contactNo: req.params.contactNo },
+      where: { contactNo: req.body.contactNo },
     });
     if (Object.keys(findUser).length <= 0) {
       next({ error: { status: 404, message: "Users not found!" } });
     } else {
       res.locals.users = findUser;
+      res.locals.userName = `${findUser.firstName} ${findUser.lastName}`;
       next();
     }
   } catch (error) {

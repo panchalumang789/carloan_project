@@ -8,11 +8,20 @@ const client = require("twilio")(process.env.ACCOUNTSID, process.env.AUTHTOKEN);
  */
 const generateToken = (role) => {
   return (req, res, next) => {
-    let credential = {
-      role: role,
-      contactNo: req.body.contactNo,
-      email: req.body.email,
-    };
+    let credential = {};
+    if (res.locals.users) {
+      credential = {
+        role: role,
+        contactNo: res.locals.users.contactNo,
+        email: res.locals.users.email,
+      };
+    } else {
+      credential = {
+        role: role,
+        contactNo: req.body.contactNo,
+        email: req.body.email,
+      };
+    }
     let token = jwt.sign(credential, process.env.JWT_SECRET_KEY);
     res.locals.token = token;
     next();

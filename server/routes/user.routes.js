@@ -21,7 +21,7 @@ userRoutes.get(
 
 // get user by contact no
 userRoutes.get(
-  "/user/mobile/:contactNo",
+  "/user/mobile",
   userController.getUserByContactNo,
   (req, res) => {
     res.status(200).send(res.locals.users);
