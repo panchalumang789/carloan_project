@@ -1,13 +1,25 @@
-import LeadDetails from "./LeadDetails";
-import CarDetails from "./CarDetails";
-import WorkDetails from "./WorkDetails";
-import Login from "./Login";
-import VerifyOTP from "./VerifyOTP";
-import CustomerDetails from "./CustomerDetails";
-import LicenseName from "./LicenseName";
-import LicenseDetails from "./LicenseDetails";
-import IncomeDetails from "./IncomeDetails";
-import ExpensesDetails from "./ExpensesDetails";
+import LeadDetails from "./LeadDetails/index";
+import CarDetails from "./CarDetails/index";
+import WorkDetails from "./WorkDetails/index";
+import Login from "./Login/index";
+import VerifyOTP from "./VerifyOTP/index";
+import CustomerDetails from "./CustomerDetails/index";
+import LicenseName from "./LicenseName/index";
+import LicenseDetails from "./LicenseDetails/index";
+import IncomeDetails from "./IncomeDetails/index";
+import ExpensesDetails from "./ExpensesDetails/index";
 
+const CustomerJourney = {
+  LeadDetails,
+  CarDetails,
+  WorkDetails,
+  Login,
+  VerifyOTP,
+  CustomerDetails,
+  LicenseName,
+  LicenseDetails,
+  IncomeDetails,
+  ExpensesDetails,
+};
 
-export default { LeadDetails, CarDetails, WorkDetails, Login, VerifyOTP, CustomerDetails, LicenseName, LicenseDetails, IncomeDetails, ExpensesDetails }
+export default CustomerJourney;

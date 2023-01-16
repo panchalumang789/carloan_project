@@ -12,7 +12,7 @@ const Journey = () => {
   return (
     <>
       <ToastContainer />
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {/* <LoadingPage/> */}
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<CustomerJourney.LeadDetails />} />
