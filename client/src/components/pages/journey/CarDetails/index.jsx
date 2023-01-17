@@ -9,12 +9,11 @@ import { FormTitle, Navigator, selectClasses } from "../extra/Widget";
 
 const CarDetails = () => {
   const cookie = new Cookies();
-  const [selectedCar] = useState(cookie.get("carDetail"));
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: "all", defaultValues: selectedCar });
+  } = useForm({ mode: "all" });
   const navigate = useNavigate();
 
   const [carDetail, setCarDetail] = useState({
@@ -57,6 +56,7 @@ const CarDetails = () => {
       if (car.id === parseInt(data.carId)) {
         let leadCookie = cookie.get("leadDetails");
         cookie.remove("leadDetails");
+        cookie.set("carDetails", car);
         return cookie.set("leadDetails", { ...leadCookie, carId: car.id });
       } else return false;
     });
@@ -100,14 +100,14 @@ const CarDetails = () => {
                     name="maker"
                     id="maker"
                     autoFocus
-                    defaultValue={""}
+                    defaultValue={cookie.get("carDetail") || ""}
                     className={selectClasses}
                     onClick={getMaker}
                     {...register("make", {
                       required: "Please select car maker!",
                     })}
                   >
-                    <option value="" className="" disabled>
+                    <option value="" disabled>
                       Select maker
                     </option>
                     {Maker.map((item) => {
@@ -131,7 +131,6 @@ const CarDetails = () => {
                   <select
                     name="model"
                     id="model"
-                    defaultValue={""}
                     className={selectClasses}
                     onClick={getModel}
                   >
@@ -166,7 +165,6 @@ const CarDetails = () => {
                     name="model_type"
                     id="model-type"
                     className={selectClasses}
-                    defaultValue=""
                     {...register("carId", {
                       required: "Please select model-type!",
                     })}

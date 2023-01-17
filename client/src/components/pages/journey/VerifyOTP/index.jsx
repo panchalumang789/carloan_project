@@ -45,10 +45,17 @@ const VerifyOTP = () => {
         });
         if (result.message === "approved") {
           toast.success(`OTP: ${result.message}`);
+          let token = "";
+          if (localStorage.getItem("token")) {
+            token = localStorage.getItem("token");
+          } else {
+            token = "";
+          }
           loanServices
             .applyLoan({
               path: "loan",
               details: { loanData: cookie.get("leadDetails") },
+              headerData: token,
             })
             .then((loanResult) => {
               cookie.remove("leadDetails");

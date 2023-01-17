@@ -46,7 +46,11 @@ const verifyToken = async (req, res, next) => {
       });
       if (findUser.id) {
         res.locals.role = verify.role;
-        res.locals.user = { id: findUser.id };
+        res.locals.userDetail = findUser;
+        res.locals.user = {
+          id: findUser.id,
+          name: `${findUser.firstName} ${findUser.lastName}`,
+        };
         next();
       } else {
         next({ error: { status: 500, message: "Permission denied!" } });

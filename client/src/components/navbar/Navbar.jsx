@@ -25,8 +25,8 @@ const Navbar = () => {
   };
   return (
     <div>
-      <div>
-        <div className="fixed top-5 right-8 max-w-screen-sm md:top-8 md:right-16 p-2 z-50">
+      <div className="h-16 w-screen fixed z-20">
+        <div className="fixed top-5 right-8 max-w-screen-sm md:top-1 md:right-16 p-2 z-20">
           <button onClick={toggleNav}>
             <div className="flex flex-col">
               <span
@@ -54,37 +54,37 @@ const Navbar = () => {
       <div
         className={
           Navbar.navbar +
-          " fixed w-screen md:w-2/5 transition-all duration-700 bg-primary-color-3 text-primary-color-4 dark:bg-primary-color-6 dark:text-primary-color-5 z-10 top-0"
+          " fixed font-medium w-screen md:w-1/3 transition-all duration-700 bg-primary-color-3 text-primary-color-4 dark:bg-primary-color-6 dark:text-primary-color-7 z-10 top-0"
         }
       >
         <div className="flex flex-col justify-center items-center gap-y-5 h-screen uppercase">
-          <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
+          <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-5 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
             <Link to={"/"} className="text-2xl">
               Get Overview
             </Link>
           </div>
-          <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
+          <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-5 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
             <Link to={"/"} className="text-2xl">
               Services
             </Link>
           </div>
-          <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
+          <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-5 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
             <Link to={"/"} className="text-2xl">
               Partners
             </Link>
           </div>
-          <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
+          <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-5 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
             <Link to={"/"} className="text-2xl">
               About
             </Link>
           </div>
-          <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-4 dark:after:bg-primary-color-3 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1">
+          <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-5 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1">
             <Link to={"/"} className="text-2xl">
               Contact US
             </Link>
           </div>
           {localStorage.getItem("token") ? (
-            <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
+            <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-5 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
               <Link
                 to={"/"}
                 onClick={() => {

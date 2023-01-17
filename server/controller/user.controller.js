@@ -100,7 +100,7 @@ const getUser = async (req, res, next) => {
 const getUserByContactNo = async (req, res, next) => {
   try {
     let findUser = await userTable.findOne({
-      where: { contactNo: req.body.contactNo },
+      where: { contactNo: req.params.contactNo },
     });
     if (Object.keys(findUser).length <= 0) {
       next({ error: { status: 404, message: "Users not found!" } });
@@ -173,54 +173,59 @@ const createUser = async (req, res, next) => {
  * @param {*} res add new user details
  */
 const updateUser = async (req, res, next) => {
-  const { error } = userValidation.validate(req.body);
-  if (error) {
-    next({ error: { status: 400, message: error.message } });
-  } else {
-    userTable
-      .count({
-        where: {
-          id: req.params.id,
-        },
-      })
-      .then((result) => {
-        if (result === 0) {
-          next({ error: { status: 500, message: "User not found." } });
-        } else {
-          userTable
-            .update(
-              { ...req.body },
-              {
-                where: {
-                  id: req.params.id,
-                },
-              }
-            )
-            .then((result) => {
-              let token = jwt.sign(
-                {
-                  contactNo: result.contactNo,
-                  firstName: result.firstName,
-                  lastName: result.lastName,
-                  email: result.email,
-                },
-                process.env.JWT_SECRET_KEY
-              );
-              res.locals.user = {
-                message: `${firstName} ${lastName}  updated successfully.`,
-                token: token,
-              };
-              next();
-            })
-            .catch((error) => {
-              if (error.errors)
-                next({
-                  error: { status: 500, message: error.errors[0].message },
-                });
-              else next({ error: { status: 500, message: error } });
+  try {
+    const { error } = userValidation.validate(req.body);
+    if (error) {
+      next({ error: { status: 400, message: error.message } });
+    }
+    const countUser = await userTable.count({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (countUser === 0) {
+      next({ error: { status: 500, message: "User not found." } });
+    } else {
+      userTable
+        .update(
+          { ...req.body },
+          {
+            where: {
+              id: req.params.id,
+            },
+          }
+        )
+        .then((result) => {
+          let token = jwt.sign(
+            {
+              contactNo: req.body.contactNo,
+              firstName: req.body.firstName,
+              lastName: req.body.lastName,
+              email: req.body.email,
+            },
+            process.env.JWT_SECRET_KEY
+          );
+          console.log("req.bod", token);
+
+          res.locals.user = {
+            message: `${req.body.firstName} ${req.body.lastName} updated successfully.`,
+            token: token,
+          };
+          next();
+        })
+        .catch((error) => {
+          if (error.errors)
+            next({
+              error: { status: 500, message: error.errors[0].message },
             });
-        }
-      });
+          else next({ error: { status: 500, message: error } });
+        });
+    }
+  } catch (error) {
+    console.log(error);
+    if (error.errors)
+      next({ error: { status: 500, message: error.errors[0].message } });
+    else next({ error: { status: 500, message: error.original.detail } });
   }
 };
 

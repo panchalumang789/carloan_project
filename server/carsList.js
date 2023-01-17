@@ -40,7 +40,7 @@ const carsList = [
     make: "Hyundai",
     model: "i10",
     production_year: ["2011", "Present"],
-    model_type: "i10 Grand LXI",
+    model_type: "i10 Grand LXi",
     image:
       "https://imgd.aeplcdn.com/1056x594/n/cw/ec/35465/grand-i10-nios-exterior-right-front-three-quarter-2.jpeg?q=75&wm=1",
   },
@@ -48,7 +48,7 @@ const carsList = [
     make: "Hyundai",
     model: "i10",
     production_year: ["2011", "Present"],
-    model_type: "i10 Nios LXI",
+    model_type: "i10 Nios LXi",
     image: "https://imgd.aeplcdn.com/1056x594/n/uqbkksa_1470092.jpg?q=75&wm=1",
   },
   {
@@ -155,7 +155,7 @@ const carsList = [
     make: "Suzuki",
     model: "Swift",
     production_year: ["2015", "Present"],
-    model_type: "Swift LXI",
+    model_type: "Swift LXi",
     image:
       "https://imgd.aeplcdn.com/1056x594/n/cw/ec/54399/exterior-right-front-three-quarter-10.jpeg?q=75&wm=1",
   },
@@ -163,7 +163,7 @@ const carsList = [
     make: "Suzuki",
     model: "Swift",
     production_year: ["2015", "Present"],
-    model_type: "Swift LXI",
+    model_type: "Swift VXi",
     image: "https://imgd.aeplcdn.com/1056x594/n/hmei4ta_1508705.jpg?q=75&wm=1",
   },
   {
@@ -250,7 +250,7 @@ const carsList = [
     production_year: ["2010", "Present"],
     model_type: "Astor Super",
     image:
-      "https://imgd.aeplcdn.com/1056x594/n/cw/ec/51940/astor-exterior-right-front-three-quarter.jpeg?isig=0&q=75&wm=1",
+      "https://imgd.aeplcdn.com/1056x594/n/cw/ec/51940/astor-exterior-right-front-three-quarter.jpeg?isig=0&q=75&wm=2",
   },
   {
     make: "Kia",

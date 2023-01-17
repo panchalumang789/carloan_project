@@ -8,12 +8,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "components/pages/LandingPage";
 import Journey from "components/pages/Journey";
 import PageNotFound from "components/pages/PageNotFound";
-import Dashboard from "components/pages/Dashboard";
+import Dashboard from "components/pages/dashboard/Dashboard";
 import Login from "components/navbar/Login";
 import Verify from "components/navbar/VerifyOTP";
 import LoadingPage from "components/pages/journey/extra/LoadingPage";
 import Protected from "components/Protected";
-import Loan from "components/pages/Loan";
+import Loan from "components/pages/dashboard/Loan";
+import LoanList from "components/pages/dashboard/LoanList";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -30,15 +31,10 @@ root.render(
               <Dashboard />
             </Protected>
           }
-        ></Route>
-        <Route
-          path="loan/:loanId"
-          element={
-            <Protected>
-              <Loan />
-            </Protected>
-          }
-        ></Route>
+        >
+          <Route path="" element={<LoanList />}></Route>
+          <Route path="loan/:loanId" element={<Loan />}></Route>
+        </Route>
         <Route path="loading" element={<LoadingPage />}></Route>
         <Route path="login" element={<Login />}></Route>
         <Route path="verify" element={<Verify />}></Route>

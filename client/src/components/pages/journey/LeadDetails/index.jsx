@@ -171,8 +171,8 @@ const LeadDetail = () => {
                   )}
                 </div>
                 <div className="flex flex-col">
-                  <label htmlFor="ballon" className="px-1">
-                    Ballon
+                  <label htmlFor="balloon" className="px-1">
+                    Balloon
                   </label>
                   <div className="input-group-prepend">
                     <span
@@ -184,24 +184,24 @@ const LeadDetail = () => {
                   </div>
                   <input
                     type="number"
-                    id="ballon"
+                    id="balloon"
                     placeholder="0"
                     className={inputClasses}
-                    {...register("ballon", {
+                    {...register("balloon", {
                       min: {
                         value: 0,
-                        message: "Ballon should be greater than 0!",
+                        message: "Balloon should be greater than 0!",
                       },
                       max: {
                         value: 35,
-                        message: "Ballon should be less than 35!",
+                        message: "Balloon should be less than 35!",
                       },
                     })}
                   />
 
-                  {errors.ballon && (
+                  {errors.balloon && (
                     <span className="text-red-500 pt-1 px-1 text-sm">
-                      {errors.ballon?.message}
+                      {errors.balloon?.message}
                     </span>
                   )}
                 </div>

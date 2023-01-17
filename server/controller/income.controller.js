@@ -7,11 +7,11 @@ const incomeValidation = Joi.object().keys({
   userId: Joi.number().required(),
   loanId: Joi.number().required(),
   additional_income: Joi.boolean().required(),
-  rental_income: Joi.number().default(null),
-  investment_income: Joi.number().default(null),
-  salary_sacrifice: Joi.number().default(null),
-  centralink_benifit: Joi.number().default(null),
-  foreign_income: Joi.number().default(null),
+  rental_income: Joi.number().default(0),
+  investment_income: Joi.number().default(0),
+  salary_sacrifice: Joi.number().default(0),
+  centralink_benifit: Joi.number().default(0),
+  foreign_income: Joi.number().default(0),
 });
 
 /**

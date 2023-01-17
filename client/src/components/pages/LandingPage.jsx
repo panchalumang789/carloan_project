@@ -31,7 +31,7 @@ const LandingPage = () => {
           </p>
           <Link
             to="/journey"
-            className="border w-max rounded-full border-primary-color-1 text-2xl p-4 transition-all hover:bg-primary-color-3 hover:text-primary-color-7 dark:border-primary-color-5 dark:bg-primary-color-3 dark:text-primary-color-4 dark:hover:bg-primary-color-7 duration-300"
+            className="border w-max rounded-md border-primary-color-1 text-2xl p-4 transition-all hover:bg-primary-color-3 hover:text-primary-color-7 dark:border-primary-color-5 dark:bg-primary-color-3 dark:text-primary-color-4 dark:hover:bg-primary-color-7 duration-300"
           >
             Get my Loan options.
           </Link>

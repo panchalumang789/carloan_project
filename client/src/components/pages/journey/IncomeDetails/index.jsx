@@ -19,6 +19,7 @@ const IncomeDetails = () => {
     formState: { errors },
   } = useForm({ mode: "all" });
   const incomeDetails = async (data) => {
+    console.log(data);
     let loanId = cookie.get("loanDetail");
     try {
       const addIncome = await incomeService.addIncome({
@@ -126,6 +127,9 @@ const IncomeDetails = () => {
             {additional_income ? (
               <>
                 <div className="flex text-md flex-col">
+                  <label htmlFor="rental_income">
+                    Rental income per month (after tax)
+                  </label>
                   <div className="input-group-prepend">
                     <span
                       className="ml-4 my-1.5 fixed text-lg "
@@ -137,6 +141,7 @@ const IncomeDetails = () => {
                   <input
                     id="rental_income"
                     type="number"
+                    defaultValue="0"
                     placeholder="Enter rental income"
                     className={inputClasses + " pl-10"}
                     {...register("rental_income", {
@@ -158,6 +163,9 @@ const IncomeDetails = () => {
                   )}
                 </div>
                 <div className="flex text-md flex-col">
+                  <label htmlFor="investment_income">
+                    Investment income per month (after tax)
+                  </label>
                   <div className="input-group-prepend">
                     <span
                       className="ml-4 my-1.5 fixed text-lg "
@@ -169,6 +177,7 @@ const IncomeDetails = () => {
                   <input
                     id="investment_income"
                     type="number"
+                    defaultValue="0"
                     placeholder="Enter investment income"
                     className={inputClasses + " pl-10"}
                     {...register("investment_income", {
@@ -190,6 +199,9 @@ const IncomeDetails = () => {
                   )}
                 </div>
                 <div className="flex text-md flex-col">
+                  <label htmlFor="salary_sacrifice">
+                    Salary sacrifice per month (after tax)
+                  </label>
                   <div className="input-group-prepend">
                     <span
                       className="ml-4 my-1.5 fixed text-lg "
@@ -201,6 +213,7 @@ const IncomeDetails = () => {
                   <input
                     id="salary_sacrifice"
                     type="number"
+                    defaultValue="0"
                     placeholder="Enter salary sacrifice"
                     className={inputClasses + " pl-10"}
                     {...register("salary_sacrifice", {
@@ -222,6 +235,9 @@ const IncomeDetails = () => {
                   )}
                 </div>
                 <div className="flex text-md flex-col">
+                  <label htmlFor="centralink_benifit">
+                    Centralink benifit per month (after tax)
+                  </label>
                   <div className="input-group-prepend">
                     <span
                       className="ml-4 my-1.5 fixed text-lg "
@@ -233,6 +249,7 @@ const IncomeDetails = () => {
                   <input
                     id="centralink_benifit"
                     type="number"
+                    defaultValue="0"
                     placeholder="Enter centralink income"
                     className={inputClasses + " pl-10"}
                     {...register("centralink_benifit", {
@@ -254,6 +271,9 @@ const IncomeDetails = () => {
                   )}
                 </div>
                 <div className="flex text-md flex-col">
+                  <label htmlFor="foreign_income">
+                    Foreign income per month (after tax)
+                  </label>
                   <div className="input-group-prepend">
                     <span
                       className="ml-4 my-1.5 fixed text-lg "
@@ -265,6 +285,7 @@ const IncomeDetails = () => {
                   <input
                     id="foreign_income"
                     type="number"
+                    defaultValue="0"
                     placeholder="Enter foreign income"
                     className={inputClasses + " pl-10"}
                     {...register("foreign_income", {

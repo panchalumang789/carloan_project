@@ -26,10 +26,10 @@ const ExpensesDetails = () => {
         headerData: localStorage.getItem("token"),
       });
       setTimeout(() => {
-        navigate("/dashboard");
-      }, 4000);
+        navigate(`/dashboard/loan/${loanId.loanId}`);
+      }, 2500);
       const functionThatReturnPromise = () =>
-        new Promise((resolve) => setTimeout(resolve, 3000));
+        new Promise((resolve) => setTimeout(resolve, 1500));
       toast.promise(functionThatReturnPromise, {
         pending: "Storing Monthly Expenses",
         success: `${addExpenses.message}`,

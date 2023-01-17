@@ -15,7 +15,7 @@ const dataValidation = Joi.object().keys({
   approx_price: Joi.number().min(0).required(),
   deposit: Joi.number().min(0).required(),
   term: Joi.number().min(0).max(10).required(),
-  ballon: Joi.number().min(0).max(35).default(0),
+  balloon: Joi.number().min(0).max(35).default(0),
   user_status: Joi.string()
     .required()
     .valid(...userStatus),
@@ -89,6 +89,9 @@ const getLoanById = async (req, res, next) => {
     if (loanFind !== null) {
       let carFind = await carTable.findOne({ where: { id: loanFind.carId } });
       if (carFind.length !== 0) {
+        loanFind.dataValues.carMaker = carFind.dataValues.make;
+        loanFind.dataValues.carModel = carFind.dataValues.model;
+        loanFind.dataValues.carModel_type = carFind.dataValues.model_type;
         loanFind.dataValues.carImage = carFind.dataValues.image;
         res.locals.loans = loanFind;
         next();
@@ -116,8 +119,11 @@ const getLoanById = async (req, res, next) => {
  */
 const newLoan = async (req, res, next) => {
   try {
-    if (req.headers.token) {
-      let verify = jwt.verify(req.headers.token, process.env.JWT_SECRET_KEY);
+    if (req.headers.authorization) {
+      let verify = jwt.verify(
+        req.headers.authorization,
+        process.env.JWT_SECRET_KEY
+      );
       let findUser = await userTable.findOne({
         where: { contactNo: verify.contactNo },
       });

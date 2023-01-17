@@ -21,12 +21,17 @@ userRoutes.get(
 
 // get user by contact no
 userRoutes.get(
-  "/user/mobile",
+  "/user/mobile/:contactNo",
   userController.getUserByContactNo,
   (req, res) => {
     res.status(200).send(res.locals.users);
   }
 );
+
+// @return verify user token
+userRoutes.get("/user/verify", authorization.verifyToken, (req, res) => {
+  res.status(200).send(res.locals.userDetail);
+});
 
 // @admin user details by id
 userRoutes.get(

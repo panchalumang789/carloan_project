@@ -21,7 +21,7 @@ const LicenseDetails = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: "all" });
+  } = useForm({ mode: "all", defaultValues: cookie.get("customerData") });
 
   const [States, setStates] = useState([]);
   const getStates = async () => {
@@ -36,29 +36,58 @@ const LicenseDetails = () => {
 
   const licenseDetail = async (data) => {
     let customerCookie = cookie.get("customerDetail");
+    let userId = customerCookie.id;
+    const removeId = customerCookie;
+    delete removeId["id"];
+    delete removeId["createdAt"];
+    delete removeId["updatedAt"];
     let contactNo = cookie.get("contactNo");
     let loanId = cookie.get("loanDetail");
-
     try {
-      const registerUser = await userService.registerUser({
-        path: "user",
-        details: { ...customerCookie, ...data, ...contactNo },
-        headerData: { ...loanId },
-      });
+      if (localStorage.getItem("token")) {
+        const registerUser = await userService.updateUser({
+          path: `user/${userId}`,
+          details: { ...removeId, ...contactNo },
+        });
 
-      cookie.remove("customerDetail");
-      setTimeout(() => {
-        navigate("/journey/incomeDetail");
-      }, 4000);
+        // cookie.remove("customerDetail");
+        // setTimeout(() => {
+        //   navigate("/journey/incomeDetail");
+        // }, 4000);
 
-      const functionThatReturnPromise = () =>
-        new Promise((resolve) => setTimeout(resolve, 3000));
-      toast.promise(functionThatReturnPromise, {
-        pending: "Registering User",
-        success: `${registerUser.message}`,
-        error: "Something is wrong !",
-      });
-      localStorage.setItem("token", registerUser.token);
+        const functionThatReturnPromise = () =>
+          new Promise((resolve) => setTimeout(resolve, 3000));
+        toast.promise(functionThatReturnPromise, {
+          pending: "Updating User",
+          success: `${registerUser.message}`,
+          error: "Something is wrong !",
+        });
+        // localStorage.setItem("token", registerUser.token);
+        cookie.remove("contactNo");
+        cookie.remove("customerDetail");
+      } else {
+        const registerUser = await userService.registerUser({
+          path: "user",
+          details: { ...customerCookie, ...data, ...contactNo },
+          headerData: { ...loanId },
+        });
+
+        cookie.remove("customerDetail");
+        setTimeout(() => {
+          navigate("/journey/incomeDetail");
+        }, 4000);
+
+        const functionThatReturnPromise = () =>
+          new Promise((resolve) => setTimeout(resolve, 3000));
+        toast.promise(functionThatReturnPromise, {
+          pending: "Registering User",
+          success: `${registerUser.message}`,
+          error: "Something is wrong !",
+        });
+        localStorage.setItem("token", registerUser.token);
+        cookie.remove("contactNo");
+        cookie.remove("customerDetail");
+      }
     } catch (error) {
       toast.error(error.message, {
         closeOnClick: true,

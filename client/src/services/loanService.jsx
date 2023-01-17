@@ -1,8 +1,8 @@
 import axios from "axios";
-let headers = {
-  "Content-type": "Application/json",
-  Authorization: "Bearer",
-};
+// let headers = {
+//   "Content-type": "Application/json",
+//   Authorization: "Bearer",
+// };
 
 class loanService {
   applyLoan = async (data) => {
@@ -10,7 +10,11 @@ class loanService {
       let output = await axios.post(
         `${process.env.REACT_APP_HOST_URL}${data.path}`,
         data.details.loanData,
-        { headers }
+        {
+          headers: {
+            Authorization: data.headerData,
+          },
+        }
       );
       return output.data;
     } catch (error) {
@@ -35,7 +39,6 @@ class loanService {
   };
 
   getLoanbyId = async (data) => {
-    console.log(data);
     try {
       const output = await axios.get(
         `${process.env.REACT_APP_HOST_URL}${data.path}`,
@@ -45,7 +48,6 @@ class loanService {
           },
         }
       );
-      console.log(output.data);
       return output.data;
     } catch (error) {
       return error.response;

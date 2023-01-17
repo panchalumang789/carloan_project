@@ -22,7 +22,7 @@ const loanTable = sequalize.define("loans", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  ballon: {
+  balloon: {
     type: DataTypes.INTEGER,
   },
   user_status: {

@@ -9,7 +9,7 @@ loanRoutes.get(
   authorization.verifyToken,
   loanController.getLoan,
   (req, res) => {
-    res.status(200).send(res.locals.loans);
+    res.status(200).json({ loan: res.locals.loans, user: res.locals.user });
   }
 );
 

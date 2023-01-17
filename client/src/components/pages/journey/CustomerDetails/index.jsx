@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import customerService from "services/customerServices";
 import { ToastContainer } from "react-toastify";
@@ -11,9 +11,24 @@ import { useNavigate } from "react-router-dom";
 
 const CustomerDetails = () => {
   const userService = new customerService();
-  const cookie = new Cookies();
   const navigate = useNavigate();
   const [States, setStates] = useState([]);
+  const cookie = new Cookies();
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      (async () => {
+        const findUser = await userService.verifyToken({
+          path: "user/verify",
+          headerData: localStorage.getItem("token"),
+        });
+        cookie.set("customerData", findUser);
+      })();
+    }
+
+    return () => {};
+    //eslint-disable-next-line
+  }, [cookie]);
 
   // const [customerData, setCustomerData] = useState({});
   const getUser = async () => {
@@ -39,9 +54,10 @@ const CustomerDetails = () => {
     formState: { errors },
   } = useForm({
     mode: "all",
-    defaultValues: cookie.get("customerDetail"),
+    defaultValues: cookie.get("customerData"),
   });
   const getCustomerDetails = (data) => {
+    console.log(data);
     cookie.set("customerDetail", data);
     navigate("/journey/licenseName");
   };
@@ -130,7 +146,16 @@ const CustomerDetails = () => {
                     className={inputClasses + " w-full"}
                     {...register("firstName", {
                       required: "Please enter firstname!",
-                      pattern: "",
+                      minLength: {
+                        value: 2,
+                        message:
+                          "Firstname should be atleast 2 characters long!",
+                      },
+                      maxLength: {
+                        value: 20,
+                        message:
+                          "Firstname should be less than 20 characters length!",
+                      },
                     })}
                   />
                   {errors.firstName && (
@@ -152,6 +177,15 @@ const CustomerDetails = () => {
                   className={inputClasses}
                   {...register("lastName", {
                     required: "Please enter lastname!",
+                    minLength: {
+                      value: 2,
+                      message: "Lastname should be atleast 2 characters long!",
+                    },
+                    maxLength: {
+                      value: 20,
+                      message:
+                        "Lastname should be less than 20 characters length!",
+                    },
                   })}
                 />
                 {errors.lastName && (
@@ -191,7 +225,7 @@ const CustomerDetails = () => {
               </div>
               <div className="flex text-md flex-col">
                 <label htmlFor="state" className="px-1">
-                  State <span className="text-red-500">*</span> 
+                  State <span className="text-red-500">*</span>
                 </label>
                 <select
                   id="state"

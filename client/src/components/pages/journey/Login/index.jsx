@@ -19,8 +19,8 @@ const LoginDetails = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: "all" });
-
+  } = useForm({ mode: "all", defaultValues: cookie.get("contactNo") });
+  console.log(cookie.get("contactNo"));
   const sendOTP = async (contactNo) => {
     const result = await loginService.sendOTP({
       path: "login",
@@ -50,8 +50,8 @@ const LoginDetails = () => {
 
   const getMobile = (data) => {
     setLoading(true);
-    cookie.set("contactNo", { contactNo: data.mobile });
-    sendOTP(data.mobile);
+    cookie.set("contactNo", { contactNo: data.contactNo });
+    sendOTP(data.contactNo);
   };
   return (
     <motion.div
@@ -106,7 +106,7 @@ const LoginDetails = () => {
                   autoFocus
                   placeholder="9876543210"
                   className={inputClasses + " pl-12"}
-                  {...register("mobile", {
+                  {...register("contactNo", {
                     required: "Please enter your contact no !",
                     minLength: {
                       value: 10,
@@ -118,9 +118,9 @@ const LoginDetails = () => {
                     },
                   })}
                 />
-                {errors.mobile && (
+                {errors.contactNo && (
                   <span className="text-red-500 pt-1 px-1 text-sm">
-                    {errors.mobile?.message}
+                    {errors.contactNo?.message}
                   </span>
                 )}
               </div>

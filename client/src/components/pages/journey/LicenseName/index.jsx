@@ -13,9 +13,12 @@ const LicenseName = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: "all" });
+  } = useForm({ mode: "all", defaultValues: cookie.get("customerData") });
+
   const licenseDetail = (data) => {
+    console.log(data);
     let customerCookie = cookie.get("customerDetail");
+    console.log(customerCookie);
     cookie.remove("customerDetail");
     cookie.set("customerDetail", { ...customerCookie, ...data });
     navigate("/journey/licenseDetail");
@@ -67,6 +70,15 @@ const LicenseName = () => {
                 autoComplete="off"
                 {...register("licenseFirstName", {
                   required: "Please enter license holder's firstname!",
+                  minLength: {
+                    value: 2,
+                    message: "Firstname should be atleast 2 characters long!",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message:
+                      "Firstname should be less than 20 characters length!",
+                  },
                 })}
               />
               {errors.licenseFirstName && (
@@ -88,6 +100,15 @@ const LicenseName = () => {
                 autoComplete="off"
                 {...register("licenseLastName", {
                   required: "Please enter license holder's lastname!",
+                  minLength: {
+                    value: 2,
+                    message: "Lastname should be atleast 2 characters long!",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message:
+                      "Lastname should be less than 20 characters length!",
+                  },
                 })}
               />
               {errors.licenseLastName && (
