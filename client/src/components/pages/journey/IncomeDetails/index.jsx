@@ -13,13 +13,16 @@ const IncomeDetails = () => {
   const [additional_income, setadditional_income] = useState(true);
   const cookie = new Cookies();
   const navigate = useNavigate();
+  const [called, setCalled] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "all" });
+
   const incomeDetails = async (data) => {
-    console.log(data);
+    if (called) return;
+    setCalled(true);
     let loanId = cookie.get("loanDetail");
     try {
       const addIncome = await incomeService.addIncome({
@@ -30,9 +33,9 @@ const IncomeDetails = () => {
       console.log(addIncome);
       setTimeout(() => {
         navigate("/journey/expensesDetail");
-      }, 4000);
+      }, 2500);
       const functionThatReturnPromise = () =>
-        new Promise((resolve) => setTimeout(resolve, 3000));
+        new Promise((resolve) => setTimeout(resolve, 1500));
       toast.promise(functionThatReturnPromise, {
         pending: "Storing Additional Incomes",
         success: `${addIncome.message}`,

@@ -149,11 +149,13 @@ const createUser = async (req, res, next) => {
     if (error) {
       next({ error: { status: 400, message: error.message } });
     }
+    console.log(req.headers);
+    console.log(req.body);
     let addUser = await userTable.build(req.body).save();
-    if (req.params.loanid && req.params.loanid !== "") {
+    if (req.headers.loanid && req.headers.loanid !== "") {
       await loanTable.update(
         { userId: addUser.id },
-        { where: { id: req.params.loanid } }
+        { where: { id: req.headers.loanid } }
       );
     }
     res.locals.user = {
@@ -173,6 +175,8 @@ const createUser = async (req, res, next) => {
  * @param {*} res add new user details
  */
 const updateUser = async (req, res, next) => {
+  console.log(req.body);
+  console.log(req.params);
   try {
     const { error } = userValidation.validate(req.body);
     if (error) {
@@ -186,46 +190,32 @@ const updateUser = async (req, res, next) => {
     if (countUser === 0) {
       next({ error: { status: 500, message: "User not found." } });
     } else {
-      userTable
-        .update(
-          { ...req.body },
-          {
-            where: {
-              id: req.params.id,
-            },
-          }
-        )
-        .then((result) => {
-          let token = jwt.sign(
-            {
-              contactNo: req.body.contactNo,
-              firstName: req.body.firstName,
-              lastName: req.body.lastName,
-              email: req.body.email,
-            },
-            process.env.JWT_SECRET_KEY
-          );
-          console.log("req.bod", token);
+      let updateUser = await userTable.update(
+        { ...req.body },
+        { where: { id: req.params.id } }
+      );
 
-          res.locals.user = {
-            message: `${req.body.firstName} ${req.body.lastName} updated successfully.`,
-            token: token,
-          };
-          next();
-        })
-        .catch((error) => {
-          if (error.errors)
-            next({
-              error: { status: 500, message: error.errors[0].message },
-            });
-          else next({ error: { status: 500, message: error } });
-        });
+      if (!updateUser) {
+        next({ error: { status: 500, message: "Something is wrong!" } });
+      }
+      credential = {
+        role: "User",
+        contactNo: req.body.contactNo,
+        email: req.body.email,
+      };
+      let token = jwt.sign(credential, process.env.JWT_SECRET_KEY);
+      res.locals.user = {
+        message: `${req.body.firstName} ${req.body.lastName} updated successfully.`,
+        token: token,
+      };
+      next();
     }
   } catch (error) {
-    console.log(error);
-    if (error.errors)
+    if (error.errors) {
       next({ error: { status: 500, message: error.errors[0].message } });
-    else next({ error: { status: 500, message: error.original.detail } });
+    } else {
+      next({ error: { status: 500, message: error.original } });
+    }
   }
 };
 

@@ -29,9 +29,9 @@ const LoginDetails = () => {
     if (result.message && result.verification) {
       setTimeout(() => {
         navigate("/journey/verifyOTP");
-      }, 6000);
+      }, 3500);
       const functionThatReturnPromise = () =>
-        new Promise((resolve) => setTimeout(resolve, 3000));
+        new Promise((resolve) => setTimeout(resolve, 2500));
       toast.promise(functionThatReturnPromise, {
         pending: "Sending OTP",
         success: `${result.message} Verification: ${result.verification}`,
@@ -66,7 +66,8 @@ const LoginDetails = () => {
     >
       {Loading && (
         <div className="h-screen w-screen flex justify-center items-center mx-auto bg-transparent/30 dark:bg-transparent/60 fixed">
-          <LoadingPage stroke={"#A3BEBE"} wheel={"#023641"} />
+          <LoadingPage stroke={"#023641"} wheel={"#ffffff"} />
+          {/* <LoadingPage stroke={"#A3BEBE"} wheel={"#023641"} /> */}
         </div>
       )}
       <ToastContainer />

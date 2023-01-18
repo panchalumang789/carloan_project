@@ -39,26 +39,12 @@ const VerifyOTP = () => {
       });
       if (result.message === "approved") {
         toast.success(`OTP: ${result.message}`);
-
-        try {
-          const findUser = await userService.verifyUser({
-            path: `verifyUser`,
-            details: cookie.get("contactNo"),
-          });
-          localStorage.setItem("token", findUser.message);
-          setTimeout(() => {
-            navigate("/dashboard");
-          }, 2000);
-          cookie.remove("contactNo");
-        } catch (error) {
-          toast.error(error.message, {
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+        if (result.token) {
+          localStorage.setItem("token", result.token);
         }
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2000);
       } else {
         setLoading(false);
         toast.error("Invalid OTP !", {

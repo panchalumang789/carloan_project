@@ -17,11 +17,21 @@ const LicenseDetails = () => {
   const cookie = new Cookies();
   const navigate = useNavigate();
   const userService = new customerService();
+  let cookieData =
+    cookie.get("customerData") || cookie.get("customerDetail") || "";
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: "all", defaultValues: cookie.get("customerData") });
+  } = useForm({
+    mode: "all",
+    defaultValues: {
+      licenceNumber: cookieData.licenceNumber,
+      licenceExpireDate: cookieData.licenceExpireDate,
+      licenceType: cookieData.licenceType,
+      licenceIssueState: cookieData.licenceIssueState,
+    },
+  });
 
   const [States, setStates] = useState([]);
   const getStates = async () => {
@@ -36,35 +46,35 @@ const LicenseDetails = () => {
 
   const licenseDetail = async (data) => {
     let customerCookie = cookie.get("customerDetail");
-    let userId = customerCookie.id;
-    const removeId = customerCookie;
-    delete removeId["id"];
-    delete removeId["createdAt"];
-    delete removeId["updatedAt"];
+    console.log(cookie.get("customerDetail"));
+
     let contactNo = cookie.get("contactNo");
     let loanId = cookie.get("loanDetail");
+
     try {
-      if (localStorage.getItem("token")) {
+      if (localStorage.getItem("token") || cookie.get('') ) {
+        let userId = cookieData.id;
+
         const registerUser = await userService.updateUser({
           path: `user/${userId}`,
-          details: { ...removeId, ...contactNo },
+          details: { ...customerCookie, ...data, ...contactNo },
         });
 
-        // cookie.remove("customerDetail");
-        // setTimeout(() => {
-        //   navigate("/journey/incomeDetail");
-        // }, 4000);
-
-        const functionThatReturnPromise = () =>
-          new Promise((resolve) => setTimeout(resolve, 3000));
-        toast.promise(functionThatReturnPromise, {
-          pending: "Updating User",
-          success: `${registerUser.message}`,
-          error: "Something is wrong !",
-        });
-        // localStorage.setItem("token", registerUser.token);
+        localStorage.setItem("token", registerUser.token);
         cookie.remove("contactNo");
         cookie.remove("customerDetail");
+        cookie.remove("customerData");
+        setTimeout(() => {
+          navigate("/journey/incomeDetail");
+        }, 3000);
+
+        const functionThatReturnPromise = () =>
+          new Promise((resolve) => setTimeout(resolve, 2000));
+        toast.promise(functionThatReturnPromise, {
+          pending: "Updating User",
+          success: "Profile updated successfully.",
+          error: "Something is wrong !",
+        });
       } else {
         const registerUser = await userService.registerUser({
           path: "user",
@@ -75,10 +85,10 @@ const LicenseDetails = () => {
         cookie.remove("customerDetail");
         setTimeout(() => {
           navigate("/journey/incomeDetail");
-        }, 4000);
+        }, 3000);
 
         const functionThatReturnPromise = () =>
-          new Promise((resolve) => setTimeout(resolve, 3000));
+          new Promise((resolve) => setTimeout(resolve, 2000));
         toast.promise(functionThatReturnPromise, {
           pending: "Registering User",
           success: `${registerUser.message}`,

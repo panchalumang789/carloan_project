@@ -31,7 +31,7 @@ const getCarmodel = async (req, res, next) => {
   carTable
     .findAll({
       where: {
-        make: req.params.maker,
+        make: req.query.maker,
       },
       attributes: ["model"],
       order: ["model"],
@@ -58,7 +58,7 @@ const getCars = async (req, res, next) => {
     .findAll({
       where: {
         make: req.params.maker,
-        model: req.params.model,
+        model: req.query.model,
       },
     })
     .then((result) => {

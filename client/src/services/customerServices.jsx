@@ -29,7 +29,7 @@ class customerService {
   verifyOTP = async (data) => {
     try {
       const output = await axios.post(
-        `${process.env.REACT_APP_HOST_URL}${data.path}`,
+        `${process.env.REACT_APP_HOST_URL}verify`,
         data.details,
         { headers }
       );
@@ -56,8 +56,13 @@ class customerService {
   registerUser = async (data) => {
     try {
       const output = await axios.post(
-        `${process.env.REACT_APP_HOST_URL}${data.path}/${data.headerData.loanId}`,
-        data.details
+        `${process.env.REACT_APP_HOST_URL}${data.path}`,
+        data.details,
+        {
+          headers: {
+            loanid: data.headerData.loanId,
+          },
+        }
       );
       return output.data;
     } catch (error) {

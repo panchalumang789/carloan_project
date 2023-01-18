@@ -7,7 +7,7 @@ import Footer from "./Footer";
 const LandingPage = () => {
   return (
     <div className="bg-primary-color-5 font-medium dark:bg-primary-color-1 h-screen grid place-items-center transition-all duration-500">
-      <div className="fixed h-16 text-primary-color-1 dark:text-primary-color-5 flex justify-center items-center xl:ml-44 top-0 left-0">
+      {/* <div className="fixed h-16 text-primary-color-1 dark:text-primary-color-5 flex justify-center items-center xl:ml-44 top-0 left-0">
         <div className="flex items-center">
           <div className="flex flex-col items-end">
             <p className="text-2xl leading-6 tracking-wider">C</p>
@@ -19,7 +19,7 @@ const LandingPage = () => {
             <p className="text-2xl leading-6 tracking-wider">NS</p>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="flex max-w-screen-xl justify-between w-full">
         <div className="w-5/6 lg:w-1/2 flex flex-col gap-y-6 lg:px-24 text-primary-color-1 dark:text-primary-color-5 tracking-wider">
           <p className="text-6xl font-semibold">

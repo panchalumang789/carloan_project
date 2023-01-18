@@ -9,11 +9,24 @@ import { FormTitle, Navigator, inputClasses } from "../extra/Widget";
 const LicenseName = () => {
   const cookie = new Cookies();
   const navigate = useNavigate();
+  let cookieData;
+  if (cookie.get("customerDetail").licenseFirstName) {
+    cookieData = cookie.get("customerDetail") || "";
+  } else {
+    cookieData = cookie.get("customerData") || "";
+  }
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: "all", defaultValues: cookie.get("customerData") });
+  } = useForm({
+    mode: "all",
+    defaultValues: {
+      licenseFirstName: cookieData.licenseFirstName,
+      licenseLastName: cookieData.licenseLastName,
+      licenseIssueDate: cookieData.licenseIssueDate,
+    },
+  });
 
   const licenseDetail = (data) => {
     console.log(data);

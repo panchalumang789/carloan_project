@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Typewriter from "typewriter-effect";
 import { useNavigate } from "react-router-dom";
@@ -12,12 +12,15 @@ const ExpensesDetails = () => {
   let expensesService = new customerService();
   const cookie = new Cookies();
   const navigate = useNavigate();
+  const [called, setCalled] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "all" });
   const expensesDetails = async (data) => {
+    if (called) return;
+    setCalled(true);
     let loanId = cookie.get("loanDetail");
     try {
       const addExpenses = await expensesService.addExpenses({

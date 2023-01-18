@@ -39,8 +39,9 @@ class loanService {
   };
 
   getLoanbyId = async (data) => {
+    let output, error;
     try {
-      const output = await axios.get(
+      const loanData = await axios.get(
         `${process.env.REACT_APP_HOST_URL}${data.path}`,
         {
           headers: {
@@ -48,10 +49,11 @@ class loanService {
           },
         }
       );
-      return output.data;
-    } catch (error) {
-      return error.response;
+      output = loanData.data;
+    } catch (err) {
+      error = err.response;
     }
+    return { output, error };
   };
 }
 export default loanService;

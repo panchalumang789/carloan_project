@@ -44,7 +44,7 @@ userRoutes.get(
 );
 
 userRoutes.post(
-  "/user/:loanid",
+  "/user",
   authorization.generateToken("User"),
   userController.createUser,
   (req, res) => {

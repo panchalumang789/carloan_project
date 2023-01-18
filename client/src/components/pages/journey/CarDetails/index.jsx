@@ -9,11 +9,6 @@ import { FormTitle, Navigator, selectClasses } from "../extra/Widget";
 
 const CarDetails = () => {
   const cookie = new Cookies();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ mode: "all" });
   const navigate = useNavigate();
 
   const [carDetail, setCarDetail] = useState({
@@ -33,6 +28,23 @@ const CarDetails = () => {
       setMaker(getCarMakers);
     }
     fetchdata();
+    if (cookie.get("carDetails")) {
+      (async () => {
+        setValue("Make", cookie.get("carDetails").make);
+        setCarDetail({ ...carDetail, Make: cookie.get("carDetails").make });
+        // const getCarModel = await carService.getCarModel(
+        //   cookie.get("carDetails").make
+        // );
+        // setCarDetail({ Make: cookie.get("carDetails").make });
+        // setModel(getCarModel);
+        // const getCars = await carService.getCarDetails(
+        //   cookie.get("carDetails").make,
+        //   cookie.get("carDetails").model
+        // );
+        // setCars(getCars);
+        // setValue("carId", cookie.get("carDetails").id);
+      })();
+    }
     // eslint-disable-next-line
   }, []);
 
@@ -50,6 +62,13 @@ const CarDetails = () => {
     );
     setCars(getCars);
   };
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({ mode: "all" });
 
   const getCar = async (data) => {
     cars.map((car) => {
@@ -93,14 +112,13 @@ const CarDetails = () => {
               <FormTitle formTitle={"Car Details"} />
               <div className="flex flex-col gap-y-5">
                 <div className="flex flex-col">
-                  <label htmlFor="maker" className="px-1">
+                  <label htmlFor="make" className="px-1">
                     Car make <span className="text-red-500">*</span>
                   </label>
                   <select
-                    name="maker"
-                    id="maker"
+                    name="make"
+                    id="make"
                     autoFocus
-                    defaultValue={cookie.get("carDetail") || ""}
                     className={selectClasses}
                     onClick={getMaker}
                     {...register("make", {

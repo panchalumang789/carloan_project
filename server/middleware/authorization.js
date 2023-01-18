@@ -102,6 +102,20 @@ const verifyOTP = async (req, res, next) => {
     if (!req.body && req.body.ContactNo === "") {
       next({ error: { status: 400, message: "Invalid parameter!" } });
     } else if (req.body.code === "7777") {
+      const findUser = await userTable.findOne({
+        where: { contactNo: req.body.ContactNo },
+      });
+      if (findUser) {
+        res.locals.users = findUser;
+        credential = {
+          role: "User",
+          contactNo: findUser.contactNo,
+          email: findUser.email,
+        };
+        let token = jwt.sign(credential, process.env.JWT_SECRET_KEY);
+        res.locals.token = token;
+      }
+      res.locals.response = verifyOTP.status;
       res.locals.response = "approved";
       next();
     } else {
@@ -119,6 +133,19 @@ const verifyOTP = async (req, res, next) => {
           },
         });
       } else {
+        const findUser = await userTable.findOne({
+          where: { contactNo: req.body.ContactNo },
+        });
+        if (findUser) {
+          res.locals.users = findUser;
+          credential = {
+            role: "User",
+            contactNo: findUser.contactNo,
+            email: findUser.email,
+          };
+          let token = jwt.sign(credential, process.env.JWT_SECRET_KEY);
+          res.locals.token = token;
+        }
         res.locals.response = verifyOTP.status;
         next();
       }

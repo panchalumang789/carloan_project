@@ -11,7 +11,9 @@ router.post("/login", authorization.sendOTP, async (req, res) => {
 });
 
 router.post("/verify", authorization.verifyOTP, async (req, res) => {
-  res.status(200).json({ message: res.locals.response });
+  res
+    .status(200)
+    .json({ message: res.locals.response, token: res.locals.token });
 });
 
 router.post(

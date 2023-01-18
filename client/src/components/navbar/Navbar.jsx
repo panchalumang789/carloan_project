@@ -25,8 +25,23 @@ const Navbar = () => {
   };
   return (
     <div>
-      <div className="h-16 w-screen fixed z-20">
-        <div className="fixed top-5 right-8 max-w-screen-sm md:top-1 md:right-16 p-2 z-20">
+      <div>
+        <div className="fixed left-1/2 -translate-x-1/2 max-w-screen-2xl h-16 w-full z-20 flex justify-center px-16">
+          <div className="flex w-full">
+            <div className="font-medium overflow-hidden h-16 text-primary-color-1 dark:text-primary-color-7 flex justify-center items-center top-2 left-0">
+              <div className="flex items-center">
+                <div className="flex flex-col items-end">
+                  <p className="text-2xl leading-6 tracking-wider">C</p>
+                  <p className="text-2xl leading-6 tracking-wider">LO</p>
+                </div>
+                <p className="text-6xl">A</p>
+                <div className="flex flex-col">
+                  <p className="text-2xl leading-6 tracking-wider">R</p>
+                  <p className="text-2xl leading-6 tracking-wider">NS</p>
+                </div>
+              </div>
+            </div>
+          </div>
           <button onClick={toggleNav}>
             <div className="flex flex-col">
               <span

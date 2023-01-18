@@ -37,12 +37,14 @@ const VerifyOTP = () => {
         called = true;
         setLoading(true);
         let result = await verifyService.verifyOTP({
-          path: "verify",
           details: {
             ContactNo: cookie.get("contactNo").contactNo,
             code: OTP.join(""),
           },
         });
+        if (result.token) {
+          localStorage.setItem("token", result.token);
+        }
         if (result.message === "approved") {
           toast.success(`OTP: ${result.message}`);
           let token = "";
@@ -59,6 +61,7 @@ const VerifyOTP = () => {
             })
             .then((loanResult) => {
               cookie.remove("leadDetails");
+              cookie.remove("loanDetail");
               cookie.set("loanDetail", { loanId: loanResult.loanId });
               const functionThatReturnPromise = () =>
                 new Promise((resolve) => setTimeout(resolve, 3000)).then(() => {

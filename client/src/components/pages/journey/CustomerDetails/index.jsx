@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import customerService from "services/customerServices";
 import { ToastContainer } from "react-toastify";
@@ -16,62 +16,72 @@ const CustomerDetails = () => {
   const cookie = new Cookies();
 
   useEffect(() => {
+    (async () => {
+      const result = await userService.getState({ data: { url: "states" } });
+      setStates(result);
+    })();
+    //eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
     if (localStorage.getItem("token")) {
       (async () => {
         const findUser = await userService.verifyToken({
           path: "user/verify",
           headerData: localStorage.getItem("token"),
         });
+        const preData = cookie.get("customerDetail");
         cookie.set("customerData", findUser);
+        setValue("prefix", preData ? preData.prefix : findUser.prefix);
+        setValue("firstName", preData ? preData.firstName : findUser.firstName);
+        setValue("lastName", preData ? preData.lastName : findUser.lastName);
+        setValue("email", preData ? preData.email : findUser.email);
+        setValue("state", preData ? preData.state : findUser.state);
+      })();
+    }
+    if (cookie.get("contactNo")) {
+      (async () => {
+        const result = await userService.findUserbyContact({
+          path: `user/mobile`,
+          details: cookie.get("contactNo"),
+        });
+        const preData = cookie.get("customerDetail");
+        cookie.set("customerData", result);
+        setValue("prefix", preData ? preData.prefix : result.prefix);
+        setValue("firstName", preData ? preData.firstName : result.firstName);
+        setValue("lastName", preData ? preData.lastName : result.lastName);
+        setValue("email", preData ? preData.email : result.email);
+        setValue("state", preData ? preData.state : result.state);
       })();
     }
 
     return () => {};
     //eslint-disable-next-line
-  }, [cookie]);
+  }, []);
 
-  // const [customerData, setCustomerData] = useState({});
-  const getUser = async () => {
-    if (cookie.get("contactNo")) {
-      const result = await userService.findUserbyContact({
-        path: `user/mobile`,
-        details: cookie.get("contactNo"),
-      });
-      if (result.status === 200) {
-        console.log(result);
-        setValue("prefix", result.prefix);
-        setValue("firstName", result.firstName);
-        setValue("lastName", result.lastName);
-        setValue("email", result.email);
-        setValue("state", result.state);
-      }
-    }
-  };
+  const cookieData = [cookie.get("customerDetail") || ""];
+
   const {
     register,
-    handleSubmit,
     setValue,
+    handleSubmit,
     formState: { errors },
   } = useForm({
     mode: "all",
-    defaultValues: cookie.get("customerData"),
+    defaultValues: {
+      prefix: cookieData.prefix,
+      firstName: cookieData.firstName,
+      lastName: cookieData.lastName,
+      email: cookieData.email,
+      state: cookieData.state,
+    },
   });
   const getCustomerDetails = (data) => {
-    console.log(data);
-    cookie.set("customerDetail", data);
+    let cookieData = cookie.get("customerDetail");
+    cookie.set("customerDetail", { ...cookieData, ...data });
     navigate("/journey/licenseName");
   };
 
-  useMemo(() => {
-    const getStates = async () => {
-      const result = await userService.getState({ data: { url: "states" } });
-      setStates(result);
-    };
-    getStates();
-    getUser();
-    return () => {};
-    //eslint-disable-next-line
-  }, []);
   return (
     <motion.div
       initial={{ opacity: 0, width: 0 }}
