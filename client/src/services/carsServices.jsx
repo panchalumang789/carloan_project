@@ -21,8 +21,6 @@ class carsService {
   };
 
   getCarDetails = async (make, model) => {
-    console.log(make);
-    console.log(model);
     let output = await axios.get(
       `${process.env.REACT_APP_HOST_URL}cars/${make}/?model=${model}`,
       { headers }

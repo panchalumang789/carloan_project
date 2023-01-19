@@ -2,85 +2,73 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import carsService from "services/carsServices";
+// import carsService from "services/carsServices";
 import Typewriter from "typewriter-effect";
 import Cookies from "universal-cookie";
-import { FormTitle, Navigator, selectClasses } from "../extra/Widget";
+import CarMaker from "./CarMaker";
+import CarModel from "./CarModel";
+import CarModelType from "./CarModelType";
+import { FormTitle, Navigator } from "../extra/Widget";
 
 const CarDetails = () => {
   const cookie = new Cookies();
   const navigate = useNavigate();
-
-  const [carDetail, setCarDetail] = useState({
+  const [Car, setCar] = useState({});
+  const [CarDetail, setCarDetail] = useState({});
+  const [CarDetails, setCarDetails] = useState({
     Make: "",
     Model: "",
-    Year: "",
-    "Model-type": "",
+    Model_type: "",
   });
-  const [Maker, setMaker] = useState([]);
-  const [Model, setModel] = useState([]);
-  const [cars, setCars] = useState([]);
-
-  const carService = new carsService();
-  useEffect(() => {
-    async function fetchdata() {
-      const getCarMakers = await carService.getCarMaker();
-      setMaker(getCarMakers);
-    }
-    fetchdata();
-    if (cookie.get("carDetails")) {
-      (async () => {
-        setValue("Make", cookie.get("carDetails").make);
-        setCarDetail({ ...carDetail, Make: cookie.get("carDetails").make });
-        // const getCarModel = await carService.getCarModel(
-        //   cookie.get("carDetails").make
-        // );
-        // setCarDetail({ Make: cookie.get("carDetails").make });
-        // setModel(getCarModel);
-        // const getCars = await carService.getCarDetails(
-        //   cookie.get("carDetails").make,
-        //   cookie.get("carDetails").model
-        // );
-        // setCars(getCars);
-        // setValue("carId", cookie.get("carDetails").id);
-      })();
-    }
-    // eslint-disable-next-line
-  }, []);
-
-  const getMaker = async (e) => {
-    setCarDetail({ ...carDetail, Make: e.target.value });
-    const getCarModel = await carService.getCarModel(e.target.value);
-    setModel(getCarModel);
-  };
-
-  const getModel = async (e) => {
-    setCarDetail({ ...carDetail, Model: e.target.value });
-    const getCars = await carService.getCarDetails(
-      carDetail.Make,
-      e.target.value
-    );
-    setCars(getCars);
-  };
-
+  // const carService = new carsService();
   const {
     register,
     handleSubmit,
+    watch,
     setValue,
+    getValues,
     formState: { errors },
-  } = useForm({ mode: "all" });
+  } = useForm({
+    mode: "all",
+  });
+  watch("make");
+
+  useEffect(() => {
+    if (cookie.get("carDetails")) {
+      const cookieData = cookie.get("carDetails");
+      setCarDetail(cookieData);
+      console.log(CarDetail);
+    }
+    return () => {};
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (Object.keys(CarDetail).length > 0) {
+      setCarDetails({
+        Make: CarDetail.make,
+        Model: CarDetail.model,
+        Model_type: CarDetail.id,
+      });
+      setValue("make", CarDetail.make);
+      setValue("model", CarDetail.model);
+      setValue("getCar", CarDetail.id);
+    }
+    return () => {};
+    // eslint-disable-next-line
+  }, [CarDetail]);
 
   const getCar = async (data) => {
-    cars.map((car) => {
-      if (car.id === parseInt(data.carId)) {
-        let leadCookie = cookie.get("leadDetails");
-        cookie.remove("leadDetails");
-        cookie.set("carDetails", car);
-        return cookie.set("leadDetails", { ...leadCookie, carId: car.id });
-      } else return false;
-    });
+    console.log("formdata", data);
+    if (Car.id) {
+      let leadCookie = cookie.get("leadDetails");
+      cookie.remove("leadDetails");
+      cookie.set("carDetails", Car);
+      cookie.set("leadDetails", { ...leadCookie, carId: Car.id });
+    }
     navigate("/journey/workDetail");
   };
+
   return (
     <motion.div
       initial={{ opacity: 0, width: 0 }}
@@ -111,59 +99,23 @@ const CarDetails = () => {
             <div className="flex flex-col gap-y-6">
               <FormTitle formTitle={"Car Details"} />
               <div className="flex flex-col gap-y-5">
-                <div className="flex flex-col">
-                  <label htmlFor="make" className="px-1">
-                    Car make <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    name="make"
-                    id="make"
-                    autoFocus
-                    className={selectClasses}
-                    onClick={getMaker}
-                    {...register("make", {
-                      required: "Please select car maker!",
-                    })}
-                  >
-                    <option value="" disabled>
-                      Select maker
-                    </option>
-                    {Maker.map((item) => {
-                      return (
-                        <option key={item.make} value={item.make}>
-                          {item.make}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  {errors.make && (
-                    <span className="text-red-500 pt-1 px-1 text-sm">
-                      {errors.make?.message}
-                    </span>
-                  )}
-                </div>
-                <div className="flex flex-col">
-                  <label htmlFor="model" className="px-1">
-                    Car model <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    name="model"
-                    id="model"
-                    className={selectClasses}
-                    onClick={getModel}
-                  >
-                    <option value="" className="opacity-50" disabled>
-                      Select model
-                    </option>
-                    {Model.map((item) => {
-                      return (
-                        <option key={item.model} value={item.model}>
-                          {item.model}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
+                <CarMaker
+                  register={register("make", {
+                    required: "Please select car maker!",
+                  })}
+                  error={errors.make}
+                  defaultValue={CarDetails.Make}
+                  getValue={getValues}
+                />
+                <CarModel
+                  maker={watch("make")}
+                  register={register("model", {
+                    required: "Please select car model!",
+                  })}
+                  error={errors.model}
+                  defaultValue={CarDetails.Model}
+                  getValue={getValues}
+                />
                 {/* <div className="flex flex-col">
                     <label htmlFor="prodution_year" className="px-1">Production Year</label>
                     <select name="prodution_year" id="prodution_year" className={selectClasses}>
@@ -175,40 +127,22 @@ const CarDetails = () => {
                       })}
                     </select>
                   </div> */}
-                <div className="flex flex-col">
-                  <label htmlFor="model_type" className="px-1">
-                    Car model type <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    name="model_type"
-                    id="model-type"
-                    className={selectClasses}
-                    {...register("carId", {
-                      required: "Please select model-type!",
-                    })}
-                  >
-                    <option value="" className="" disabled>
-                      Select model type
-                    </option>
-                    {cars.map((item) => {
-                      return (
-                        <option
-                          key={item.model_type}
-                          id={item.model_type}
-                          value={item.id}
-                        >
-                          {item.model_type}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  {errors.carId && (
-                    <span className="text-red-500 pt-1 px-1 text-sm">
-                      {errors.carId?.message}
-                    </span>
-                  )}
-                </div>
+                <CarModelType
+                  maker={watch("make")}
+                  model={watch("model")}
+                  register={register("carId", {
+                    required: "Please select model-type!",
+                  })}
+                  error={errors.carId}
+                  defaultValue={CarDetails.Model_type}
+                  selectedCar={(data) => {
+                    setCar(data);
+                  }}
+                  getValue={getValues}
+                />
               </div>
+              {JSON.stringify(CarDetails)}
+
               <Navigator prevForm={"/journey"} />
             </div>
           </form>

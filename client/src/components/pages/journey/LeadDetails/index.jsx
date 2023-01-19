@@ -174,11 +174,8 @@ const LeadDetail = () => {
                   <label htmlFor="balloon" className="px-1">
                     Balloon
                   </label>
-                  <div className="input-group-prepend">
-                    <span
-                      className="ml-96 my-1.5 fixed text-lg "
-                      id="basic-addon1"
-                    >
+                  <div className="relative ml-auto input-group-prepend">
+                    <span className="-ml-8 my-1.5 fixed text-lg" id="basic-addon1">
                       &#x25;
                     </span>
                   </div>

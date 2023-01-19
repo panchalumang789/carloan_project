@@ -45,10 +45,8 @@ class customerService {
         `${process.env.REACT_APP_HOST_URL}${data.path}/${data.details.contactNo}`,
         { headers }
       );
-      console.log(output.data);
       return output.data;
     } catch (error) {
-      console.log(error);
       return error.response;
     }
   };
@@ -71,7 +69,6 @@ class customerService {
   };
 
   updateUser = async (data) => {
-    console.log(data);
     try {
       const output = await axios.put(
         `${process.env.REACT_APP_HOST_URL}${data.path}`,
