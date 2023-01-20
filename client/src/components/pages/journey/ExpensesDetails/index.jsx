@@ -7,8 +7,11 @@ import Cookies from "universal-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import { FormTitle, Navigator, inputClasses } from "../extra/Widget";
 import customerService from "services/customerServices";
+import useProgress from "useProgress";
 
 const ExpensesDetails = () => {
+  const { setProgress } = useProgress();
+  setProgress("90%");
   let expensesService = new customerService();
   const cookie = new Cookies();
   const navigate = useNavigate();
@@ -28,6 +31,8 @@ const ExpensesDetails = () => {
         details: { ...data, ...loanId },
         headerData: localStorage.getItem("token"),
       });
+      cookie.remove("loanDetail");
+      cookie.remove("carDetails");
       setTimeout(() => {
         navigate(`/dashboard/loan/${loanId.loanId}`);
       }, 2500);
@@ -94,6 +99,7 @@ const ExpensesDetails = () => {
                 placeholder="Enter vehicle running cost"
                 className={inputClasses + " pl-10"}
                 {...register("vehicle_running_cost", {
+                  required: "Vehicle running cost should be greater than 0!",
                   min: {
                     value: 0,
                     message: "Vehicle running cost should be greater than 0!",
@@ -127,6 +133,7 @@ const ExpensesDetails = () => {
                 placeholder="Enter travel cost"
                 className={inputClasses + " pl-10"}
                 {...register("travel_cost", {
+                  required: "Travel cost should be greater than 0!",
                   min: {
                     value: 0,
                     message: "Travel cost should be greater than 0!",
@@ -164,6 +171,7 @@ const ExpensesDetails = () => {
                 placeholder="Enter utilities cost"
                 className={inputClasses + " pl-10"}
                 {...register("utilities_cost", {
+                  required: "Utilities cost should be greater than 0!",
                   min: {
                     value: 0,
                     message: "Utilities cost should be greater than 0!",
@@ -197,6 +205,7 @@ const ExpensesDetails = () => {
                 placeholder="Enter insurances amount"
                 className={inputClasses + " pl-10"}
                 {...register("insurance", {
+                  required: "Insurance cost should be greater than 0!",
                   min: {
                     value: 0,
                     message: "Insurance cost should be greater than 0!",
@@ -230,6 +239,8 @@ const ExpensesDetails = () => {
                 placeholder="Enter telephone and internet charges"
                 className={inputClasses + " pl-10"}
                 {...register("tel_internet", {
+                  required:
+                    "Telephone and Internet cost should be greater than 0!",
                   min: {
                     value: 0,
                     message:
@@ -264,6 +275,7 @@ const ExpensesDetails = () => {
                 placeholder="Enter entertainment cost"
                 className={inputClasses + " pl-10"}
                 {...register("entertainment", {
+                  required: "Entertainment cost should be greater than 0!",
                   min: {
                     value: 0,
                     message: "Entertainment cost should be greater than 0!",

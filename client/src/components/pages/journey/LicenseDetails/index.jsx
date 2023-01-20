@@ -12,8 +12,11 @@ import {
   inputClasses,
   selectClasses,
 } from "../extra/Widget";
+import useProgress from "useProgress";
 
 const LicenseDetails = () => {
+  const { setProgress } = useProgress();
+  setProgress("70%");
   const cookie = new Cookies();
   const navigate = useNavigate();
   const userService = new customerService();
@@ -52,7 +55,7 @@ const LicenseDetails = () => {
     let loanId = cookie.get("loanDetail");
 
     try {
-      if (localStorage.getItem("token") || cookie.get('') ) {
+      if (localStorage.getItem("token") || cookie.get("")) {
         let userId = cookieData.id;
 
         const registerUser = await userService.updateUser({
@@ -169,6 +172,7 @@ const LicenseDetails = () => {
               <input
                 id="license_expiry"
                 type="date"
+                min={new Date().toISOString().split("T")[0]}
                 className={inputClasses}
                 {...register("licenceExpireDate", {
                   required: "Please select license expiry date!",

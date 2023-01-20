@@ -9,8 +9,11 @@ import CarMaker from "./CarMaker";
 import CarModel from "./CarModel";
 import CarModelType from "./CarModelType";
 import { FormTitle, Navigator } from "../extra/Widget";
+import useProgress from "useProgress";
 
 const CarDetails = () => {
+  // const { setProgress } = useProgress();
+  // setProgress("10%");
   const cookie = new Cookies();
   const navigate = useNavigate();
   const [Car, setCar] = useState({});
@@ -50,21 +53,48 @@ const CarDetails = () => {
         Model: CarDetail.model,
         Model_type: CarDetail.id,
       });
-      setValue("make", CarDetail.make);
-      setValue("model", CarDetail.model);
-      setValue("getCar", CarDetail.id);
+      setValue("make", "" || CarDetail.make);
+      setValue("model", "" || CarDetail.model);
+      setValue("carId", "" || CarDetail.id);
     }
     return () => {};
     // eslint-disable-next-line
   }, [CarDetail]);
+
+  useEffect(() => {
+    if (
+      cookie.get("carDetails") &&
+      cookie.get("carDetails").make !== watch("make")
+    ) {
+      setCarDetails({ Model_type: "" });
+      setValue("model", "");
+      setValue("carId", "");
+    }
+    // eslint-disable-next-line
+  }, [watch("make")]);
+
+  useEffect(() => {
+    if (
+      cookie.get("carDetails") &&
+      cookie.get("carDetails").model !== watch("model")
+    ) {
+      setCarDetails({ Model_type: "" });
+      setValue("carId", "");
+    }
+    // eslint-disable-next-line
+  }, [watch("model")]);
 
   const getCar = async (data) => {
     console.log("formdata", data);
     if (Car.id) {
       let leadCookie = cookie.get("leadDetails");
       cookie.remove("leadDetails");
-      cookie.set("carDetails", Car);
-      cookie.set("leadDetails", { ...leadCookie, carId: Car.id });
+      cookie.set("carDetails", Car, { maxAge: 3600 });
+      cookie.set(
+        "leadDetails",
+        { ...leadCookie, carId: Car.id },
+        { maxAge: 3600 }
+      );
     }
     navigate("/journey/workDetail");
   };
@@ -141,8 +171,6 @@ const CarDetails = () => {
                   getValue={getValues}
                 />
               </div>
-              {JSON.stringify(CarDetails)}
-
               <Navigator prevForm={"/journey"} />
             </div>
           </form>

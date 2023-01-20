@@ -57,10 +57,6 @@ const userTable = sequalize.define("users", {
   },
   licenseIssueDate: {
     type: DataTypes.STRING,
-    validate: {
-      isAfter: "1980-01-01",
-      isBefore: "2024-01-01",
-    },
     allowNull: false,
   },
   licenceNumber: {
@@ -74,9 +70,6 @@ const userTable = sequalize.define("users", {
   },
   licenceExpireDate: {
     type: DataTypes.STRING,
-    validate: {
-      isAfter: "2023-01-01",
-    },
     allowNull: false,
   },
   licenceIssueState: {

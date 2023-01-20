@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import customerService from "services/customerServices";
 import LoadingPage from "components/pages/journey/extra/LoadingPage";
+import { inputClasses } from "components/pages/journey/extra/Widget";
 
 const Login = () => {
   const cookie = new Cookies();
@@ -49,7 +50,7 @@ const Login = () => {
 
   const getMobile = (data) => {
     setLoading(true);
-    cookie.set("contactNo", { contactNo: data.contactNo });
+    cookie.set("contactNo", { contactNo: data.contactNo },{maxAge:3600});
     sendOTP(data.contactNo);
   };
   return (
@@ -69,14 +70,22 @@ const Login = () => {
             <div className="flex flex-col gap-y-12">
               <div className="flex flex-col">
                 <label htmlFor="contact_no" className="px-1">
-                  Mobile
+                  Contact no. <span className="text-red-500">*</span>
                 </label>
+                <div className="input-group-prepend">
+                  <span
+                    className="ml-4 my-1.5 fixed text-lg "
+                    id="basic-addon1"
+                  >
+                    &#x1F4DE;
+                  </span>
+                </div>
                 <input
                   id="contact_no"
                   type="number"
                   autoFocus
-                  placeholder="Contact No"
-                  className="p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-60"
+                  placeholder="9876543210"
+                  className={inputClasses + " pl-12"}
                   {...register("contactNo", {
                     required: "Please enter your contact no !",
                     minLength: {

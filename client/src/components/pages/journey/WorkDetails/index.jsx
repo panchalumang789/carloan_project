@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Typewriter from "typewriter-effect";
 import Cookies from "universal-cookie";
+import useProgress from "useProgress";
 import {
   FormTitle,
   Navigator,
@@ -12,6 +13,8 @@ import {
 } from "../extra/Widget";
 
 const WorkDetails = () => {
+  const { setProgress } = useProgress();
+  setProgress("20%");
   const cookie = new Cookies();
   const navigate = useNavigate();
   const [workDetail] = useState(cookie.get("leadDetails"));
@@ -24,7 +27,7 @@ const WorkDetails = () => {
   const WorkDetails = (data) => {
     let leadCookie = cookie.get("leadDetails");
     cookie.remove("leadDetails");
-    cookie.set("leadDetails", { ...leadCookie, ...data });
+    cookie.set("leadDetails", { ...leadCookie, ...data }, { maxAge: 3600 });
     navigate("/journey/loginDetail");
   };
   return (

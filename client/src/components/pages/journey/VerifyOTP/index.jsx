@@ -8,8 +8,11 @@ import customerService from "services/customerServices";
 import loanService from "services/loanService";
 import Typewriter from "typewriter-effect";
 import LoadingPage from "../extra/LoadingPage";
+import useProgress from "useProgress";
 
 const VerifyOTP = () => {
+  const { setProgress } = useProgress();
+  setProgress("40%");
   const cookie = new Cookies();
   const loanServices = new loanService();
   const navigate = useNavigate();
@@ -62,7 +65,11 @@ const VerifyOTP = () => {
             .then((loanResult) => {
               cookie.remove("leadDetails");
               cookie.remove("loanDetail");
-              cookie.set("loanDetail", { loanId: loanResult.loanId });
+              cookie.set(
+                "loanDetail",
+                { loanId: loanResult.loanId },
+                { maxAge: 3600 }
+              );
               const functionThatReturnPromise = () =>
                 new Promise((resolve) => setTimeout(resolve, 3000)).then(() => {
                   setTimeout(() => {
@@ -114,8 +121,7 @@ const VerifyOTP = () => {
     >
       {Loading && (
         <div className="h-screen w-screen flex justify-center items-center mx-auto bg-transparent/30 dark:bg-transparent/60 fixed">
-          <LoadingPage stroke={"#023641"} wheel={"#ffffff"} />
-          {/* <LoadingPage stroke={"#A3BEBE"} wheel={"#023641"} /> */}
+          <LoadingPage stroke={"#e0f5f5"} wheel={"#A3BEBE"} />
         </div>
       )}
       <ToastContainer />

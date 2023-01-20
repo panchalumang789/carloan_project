@@ -1,30 +1,24 @@
-import { motion } from "framer-motion";
+import { motion, useDragControls } from "framer-motion";
 import React from "react";
 import { Link } from "react-router-dom";
 import LandingPageImage from "../../assest/images/LandingPage4.jpg";
 import Footer from "./Footer";
 
 const LandingPage = () => {
+  const controls = useDragControls();
   return (
     <div className="bg-primary-color-5 font-medium dark:bg-primary-color-1 h-screen grid place-items-center transition-all duration-500">
-      {/* <div className="fixed h-16 text-primary-color-1 dark:text-primary-color-5 flex justify-center items-center xl:ml-44 top-0 left-0">
-        <div className="flex items-center">
-          <div className="flex flex-col items-end">
-            <p className="text-2xl leading-6 tracking-wider">C</p>
-            <p className="text-2xl leading-6 tracking-wider">LO</p>
-          </div>
-          <p className="text-6xl">A</p>
-          <div className="flex flex-col">
-            <p className="text-2xl leading-6 tracking-wider">R</p>
-            <p className="text-2xl leading-6 tracking-wider">NS</p>
-          </div>
-        </div>
-      </div> */}
       <div className="flex max-w-screen-xl justify-between w-full">
         <div className="w-5/6 lg:w-1/2 flex flex-col gap-y-6 lg:px-24 text-primary-color-1 dark:text-primary-color-5 tracking-wider">
-          <p className="text-6xl font-semibold">
+          <motion.p
+            drag
+            dragControls={controls}
+            dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }}
+            dragElastic={0.3}
+            className="text-6xl font-semibold"
+          >
             Find the perfect loan for you..
-          </p>
+          </motion.p>
           <p className="text-xl">
             Find the cheapest loan in minutes then click to apply instantly.
             It's free and won't affect your credit score.

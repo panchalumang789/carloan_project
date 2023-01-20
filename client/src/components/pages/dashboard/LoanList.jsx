@@ -18,10 +18,10 @@ const LoanList = () => {
   }, []);
   return (
     <div className="p-4 lg:p-0 gap-y-3 flex h-[calc(100vh-122px)] flex-col lg:flex-row w-full gap-x-6">
-      <div className="w-full border-2 border-primary-color-1 rounded-md lg:w-1/5 p-3 text-primary-color-1 dark:text-primary-color-7">
+      <div className="w-full border-2 border-primary-color-1 dark:border-primary-color-7 rounded-md lg:w-1/5 p-3 text-primary-color-1 dark:text-primary-color-7">
         <Link
           to={"/journey"}
-          className="font-medium flex items-center justify-end gap-x-2 w-44 text-center p-3 mt-2 mb-4 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 bg-white/30 dark:border-primary-color-3 hover:bg-primary-color-3 hover:text-primary-color-7 transition-all duration-500"
+          className="font-medium flex items-center justify-end gap-x-2 w-44 text-center p-3 mt-2 mb-4 border-2 border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 bg-white/30 dark:border-primary-color-7 hover:bg-primary-color-3 hover:text-primary-color-7 transition-all duration-500"
         >
           <em className="text-xl fa-solid fa-plus"></em>
           Apply new loan

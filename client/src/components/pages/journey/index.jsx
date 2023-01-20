@@ -8,6 +8,8 @@ import LicenseName from "./LicenseName/index";
 import LicenseDetails from "./LicenseDetails/index";
 import IncomeDetails from "./IncomeDetails/index";
 import ExpensesDetails from "./ExpensesDetails/index";
+import DocumentUpload from "./DocumentUpload/index";
+import ProgressBar from "./ProgressBar";
 
 const CustomerJourney = {
   LeadDetails,
@@ -20,6 +22,8 @@ const CustomerJourney = {
   LicenseDetails,
   IncomeDetails,
   ExpensesDetails,
+  DocumentUpload,
+  ProgressBar,
 };
 
 export default CustomerJourney;

@@ -8,8 +8,11 @@ import Typewriter from "typewriter-effect";
 import { FormTitle, inputClasses, selectClasses } from "../extra/Widget";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
+import useProgress from "useProgress";
 
 const CustomerDetails = () => {
+  const { setProgress } = useProgress();
+  setProgress("50%");
   const userService = new customerService();
   const navigate = useNavigate();
   const [States, setStates] = useState([]);
@@ -31,7 +34,7 @@ const CustomerDetails = () => {
           headerData: localStorage.getItem("token"),
         });
         const preData = cookie.get("customerDetail");
-        cookie.set("customerData", findUser);
+        cookie.set("customerData", findUser, { maxAge: 3600 });
         setValue("prefix", preData ? preData.prefix : findUser.prefix);
         setValue("firstName", preData ? preData.firstName : findUser.firstName);
         setValue("lastName", preData ? preData.lastName : findUser.lastName);
@@ -46,7 +49,7 @@ const CustomerDetails = () => {
           details: cookie.get("contactNo"),
         });
         const preData = cookie.get("customerDetail");
-        cookie.set("customerData", result);
+        cookie.set("customerData", result, { maxAge: 3600 });
         setValue("prefix", preData ? preData.prefix : result.prefix);
         setValue("firstName", preData ? preData.firstName : result.firstName);
         setValue("lastName", preData ? preData.lastName : result.lastName);
@@ -78,7 +81,7 @@ const CustomerDetails = () => {
   });
   const getCustomerDetails = (data) => {
     let cookieData = cookie.get("customerDetail");
-    cookie.set("customerDetail", { ...cookieData, ...data });
+    cookie.set("customerDetail", { ...cookieData, ...data }, { maxAge: 3600 });
     navigate("/journey/licenseName");
   };
 

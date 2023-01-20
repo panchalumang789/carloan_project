@@ -3,9 +3,6 @@ import carsService from "services/carsServices";
 import { selectClasses } from "../extra/Widget";
 
 const CarModel = (props) => {
-  console.log("Model", props.defaultValue);
-  console.log("Model", props.getValue("model"));
-  console.log("====================================");
   const carService = new carsService();
   const [Model, setModel] = useState([]);
 
@@ -22,7 +19,7 @@ const CarModel = (props) => {
     <div>
       <div className="flex flex-col">
         <label htmlFor="model" className="px-1">
-          Car model {props.maker}
+          Car model
           <span className="text-red-500">*</span>
         </label>
         <select

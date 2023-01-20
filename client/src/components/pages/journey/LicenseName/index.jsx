@@ -5,12 +5,18 @@ import Typewriter from "typewriter-effect";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { FormTitle, Navigator, inputClasses } from "../extra/Widget";
+import useProgress from "useProgress";
 
 const LicenseName = () => {
+  const { setProgress } = useProgress();
+  setProgress("60%");
   const cookie = new Cookies();
   const navigate = useNavigate();
   let cookieData;
-  if (cookie.get("customerDetail").licenseFirstName) {
+  if (
+    cookie.get("customerDetail") &&
+    cookie.get("customerDetail").licenseFirstName
+  ) {
     cookieData = cookie.get("customerDetail") || "";
   } else {
     cookieData = cookie.get("customerData") || "";
@@ -33,7 +39,11 @@ const LicenseName = () => {
     let customerCookie = cookie.get("customerDetail");
     console.log(customerCookie);
     cookie.remove("customerDetail");
-    cookie.set("customerDetail", { ...customerCookie, ...data });
+    cookie.set(
+      "customerDetail",
+      { ...customerCookie, ...data },
+      { maxAge: 3600 }
+    );
     navigate("/journey/licenseDetail");
   };
   return (
@@ -137,6 +147,8 @@ const LicenseName = () => {
               <input
                 id="issue_date"
                 type="date"
+                min={"1980-01-01"}
+                max={new Date().toISOString().split("T")[0]}
                 className={inputClasses}
                 {...register("licenseIssueDate", {
                   required: "Please select license issue date!",

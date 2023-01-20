@@ -50,6 +50,7 @@ const verifyToken = async (req, res, next) => {
         res.locals.user = {
           id: findUser.id,
           name: `${findUser.firstName} ${findUser.lastName}`,
+          contactNo: `${findUser.contactNo}`,
         };
         next();
       } else {
@@ -79,6 +80,7 @@ const sendOTP = async (req, res, next) => {
           to: `+91${req.body.ContactNo}`,
           channel: "sms",
         });
+      console.log(sendOTP.status);
       if (sendOTP.status === "pending") {
         res.locals.response = "OTP sended successfully.";
         res.locals.verification = sendOTP.status;
@@ -88,6 +90,7 @@ const sendOTP = async (req, res, next) => {
       }
     }
   } catch (error) {
+    console.log(error);
     if (error.original) {
       next({ error: { status: 200, message: error.original } });
     } else next({ error: { status: 200, message: "Something is Wrong" } });

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 const Navbar = () => {
+  const cookie = new Cookies();
   const [Navbar, setNavbar] = useState({
     navbar: "-right-full",
     span1: "",
@@ -22,6 +24,16 @@ const Navbar = () => {
       span3: "",
     };
     setNavbar(Navbar.navbar === "-right-full" ? open : close);
+  };
+  const logout = () => {
+    localStorage.removeItem("token");
+    toggleNav();
+    cookie.remove("contactNo");
+    cookie.remove("carDetails");
+    cookie.remove("leadDetails");
+    cookie.remove("customerData");
+    cookie.remove("customerDetail");
+    cookie.remove("loanDetail");
   };
   return (
     <div>
@@ -100,14 +112,7 @@ const Navbar = () => {
           </div>
           {localStorage.getItem("token") ? (
             <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-5 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
-              <Link
-                to={"/"}
-                onClick={() => {
-                  localStorage.removeItem("token");
-                  toggleNav();
-                }}
-                className="text-2xl"
-              >
+              <Link to={"/"} onClick={logout} className="text-2xl">
                 LOGOUT
               </Link>
             </div>

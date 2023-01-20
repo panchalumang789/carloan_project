@@ -55,11 +55,7 @@ const addExpenses = async (req, res, next) => {
       next();
     }
   } catch (error) {
-    if (Object.keys(error.errors).length >= 0) {
-      next({ error: { status: 500, message: error.errors[0].message } });
-    } else {
-      next({ error: { status: 500, message: error.errors } });
-    }
+    next({ error: { status: 500, message: error.errors } });
   }
 };
 

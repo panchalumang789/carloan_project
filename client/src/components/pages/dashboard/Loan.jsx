@@ -69,7 +69,7 @@ const Loan = () => {
           <div className="w-5/6 lg:w-3/4 flex flex-col gap-y-3 h-full overflow-y-auto">
             <Link
               to={"/dashboard"}
-              className="group font-medium flex items-center justify-end gap-x-2 w-32 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
+              className="group font-medium flex items-center justify-end gap-x-2 w-32 text-center p-3 border-2 bg-white/30 border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-7"
             >
               <em className="group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left"></em>
               All loans

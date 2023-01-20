@@ -3,8 +3,6 @@ import carsService from "services/carsServices";
 import { selectClasses } from "../extra/Widget";
 
 const CarModelType = (props) => {
-  console.log("Model-Type", props.defaultValue);
-  console.log("Model-Type", props.getValue("carId"));
   const carService = new carsService();
   const [Cars, setCars] = useState([]);
 
@@ -13,16 +11,15 @@ const CarModelType = (props) => {
       const getCars = await carService.getCarDetails(props.maker, props.model);
       setCars(getCars);
     }
-    if (props.model) fetchCars();
+    // if (props.model) fetchCars();
+    if ((props.maker, props.model)) fetchCars();
     return () => {};
     // eslint-disable-next-line
   }, [props.model]);
 
   const getCar = (e) => {
-    console.log("model", e.target.value);
     Cars.map((item) => {
       if (item.id === parseInt(props.getValue("carId"))) {
-        console.log(item);
         return props.selectedCar(item);
       } else return false;
     });
@@ -32,7 +29,7 @@ const CarModelType = (props) => {
     <div>
       <div className="flex flex-col">
         <label htmlFor="model_type" className="px-1">
-          Car model type {props.maker} {props.model}
+          Car model type
           <span className="text-red-500">*</span>
         </label>
         <select

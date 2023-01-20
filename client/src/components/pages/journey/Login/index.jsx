@@ -9,8 +9,11 @@ import Typewriter from "typewriter-effect";
 import Cookies from "universal-cookie";
 import { Navigator, inputClasses } from "../extra/Widget";
 import LoadingPage from "../extra/LoadingPage";
+import useProgress from "useProgress";
 
 const LoginDetails = () => {
+  const { setProgress } = useProgress();
+  setProgress("30%");
   const cookie = new Cookies();
   const [Loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -50,7 +53,7 @@ const LoginDetails = () => {
 
   const getMobile = (data) => {
     setLoading(true);
-    cookie.set("contactNo", { contactNo: data.contactNo });
+    cookie.set("contactNo", { contactNo: data.contactNo }, { maxAge: 3600 });
     sendOTP(data.contactNo);
   };
   return (
@@ -66,8 +69,7 @@ const LoginDetails = () => {
     >
       {Loading && (
         <div className="h-screen w-screen flex justify-center items-center mx-auto bg-transparent/30 dark:bg-transparent/60 fixed">
-          <LoadingPage stroke={"#023641"} wheel={"#ffffff"} />
-          {/* <LoadingPage stroke={"#A3BEBE"} wheel={"#023641"} /> */}
+          <LoadingPage stroke={"#e0f5f5"} wheel={"#A3BEBE"} />
         </div>
       )}
       <ToastContainer />

@@ -4,6 +4,7 @@ import Cookies from "universal-cookie";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Typewriter from "typewriter-effect";
+import useProgress from "useProgress";
 import {
   FormTitle,
   Navigator,
@@ -12,6 +13,8 @@ import {
 } from "../extra/Widget";
 
 const LeadDetail = () => {
+  const { setProgress } = useProgress();
+  setProgress("0%");
   const cookie = new Cookies();
   const [leadDetail] = useState(cookie.get("leadDetails"));
   const navigate = useNavigate();
@@ -22,7 +25,7 @@ const LeadDetail = () => {
     formState: { errors },
   } = useForm({ mode: "all", defaultValues: leadDetail });
   const LeadDetail = (data) => {
-    cookie.set("leadDetails", data);
+    cookie.set("leadDetails", data, { maxAge: 3600 });
     navigate("/journey/carDetail");
   };
   return (
@@ -175,7 +178,10 @@ const LeadDetail = () => {
                     Balloon
                   </label>
                   <div className="relative ml-auto input-group-prepend">
-                    <span className="-ml-8 my-1.5 fixed text-lg" id="basic-addon1">
+                    <span
+                      className="-ml-8 my-1.5 fixed text-lg"
+                      id="basic-addon1"
+                    >
                       &#x25;
                     </span>
                   </div>
