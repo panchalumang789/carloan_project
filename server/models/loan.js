@@ -38,6 +38,9 @@ const loanTable = sequalize.define("loans", {
   agentId: {
     type: DataTypes.INTEGER,
   },
+  status: {
+    type: DataTypes.INTEGER,
+  },
 });
 
 module.exports = loanTable;

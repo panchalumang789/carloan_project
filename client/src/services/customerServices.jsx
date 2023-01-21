@@ -52,8 +52,9 @@ class customerService {
   };
 
   registerUser = async (data) => {
+    let output, error;
     try {
-      const output = await axios.post(
+      const createUser = await axios.post(
         `${process.env.REACT_APP_HOST_URL}${data.path}`,
         data.details,
         {
@@ -62,22 +63,25 @@ class customerService {
           },
         }
       );
-      return output.data;
-    } catch (error) {
-      return error.response;
+      output = createUser.data;
+    } catch (err) {
+      error = err.response;
     }
+    return { output, error };
   };
 
   updateUser = async (data) => {
+    let output, error;
     try {
-      const output = await axios.put(
+      const updateUser = await axios.put(
         `${process.env.REACT_APP_HOST_URL}${data.path}`,
         data.details
       );
-      return output.data;
-    } catch (error) {
-      return error.response;
+      output = updateUser.data;
+    } catch (err) {
+      error = err.response;
     }
+    return { output, error };
   };
 
   addIncome = async (data) => {

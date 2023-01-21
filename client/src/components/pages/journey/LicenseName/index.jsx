@@ -5,11 +5,11 @@ import Typewriter from "typewriter-effect";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { FormTitle, Navigator, inputClasses } from "../extra/Widget";
-import useProgress from "useProgress";
+// import useProgress from "useProgress";
 
 const LicenseName = () => {
-  const { setProgress } = useProgress();
-  setProgress("60%");
+  // const { setProgress } = useProgress();
+  // setProgress("60%");
   const cookie = new Cookies();
   const navigate = useNavigate();
   let cookieData;

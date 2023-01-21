@@ -1,0 +1,21 @@
+import axios from "axios";
+
+class loginService {
+  adminLogin = async (data) => {
+    let output, error;
+    try {
+      const login = await axios.post(
+        `${process.env.REACT_APP_HOST_URL}admin`,
+        data.details
+      );
+      output = login.data;
+    } catch (err) {
+      error = err.response;
+    }
+    console.log(output);
+    console.log(error);
+    return { output, error };
+  };
+}
+
+export default loginService;

@@ -1,5 +1,6 @@
 const { equal } = require("joi");
 const jwt = require("jsonwebtoken");
+const adminTable = require("../models/admin");
 const userTable = require("../models/user");
 const client = require("twilio")(process.env.ACCOUNTSID, process.env.AUTHTOKEN);
 
@@ -38,6 +39,16 @@ const verifyToken = async (req, res, next) => {
       process.env.JWT_SECRET_KEY
     );
     if (verify.role === "Admin") {
+      console.log(verify);
+      let findUser = await adminTable.findOne({
+        where: { contactNo: verify.contactNo },
+      });
+      res.locals.userDetail = findUser;
+      res.locals.user = {
+        id: findUser.id,
+        name: `${findUser.firstName} ${findUser.lastName}`,
+        contactNo: `${findUser.contactNo}`,
+      };
       res.locals.role = verify.role;
       next();
     } else if (verify.role === "User") {
@@ -80,7 +91,6 @@ const sendOTP = async (req, res, next) => {
           to: `+91${req.body.ContactNo}`,
           channel: "sms",
         });
-      console.log(sendOTP.status);
       if (sendOTP.status === "pending") {
         res.locals.response = "OTP sended successfully.";
         res.locals.verification = sendOTP.status;
@@ -90,7 +100,6 @@ const sendOTP = async (req, res, next) => {
       }
     }
   } catch (error) {
-    console.log(error);
     if (error.original) {
       next({ error: { status: 200, message: error.original } });
     } else next({ error: { status: 200, message: "Something is Wrong" } });

@@ -7,11 +7,11 @@ import Cookies from "universal-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import { FormTitle, Navigator, inputClasses } from "../extra/Widget";
 import customerService from "services/customerServices";
-import useProgress from "useProgress";
+// import useProgress from "useProgress";
 
 const ExpensesDetails = () => {
-  const { setProgress } = useProgress();
-  setProgress("90%");
+  // const { setProgress } = useProgress();
+  // setProgress("90%");
   let expensesService = new customerService();
   const cookie = new Cookies();
   const navigate = useNavigate();

@@ -12,7 +12,6 @@ const Dashboard = () => {
     const gerLoans = new loanService();
     (async () => {
       const getLoan = await gerLoans.getLoan({
-        path: "loans",
         headerData: localStorage.getItem("token"),
       });
       setUser(getLoan.user);
@@ -48,8 +47,13 @@ const Dashboard = () => {
               </div>
               <div className="px-3">
                 <span className="text-base text-primary-color-1 dark:text-primary-color-7 fa-solid fa-phone"></span>
-                <span className="text-base font-medium ml-1 mr-3">{user.contactNo}</span>
-                <span onClick={openWidget} className="fa-solid fa-ellipsis"></span>
+                <span className="text-base font-medium ml-1 mr-3">
+                  {user.contactNo}
+                </span>
+                <span
+                  onClick={openWidget}
+                  className="fa-solid fa-ellipsis"
+                ></span>
                 <div className={Widget + " relative right-6 -top-6"}>
                   <div className="fixed text-sm font-medium flex flex-col bg-primary-color-7 dark:bg-primary-color-6 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-lg px-3 py-1">
                     <Link

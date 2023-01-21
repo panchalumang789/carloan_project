@@ -9,7 +9,7 @@ import CarMaker from "./CarMaker";
 import CarModel from "./CarModel";
 import CarModelType from "./CarModelType";
 import { FormTitle, Navigator } from "../extra/Widget";
-import useProgress from "useProgress";
+// import useProgress from "useProgress";
 
 const CarDetails = () => {
   // const { setProgress } = useProgress();

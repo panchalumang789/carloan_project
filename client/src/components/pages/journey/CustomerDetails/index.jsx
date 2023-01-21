@@ -8,11 +8,11 @@ import Typewriter from "typewriter-effect";
 import { FormTitle, inputClasses, selectClasses } from "../extra/Widget";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
-import useProgress from "useProgress";
+// import useProgress from "useProgress";
 
 const CustomerDetails = () => {
-  const { setProgress } = useProgress();
-  setProgress("50%");
+  // const { setProgress } = useProgress();
+  // setProgress("50%");
   const userService = new customerService();
   const navigate = useNavigate();
   const [States, setStates] = useState([]);

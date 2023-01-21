@@ -12,11 +12,11 @@ import {
   inputClasses,
   selectClasses,
 } from "../extra/Widget";
-import useProgress from "useProgress";
+// import useProgress from "useProgress";
 
 const LicenseDetails = () => {
-  const { setProgress } = useProgress();
-  setProgress("70%");
+  // const { setProgress } = useProgress();
+  // setProgress("70%");
   const cookie = new Cookies();
   const navigate = useNavigate();
   const userService = new customerService();
@@ -49,57 +49,71 @@ const LicenseDetails = () => {
 
   const licenseDetail = async (data) => {
     let customerCookie = cookie.get("customerDetail");
-    console.log(cookie.get("customerDetail"));
-
     let contactNo = cookie.get("contactNo");
     let loanId = cookie.get("loanDetail");
 
     try {
       if (localStorage.getItem("token") || cookie.get("")) {
         let userId = cookieData.id;
-
-        const registerUser = await userService.updateUser({
+        const { output, error } = await userService.updateUser({
           path: `user/${userId}`,
           details: { ...customerCookie, ...data, ...contactNo },
         });
-
-        localStorage.setItem("token", registerUser.token);
-        cookie.remove("contactNo");
-        cookie.remove("customerDetail");
-        cookie.remove("customerData");
-        setTimeout(() => {
-          navigate("/journey/incomeDetail");
-        }, 3000);
-
-        const functionThatReturnPromise = () =>
-          new Promise((resolve) => setTimeout(resolve, 2000));
-        toast.promise(functionThatReturnPromise, {
-          pending: "Updating User",
-          success: "Profile updated successfully.",
-          error: "Something is wrong !",
-        });
+        if (!output) {
+          toast.error(error.data.message, {
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        } else {
+          localStorage.setItem("token", output.token);
+          cookie.remove("contactNo");
+          cookie.remove("customerDetail");
+          cookie.remove("customerData");
+          setTimeout(() => {
+            navigate("/journey/incomeDetail");
+          }, 3000);
+          const functionThatReturnPromise = () =>
+            new Promise((resolve) => setTimeout(resolve, 2000));
+          toast.promise(functionThatReturnPromise, {
+            pending: "Updating User",
+            success: "Profile updated successfully.",
+            error: "Something is wrong !",
+          });
+        }
       } else {
-        const registerUser = await userService.registerUser({
+        const { output, error } = await userService.registerUser({
           path: "user",
           details: { ...customerCookie, ...data, ...contactNo },
           headerData: { ...loanId },
         });
+        if (!output) {
+          toast.error(error.data.message, {
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        } else {
+          cookie.remove("customerDetail");
+          setTimeout(() => {
+            navigate("/journey/incomeDetail");
+          }, 3000);
 
-        cookie.remove("customerDetail");
-        setTimeout(() => {
-          navigate("/journey/incomeDetail");
-        }, 3000);
-
-        const functionThatReturnPromise = () =>
-          new Promise((resolve) => setTimeout(resolve, 2000));
-        toast.promise(functionThatReturnPromise, {
-          pending: "Registering User",
-          success: `${registerUser.message}`,
-          error: "Something is wrong !",
-        });
-        localStorage.setItem("token", registerUser.token);
-        cookie.remove("contactNo");
-        cookie.remove("customerDetail");
+          const functionThatReturnPromise = () =>
+            new Promise((resolve) => setTimeout(resolve, 2000));
+          toast.promise(functionThatReturnPromise, {
+            pending: "Registering User",
+            success: `${output.message}`,
+            error: "Something is wrong !",
+          });
+          localStorage.setItem("token", output.token);
+          cookie.remove("contactNo");
+          cookie.remove("customerDetail");
+        }
       }
     } catch (error) {
       toast.error(error.message, {

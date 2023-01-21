@@ -24,14 +24,11 @@ class loanService {
 
   getLoan = async (data) => {
     try {
-      const output = await axios.get(
-        `${process.env.REACT_APP_HOST_URL}${data.path}`,
-        {
-          headers: {
-            Authorization: data.headerData,
-          },
-        }
-      );
+      const output = await axios.get(`${process.env.REACT_APP_HOST_URL}loans`, {
+        headers: {
+          Authorization: data.headerData,
+        },
+      });
       return output.data;
     } catch (error) {
       return error.response;

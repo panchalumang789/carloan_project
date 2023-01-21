@@ -149,8 +149,6 @@ const createUser = async (req, res, next) => {
     if (error) {
       next({ error: { status: 400, message: error.message } });
     }
-    console.log(req.headers);
-    console.log(req.body);
     let addUser = await userTable.build(req.body).save();
     if (req.headers.loanid && req.headers.loanid !== "") {
       await loanTable.update(
@@ -165,8 +163,8 @@ const createUser = async (req, res, next) => {
     next();
   } catch (error) {
     if (error.errors)
-      next({ error: { status: 500, message: error.errors[0].message } });
-    else next({ error: { status: 500, message: error.original.detail } });
+      next({ error: { status: 400, message: error.errors[0].message } });
+    else next({ error: { status: 400, message: error.original.detail } });
   }
 };
 
@@ -175,8 +173,6 @@ const createUser = async (req, res, next) => {
  * @param {*} res add new user details
  */
 const updateUser = async (req, res, next) => {
-  console.log(req.body);
-  console.log(req.params);
   try {
     const { error } = userValidation.validate(req.body);
     if (error) {

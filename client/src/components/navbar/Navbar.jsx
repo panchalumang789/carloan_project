@@ -41,7 +41,7 @@ const Navbar = () => {
         <div className="fixed left-1/2 -translate-x-1/2 max-w-screen-2xl h-16 w-full z-20 flex justify-center px-16">
           <div className="flex w-full">
             <div className="font-medium overflow-hidden h-16 text-primary-color-1 dark:text-primary-color-7 flex justify-center items-center top-2 left-0">
-              <div className="flex items-center">
+              <Link to={"/"} className="flex items-center hover:cursor-pointer">
                 <div className="flex flex-col items-end">
                   <p className="text-2xl leading-6 tracking-wider">C</p>
                   <p className="text-2xl leading-6 tracking-wider">LO</p>
@@ -51,7 +51,7 @@ const Navbar = () => {
                   <p className="text-2xl leading-6 tracking-wider">R</p>
                   <p className="text-2xl leading-6 tracking-wider">NS</p>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
           <button onClick={toggleNav}>

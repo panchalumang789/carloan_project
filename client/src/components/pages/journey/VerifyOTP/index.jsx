@@ -8,11 +8,11 @@ import customerService from "services/customerServices";
 import loanService from "services/loanService";
 import Typewriter from "typewriter-effect";
 import LoadingPage from "../extra/LoadingPage";
-import useProgress from "useProgress";
+// import useProgress from "useProgress";
 
 const VerifyOTP = () => {
-  const { setProgress } = useProgress();
-  setProgress("40%");
+  // const { setProgress } = useProgress();
+  // setProgress("40%");
   const cookie = new Cookies();
   const loanServices = new loanService();
   const navigate = useNavigate();

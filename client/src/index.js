@@ -15,6 +15,7 @@ import LoadingPage from "components/pages/journey/extra/LoadingPage";
 import Protected from "components/Protected";
 import Loan from "components/pages/dashboard/Loan";
 import LoanList from "components/pages/dashboard/LoanList";
+import AdminLogin from "components/pages/AdminLogin/index";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -38,8 +39,9 @@ root.render(
         <Route path="loading" element={<LoadingPage />}></Route>
         <Route path="login" element={<Login />}></Route>
         <Route path="verify" element={<Verify />}></Route>
+        <Route path="admin" element={<AdminLogin />}></Route>
+        <Route path="*" element={<PageNotFound />}></Route>
       </Route>
-      <Route path="*" element={<PageNotFound />}></Route>
     </Routes>
   </BrowserRouter>
   // </React.StrictMode>

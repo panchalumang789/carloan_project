@@ -9,11 +9,11 @@ import Typewriter from "typewriter-effect";
 import Cookies from "universal-cookie";
 import { Navigator, inputClasses } from "../extra/Widget";
 import LoadingPage from "../extra/LoadingPage";
-import useProgress from "useProgress";
+// import useProgress from "useProgress";
 
 const LoginDetails = () => {
-  const { setProgress } = useProgress();
-  setProgress("30%");
+  // const { setProgress } = useProgress();
+  // setProgress("30%");
   const cookie = new Cookies();
   const [Loading, setLoading] = useState(false);
   const navigate = useNavigate();
