@@ -25,6 +25,7 @@ class loanService {
           Authorization: data.headerData,
         },
       });
+      console.log(output);
       return output.data;
     } catch (error) {
       return error.response;
@@ -43,6 +44,25 @@ class loanService {
         }
       );
       output = loanData.data;
+    } catch (err) {
+      error = err.response;
+    }
+    return { output, error };
+  };
+
+  updateLoan = async (data) => {
+    let output, error;
+    try {
+      const updateLoan = await axios.put(
+        `${process.env.REACT_APP_HOST_URL}loan/status/${data.loanId}`,
+        data.body,
+        {
+          headers: {
+            Authorization: data.headerData,
+          },
+        }
+      );
+      output = updateLoan.data;
     } catch (err) {
       error = err.response;
     }

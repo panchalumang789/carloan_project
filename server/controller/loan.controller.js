@@ -7,6 +7,7 @@ const carTable = require("../models/car");
 const userTable = require("../models/user");
 
 const userStatus = ["Employee", "Unemployed"];
+const loanStatus = ["In progress", "In review", "Approved", "Rejected"];
 
 // Validation Rules
 const dataValidation = Joi.object().keys({
@@ -21,7 +22,10 @@ const dataValidation = Joi.object().keys({
     .valid(...userStatus),
   user_income: Joi.number().min(10000).required(),
   agentId: Joi.number().optional().default(null),
-  status: Joi.string().optional().default(null),
+  status: Joi.string()
+    .optional()
+    .default("In progress")
+    .valid(...loanStatus),
 });
 
 /**
@@ -188,9 +192,42 @@ const updateLoan = async (req, res, next) => {
   }
 };
 
+/**
+ * @param {*} req get loan new details from body
+ * @param {*} res update loan details by id
+ */
+const updateLoanStatus = async (req, res, next) => {
+  try {
+    if (res.locals.role === "Admin") {
+      await loanTable.update(
+        { status: req.body.status },
+        { where: { id: req.params.id } }
+      );
+      let loanData = await loanTable.findOne({ where: { id: req.params.id } });
+      let userData = await userTable.findOne({
+        where: { id: loanData.userId },
+      });
+      res.locals.email = userData.email
+      next();
+    } else {
+      next({
+        error: {
+          status: 400,
+          message: "Unothorized request!",
+        },
+      });
+    }
+  } catch (error) {
+    if (error.errors)
+      next({ error: { status: 500, message: error.errors[0].message } });
+    else next({ error: { status: 500, message: error } });
+  }
+};
+
 module.exports = {
   getLoan,
   getLoanById,
   newLoan,
   updateLoan,
+  updateLoanStatus,
 };

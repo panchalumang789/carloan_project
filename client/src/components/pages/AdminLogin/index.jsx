@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import LoadingPage from "components/pages/journey/extra/LoadingPage";
-import loginService from "services/loanService";
+import loginService from "services/loginService";
 import { FormTitle, inputClasses } from "components/pages/journey/extra/Widget";
 import { useNavigate } from "react-router-dom";
 import LoginImage from "assest/images/OTPPage.jpg";
@@ -23,7 +23,6 @@ const AdminLogin = () => {
     setTimeout(() => {
       setLoading(false);
     }, 2500);
-    console.log(data);
     try {
       const { output, error } = await adminService.adminLogin({
         details: data,

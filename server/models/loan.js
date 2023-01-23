@@ -39,7 +39,8 @@ const loanTable = sequalize.define("loans", {
     type: DataTypes.INTEGER,
   },
   status: {
-    type: DataTypes.INTEGER,
+    allowNull: false,
+    type: DataTypes.STRING,
   },
 });
 

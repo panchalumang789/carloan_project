@@ -2,6 +2,7 @@ import axios from "axios";
 
 class loginService {
   adminLogin = async (data) => {
+    console.log(data);
     let output, error;
     try {
       const login = await axios.post(

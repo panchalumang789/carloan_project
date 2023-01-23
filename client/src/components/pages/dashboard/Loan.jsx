@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import loanService from "services/loanService";
-import { CounterUp } from "../journey/extra/Widget";
+import { toast, ToastContainer } from "react-toastify";
+import { CounterUp, selectClasses } from "../journey/extra/Widget";
+import Swal from "sweetalert2";
+window.Swal = Swal;
 
 const Loan = () => {
+  const location = useLocation();
+  const state = location.state;
   const [loanDetails, setLoanData] = useState({});
   const [error, setError] = useState("");
+  const [status, setstatus] = useState("");
   const [incomeDetails, setIncomeData] = useState({
     rental_income: "",
     investment_income: "",
@@ -33,10 +39,72 @@ const Loan = () => {
         }
       })();
     } catch (error) {
-      console.log(error);
+      toast.error(error.data.message, {
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+        position: "top-center",
+      });
     }
     return () => {};
   }, [loanId]);
+
+  useEffect(() => {
+    setstatus(loanDetails.status);
+  }, [loanDetails]);
+
+  let loanid = useParams("id");
+  const editLoan = (e) => {
+    const loanServices = new loanService();
+    setstatus(e.target.value);
+    Swal.fire({
+      title: "Do you want to change loan status?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonColor: "#EB5757",
+      confirmButtonColor: "#41aa76",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        (async () => {
+          const { output, error } = await loanServices.updateLoan({
+            loanId: loanid.loanId,
+            body: { status: e.target.value },
+            headerData: localStorage.getItem("token"),
+          });
+          if (!output) {
+            toast.error(error.data.message, {
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "light",
+              position: "top-center",
+            });
+          } else {
+            if (output.mailstatus) {
+              setTimeout(() => {
+                toast.success(output.mailstatus, {
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  theme: "light",
+                  position: "top-center",
+                });
+              }, 700);
+            }
+            toast.success(output.message, {
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "light",
+              position: "top-center",
+            });
+          }
+        })();
+      }
+    });
+  };
 
   return (
     <>
@@ -46,6 +114,7 @@ const Loan = () => {
         </div>
       ) : (
         <div className="flex h-full w-full gap-x-6">
+          <ToastContainer />
           <div className="w-5/6 border-2 border-primary-color-1 dark:border-primary-color-5 lg:w-1/4 p-3">
             <p className="text-lg font-medium">Loan Summary</p>
             <div className="p-5">
@@ -70,13 +139,36 @@ const Loan = () => {
             </div>
           </div>
           <div className="w-5/6 lg:w-3/4 flex flex-col gap-y-3 h-full overflow-y-auto">
-            <Link
-              to={"/dashboard"}
-              className="group font-medium flex items-center justify-end gap-x-2 w-32 text-center p-3 border-2 bg-white/30 border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-7"
-            >
-              <em className="group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left"></em>
-              All loans
-            </Link>
+            <div className="flex justify-between px-1">
+              <Link
+                to={"/dashboard"}
+                className="group font-medium flex items-center justify-end gap-x-2 w-32 text-center p-3 border-2 bg-white/30 border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-7"
+              >
+                <em className="group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left"></em>
+                All loans
+              </Link>
+              {state === "Admin" && (
+                <div>
+                  <label htmlFor="status" className="px-2">
+                    Status
+                  </label>
+                  <select
+                    id="status"
+                    className={
+                      selectClasses +
+                      " my-0.5 dark:border-2 dark:border-primary-color-7"
+                    }
+                    value={status}
+                    onChange={editLoan}
+                  >
+                    <option value="In progress">In progress</option>
+                    <option value="In review">In review</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+                </div>
+              )}
+            </div>
             <div className="border-t-2 border-primary-color-1 dark:border-primary-color-5 px-4 py-2">
               <p className="font-medium text-xl pt-1">Loan Details</p>
               <div className="flex">

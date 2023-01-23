@@ -39,12 +39,12 @@ const verifyToken = async (req, res, next) => {
       process.env.JWT_SECRET_KEY
     );
     if (verify.role === "Admin") {
-      console.log(verify);
       let findUser = await adminTable.findOne({
         where: { contactNo: verify.contactNo },
       });
       res.locals.userDetail = findUser;
       res.locals.user = {
+        role: "Admin",
         id: findUser.id,
         name: `${findUser.firstName} ${findUser.lastName}`,
         contactNo: `${findUser.contactNo}`,
@@ -125,6 +125,11 @@ const verifyOTP = async (req, res, next) => {
           email: findUser.email,
         };
         let token = jwt.sign(credential, process.env.JWT_SECRET_KEY);
+        res.locals.userData = {
+          id: findUser.id,
+          name: `${findUser.firstName} ${findUser.lastName}`,
+          contactNo: `${findUser.contactNo}`,
+        };
         res.locals.token = token;
       }
       res.locals.response = verifyOTP.status;
@@ -156,6 +161,11 @@ const verifyOTP = async (req, res, next) => {
             email: findUser.email,
           };
           let token = jwt.sign(credential, process.env.JWT_SECRET_KEY);
+          res.locals.userData = {
+            id: findUser.id,
+            name: `${findUser.firstName} ${findUser.lastName}`,
+            contactNo: `${findUser.contactNo}`,
+          };
           res.locals.token = token;
         }
         res.locals.response = verifyOTP.status;

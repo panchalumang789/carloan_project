@@ -23,8 +23,8 @@ const Theme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
   return (
-    <div className="fixed h-16 flex items-center right-1/4 justify-center z-50">
-      <div className="max-w-screen-lg flex justify-end translate-x-40">
+    <div className="fixed h-16 flex items-center right-1/2 lg:right-1/3 md:mx-4  xl:mx-0 justify-center z-50">
+      <div className="max-w-screen-lg flex justify-end translate-x-40 xl:translate-x-52">
         <label className="relative inline-flex items-center cursor-pointer">
           <input
             type="checkbox"

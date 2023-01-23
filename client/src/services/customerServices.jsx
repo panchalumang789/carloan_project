@@ -33,6 +33,7 @@ class customerService {
         data.details,
         { headers }
       );
+      console.log(output);
       return output.data;
     } catch (error) {
       return error.response;

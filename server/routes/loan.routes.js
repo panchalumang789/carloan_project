@@ -3,6 +3,7 @@ const router = require("express").Router();
 const loanRoutes = router;
 const authorization = require("../middleware/authorization");
 const loanController = require("../controller/loan.controller");
+const adminController = require("../controller/admin.controller");
 
 loanRoutes.get(
   "/loans",
@@ -37,6 +38,19 @@ loanRoutes.put(
     res.status(200).json({
       loanId: res.locals.loanId,
       message: "Loan application updated successfully.",
+    });
+  }
+);
+
+loanRoutes.put(
+  "/loan/status/:id",
+  authorization.verifyToken,
+  loanController.updateLoanStatus,
+  adminController.sendMail,
+  (req, res) => {
+    res.status(200).json({
+      message: "Loan status updated successfully.",
+      mailstatus: res.locals.mailStatus,
     });
   }
 );

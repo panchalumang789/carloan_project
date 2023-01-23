@@ -37,10 +37,10 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="absolute top-0 left-0 h-full w-full bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-1 dark:text-primary-color-7">
-        <div className="flex gap-y-14 max-w-screen-2xl mx-auto">
-          <div className="flex relative top-14 w-full px-2 md:px-8 flex-col h-[calc(100vh-56px)]">
-            <div className="flex justify-between text-xl p-4 border-t-2 border-primary-color-1 dark:border-primary-color-7 mt-4 z-20 w-full">
+      <div className="absolute top-0 left-0 h-full w-full bg-primary-color-5 dark:bg-primary-color-8 text-primary-color-1 dark:text-primary-color-7">
+        <div className="flex gap-y-14 max-w-screen-2xl mx-auto overflow-y-hidden h-[calc(100vh-56px)]">
+          <div className="flex relative top-14 w-full px-2 md:px-8 flex-col">
+            <div className="flex justify-between text-xl p-4 border-t-2 border-primary-color-1 dark:border-primary-color-7 mt-4 w-full">
               <div>
                 Welcome
                 <span className="font-medium uppercase px-1">{user.name}</span>

@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import customerService from "services/customerServices";
 import Typewriter from "typewriter-effect";
 import Cookies from "universal-cookie";
+import OTPImage from "assest/images/OTPPage1.jpg";
 
 const VerifyOTP = () => {
   const cookie = new Cookies();
@@ -90,23 +91,31 @@ const VerifyOTP = () => {
       )}
       <ToastContainer />
       <div className="flex flex-col lg:flex-row items-center justify-center gap-y-14 max-w-screen-xl h-full mx-auto">
-        <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl md:px-20">
-          <p className="">I just send a 4-digit SMS code to you on </p>
-          <span className="text-xl font-medium">
-            {cookie.get("contactNo") && (
-              <Typewriter
-                options={{
-                  strings: cookie.get("contactNo").contactNo,
-                  autoStart: true,
-                  loop: false,
-                  delay: 80,
-                }}
-              />
-            )}
-          </span>
-          <p>Please enter it to verify yourself.</p>
+        <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl">
+          <input
+            className="w-full mix-blend-multiply"
+            type="image"
+            src={OTPImage}
+            alt="OTP verification image"
+          />
         </div>
         <div className="w-5/6 lg:w-1/2 md:px-28">
+          <div className="text-lg md:text-2xl pb-8">
+            <p className="">I just send a 4-digit SMS code to you on </p>
+            <span className="text-xl font-medium">
+              {cookie.get("contactNo") && (
+                <Typewriter
+                  options={{
+                    strings: cookie.get("contactNo").contactNo,
+                    autoStart: true,
+                    loop: false,
+                    delay: 80,
+                  }}
+                />
+              )}
+            </span>
+            <p>Please enter it to verify yourself.</p>
+          </div>
           <p className="px-6 py-1">SMS Code</p>
           <div
             className="flex gap-x-4 justify-center pb-8"

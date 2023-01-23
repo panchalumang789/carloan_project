@@ -38,7 +38,7 @@ const Navbar = () => {
   return (
     <div>
       <div>
-        <div className="fixed left-1/2 -translate-x-1/2 max-w-screen-2xl h-16 w-full z-20 flex justify-center px-16">
+        <div className="fixed left-1/2 -translate-x-1/2 max-w-screen-2xl h-16 w-full z-20 flex justify-center px-4 md:px-16">
           <div className="flex w-full">
             <div className="font-medium overflow-hidden h-16 text-primary-color-1 dark:text-primary-color-7 flex justify-center items-center top-2 left-0">
               <Link to={"/"} className="flex items-center hover:cursor-pointer">
@@ -55,14 +55,14 @@ const Navbar = () => {
             </div>
           </div>
           {localStorage.getItem("token") ? (
-            <div className="flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-5">
+            <div className="hidden md:flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-5">
               <Link to={"/"} onClick={logout} className="text-2xl">
                 LOGOUT
               </Link>
             </div>
           ) : (
-            <div className="flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-5">
-              <Link to={"/login"} onClick={toggleNav} className="text-2xl">
+            <div className="hidden md:flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-5">
+              <Link to={"/login"} className="text-2xl">
                 LOGIN
               </Link>
             </div>
@@ -72,7 +72,7 @@ const Navbar = () => {
               <span
                 className={
                   Navbar.span1 +
-                  " transition-all after:duration-500 after:w-9 after:my-1 after:rounded-xl after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:block group-hover:"
+                  " transition-all after:duration-500 after:w-9 after:my-1 after:rounded-xl after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:block"
                 }
               ></span>
               <span

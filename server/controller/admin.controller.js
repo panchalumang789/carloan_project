@@ -1,5 +1,8 @@
-const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 const adminTable = require("../models/admin");
+const fs = require("fs");
+const { promisify } = require("util");
+const readFile = promisify(fs.readFile);
 
 const addAdmin = async (req, res, next) => {
   try {
@@ -22,13 +25,42 @@ const adminLogin = async (req, res, next) => {
       },
     });
     if (Object.keys(findAdmin).length <= 0) {
-      next({ error: { status: 404, message: "Invalid email password!" } });
+      next({ error: { status: 404, message: "Invalid email or password!" } });
     }
     res.locals.users = findAdmin.dataValues;
     next();
   } catch (error) {
-    next({ error: { status: 404, message: "Invalid email password!" } });
+    next({ error: { status: 404, message: "Invalid email or password!" } });
   }
 };
 
-module.exports = { addAdmin, adminLogin };
+const sendMail = async (req, res, next) => {
+  let transporter = nodemailer.createTransport({
+    port: 587,
+    host: "mail.mailtest.radixweb.net",
+    secure: false,
+    tls: {
+      rejectUnauthorized: false,
+    },
+    auth: {
+      user: "testdotnet@mailtest.radixweb.net",
+      pass: "Radix@web#8",
+    },
+  });
+  var mailOptions = {
+    from: "testdotnet@mailtest.radixweb.net",
+    to: res.locals.email,
+    subject: "CARLOAN Update mail for loan status",
+    html: await readFile("mailtemp.html", "utf8"),
+  };
+  transporter.sendMail(mailOptions, (error, result) => {
+    if (error) {
+      next({ error: { status: 404, message: error.message } });
+    } else {
+      res.locals.mailStatus = "Mail sended successfully to customer.";
+      next();
+    }
+  });
+};
+
+module.exports = { addAdmin, adminLogin, sendMail };
