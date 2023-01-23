@@ -1,13 +1,13 @@
 import { motion, useDragControls } from "framer-motion";
 import React from "react";
 import { Link } from "react-router-dom";
-import LandingPageImage from "../../assest/images/LandingPage4.jpg";
+import LandingPageImage from "assest/images/LandingPage1.jpg";
 import Footer from "./Footer";
 
 const LandingPage = () => {
   const controls = useDragControls();
   return (
-    <div className="bg-primary-color-5 font-medium dark:bg-primary-color-1 h-screen grid place-items-center transition-all duration-500">
+    <div className="bg-primary-color-5 font-medium dark:bg-primary-color-8 h-screen grid place-items-center transition-all duration-500">
       <div className="flex max-w-screen-xl justify-between w-full">
         <div className="w-5/6 lg:w-1/2 flex flex-col gap-y-6 lg:px-24 text-primary-color-1 dark:text-primary-color-5 tracking-wider">
           <motion.p
@@ -30,12 +30,12 @@ const LandingPage = () => {
             Get my Loan options.
           </Link>
         </div>
-        <div className="w-5/6 lg:w-1/2 sca">
+        <div className="w-5/6 lg:w-1/2 mx-20">
           <motion.img
             initial={{ x: "-40%", scale: 1, opacity: 0 }}
             animate={{ x: "0%", scale: 1.25, opacity: 1 }}
             transition={{ duration: 0.75 }}
-            className="bg-transparent aspect-video dark:mix-blend-soft-light h-full mix-blend-color-burn"
+            className="bg-transparent dark:mix-blend-soft-light mix-blend-color-burn"
             src={LandingPageImage}
             alt="Banner"
           />

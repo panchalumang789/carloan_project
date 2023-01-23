@@ -23,7 +23,6 @@ const Login = () => {
 
   const sendOTP = async (contactNo) => {
     const result = await loginService.sendOTP({
-      path: "login",
       details: { ContactNo: contactNo },
     });
     if (result.message && result.verification) {
@@ -32,11 +31,17 @@ const Login = () => {
       }, 4000);
       const functionThatReturnPromise = () =>
         new Promise((resolve) => setTimeout(resolve, 3000));
-      toast.promise(functionThatReturnPromise, {
-        pending: "Sending OTP",
-        success: `${result.message} Verification: ${result.verification}`,
-        error: "Something is wrong !",
-      });
+      toast.promise(
+        functionThatReturnPromise,
+        {
+          pending: "Sending OTP",
+          success: `${result.message} Verification: ${result.verification}`,
+          error: "Something is wrong !",
+        },
+        {
+          position: "top-center",
+        }
+      );
     } else {
       toast.error(result.message, {
         closeOnClick: true,
@@ -44,13 +49,14 @@ const Login = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
+        position: "top-center",
       });
     }
   };
 
   const getMobile = (data) => {
     setLoading(true);
-    cookie.set("contactNo", { contactNo: data.contactNo },{maxAge:3600});
+    cookie.set("contactNo", { contactNo: data.contactNo }, { maxAge: 3600 });
     sendOTP(data.contactNo);
   };
   return (

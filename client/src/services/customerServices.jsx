@@ -16,7 +16,7 @@ class customerService {
   sendOTP = async (data) => {
     try {
       let output = await axios.post(
-        `${process.env.REACT_APP_HOST_URL}${data.path}`,
+        `${process.env.REACT_APP_HOST_URL}login`,
         data.details,
         { headers }
       );
@@ -42,7 +42,7 @@ class customerService {
   findUserbyContact = async (data) => {
     try {
       const output = await axios.get(
-        `${process.env.REACT_APP_HOST_URL}${data.path}/${data.details.contactNo}`,
+        `${process.env.REACT_APP_HOST_URL}user/mobile/${data.details.contactNo}`,
         { headers }
       );
       return output.data;
@@ -55,7 +55,7 @@ class customerService {
     let output, error;
     try {
       const createUser = await axios.post(
-        `${process.env.REACT_APP_HOST_URL}${data.path}`,
+        `${process.env.REACT_APP_HOST_URL}user`,
         data.details,
         {
           headers: {
@@ -87,7 +87,7 @@ class customerService {
   addIncome = async (data) => {
     try {
       const output = await axios.post(
-        `${process.env.REACT_APP_HOST_URL}${data.path}`,
+        `${process.env.REACT_APP_HOST_URL}income`,
         data.details,
         {
           headers: {
@@ -104,7 +104,7 @@ class customerService {
   addExpenses = async (data) => {
     try {
       const output = await axios.post(
-        `${process.env.REACT_APP_HOST_URL}${data.path}`,
+        `${process.env.REACT_APP_HOST_URL}expenses`,
         data.details,
         {
           headers: {
@@ -122,7 +122,7 @@ class customerService {
   verifyToken = async (data) => {
     try {
       const result = await axios.get(
-        `${process.env.REACT_APP_HOST_URL}${data.path}`,
+        `${process.env.REACT_APP_HOST_URL}user/verify`,
         {
           headers: {
             Authorization: data.headerData,

@@ -27,7 +27,6 @@ const ExpensesDetails = () => {
     let loanId = cookie.get("loanDetail");
     try {
       const addExpenses = await expensesService.addExpenses({
-        path: "expenses",
         details: { ...data, ...loanId },
         headerData: localStorage.getItem("token"),
       });
@@ -38,11 +37,17 @@ const ExpensesDetails = () => {
       }, 2500);
       const functionThatReturnPromise = () =>
         new Promise((resolve) => setTimeout(resolve, 1500));
-      toast.promise(functionThatReturnPromise, {
-        pending: "Storing Monthly Expenses",
-        success: `${addExpenses.message}`,
-        error: "Something is wrong !",
-      });
+      toast.promise(
+        functionThatReturnPromise,
+        {
+          pending: "Storing Monthly Expenses",
+          success: `${addExpenses.message}`,
+          error: "Something is wrong !",
+        },
+        {
+          position: "top-center",
+        }
+      );
     } catch (error) {
       toast.error(error.message, {
         closeOnClick: true,
@@ -50,6 +55,7 @@ const ExpensesDetails = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
+        position: "top-center",
       });
     }
   };

@@ -8,7 +8,6 @@ const LoanList = () => {
     const gerLoans = new loanService();
     (async () => {
       const getLoan = await gerLoans.getLoan({
-        path: "loans",
         headerData: localStorage.getItem("token"),
       });
       setLoans(getLoan.loan);
@@ -19,13 +18,6 @@ const LoanList = () => {
   return (
     <div className="p-4 lg:p-0 gap-y-3 flex h-[calc(100vh-122px)] flex-col lg:flex-row w-full gap-x-6">
       <div className="w-full border-2 border-primary-color-1 dark:border-primary-color-7 rounded-md lg:w-1/5 p-3 text-primary-color-1 dark:text-primary-color-7">
-        <Link
-          to={"/journey"}
-          className="font-medium flex items-center justify-end gap-x-2 w-44 text-center p-3 mt-2 mb-4 border-2 border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 bg-white/30 dark:border-primary-color-7 hover:bg-primary-color-3 hover:text-primary-color-7 transition-all duration-500"
-        >
-          <em className="text-xl fa-solid fa-plus"></em>
-          Apply new loan
-        </Link>
         <p className="text-xl">Get loan options</p>
         <ul className="list-disc text-sm py-2 mx-3">
           <li>Compare 30+ matched lenders in 60 seconds.</li>
@@ -50,18 +42,18 @@ const LoanList = () => {
                     <div className="flex items-center p-2 flex-col h-32 bg-white/25 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-3xl">
                       <span className="text-lg lg:text-3xl mr-auto p-1.5 fa-solid fa-money-bill-1"></span>
                       <span className="uppercase text-sm md:text-md xl:text-base">
-                        Approx amount:-{" "}
+                        Approx amount:-
                       </span>
-                      <span className="font-semibold text-base md:text-lg xl:text-2xl mx-auto">
+                      <span className="font-semibold text-base md:text-lg xl:text-xl mx-auto">
                         {loan.approx_price} &#x20B9;
                       </span>
                     </div>
                     <div className="flex items-center p-2 flex-col h-32 bg-white/25 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-3xl">
                       <span className="text-lg lg:text-3xl mr-auto p-1.5 fa-solid fa-sack-dollar"></span>
                       <span className="uppercase text-sm md:text-md xl:text-base">
-                        Deposit:-{" "}
+                        Deposit:-
                       </span>
-                      <span className="font-semibold text-base md:text-lg xl:text-2xl mx-auto">
+                      <span className="font-semibold text-base md:text-lg xl:text-xl mx-auto">
                         {loan.deposit} &#x20B9;
                       </span>
                     </div>
@@ -70,27 +62,27 @@ const LoanList = () => {
                         &#xf201;
                       </span>
                       <span className="uppercase text-sm md:text-md xl:text-base">
-                        Term:-{" "}
+                        Term:-
                       </span>
-                      <span className="font-semibold text-base md:text-lg xl:text-2xl mx-auto">
+                      <span className="font-semibold text-base md:text-lg xl:text-xl mx-auto">
                         {loan.term} years
                       </span>
                     </div>
                     <div className="flex items-center p-2 flex-col h-32 bg-white/25 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-3xl">
                       <span className="text-lg lg:text-3xl mr-auto p-1.5 fa-solid fa-hand-holding-dollar"></span>
                       <span className="uppercase text-sm md:text-md xl:text-base">
-                        Balloon:-{" "}
+                        Balloon:-
                       </span>
-                      <span className="font-semibold text-base md:text-lg xl:text-2xl mx-auto">
+                      <span className="font-semibold text-base md:text-lg xl:text-xl mx-auto">
                         {loan.balloon} %
                       </span>
                     </div>
                     <div className="flex items-center p-2 flex-col h-32 bg-white/25 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-3xl">
                       <span className="text-lg lg:text-3xl mr-auto p-1.5 fa-solid fa-calendar-days"></span>
                       <span className="uppercase text-sm md:text-md xl:text-base">
-                        Applied on:-{" "}
+                        Applied on:-
                       </span>
-                      <span className="font-semibold text-base md:text-base xl:text-2xl mx-auto">
+                      <span className="font-semibold text-base md:text-base xl:text-xl mx-auto">
                         {new Date(loan.createdAt).toLocaleDateString()}
                       </span>
                     </div>

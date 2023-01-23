@@ -9,6 +9,7 @@ import Typewriter from "typewriter-effect";
 import Cookies from "universal-cookie";
 import { Navigator, inputClasses } from "../extra/Widget";
 import LoadingPage from "../extra/LoadingPage";
+import LoginImage from "assest/images/LoginImage.jpg";
 // import useProgress from "useProgress";
 
 const LoginDetails = () => {
@@ -26,7 +27,6 @@ const LoginDetails = () => {
   console.log(cookie.get("contactNo"));
   const sendOTP = async (contactNo) => {
     const result = await loginService.sendOTP({
-      path: "login",
       details: { ContactNo: contactNo },
     });
     if (result.message && result.verification) {
@@ -35,11 +35,17 @@ const LoginDetails = () => {
       }, 3500);
       const functionThatReturnPromise = () =>
         new Promise((resolve) => setTimeout(resolve, 2500));
-      toast.promise(functionThatReturnPromise, {
-        pending: "Sending OTP",
-        success: `${result.message} Verification: ${result.verification}`,
-        error: "Something is wrong !",
-      });
+      toast.promise(
+        functionThatReturnPromise,
+        {
+          pending: "Sending OTP",
+          success: `${result.message} Verification: ${result.verification}`,
+          error: "Something is wrong !",
+        },
+        {
+          position: "top-center",
+        }
+      );
     } else {
       toast.error(result.message, {
         closeOnClick: true,
@@ -47,6 +53,7 @@ const LoginDetails = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
+        position: "top-center",
       });
     }
   };
@@ -74,18 +81,26 @@ const LoginDetails = () => {
       )}
       <ToastContainer />
       <div className="flex flex-col lg:flex-row items-center justify-center gap-y-14 max-w-screen-xl h-full mx-auto">
-        <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl md:px-20">
-          <p>Please protect your account with SMS authentication.</p>
-          <Typewriter
-            options={{
-              strings: "Your privacy and security is important for us.",
-              autoStart: true,
-              loop: false,
-              delay: 60,
-            }}
+        <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl">
+          <input
+            className="w-full mix-blend-multiply"
+            type="image"
+            src={LoginImage}
+            alt="OTP verification image"
           />
         </div>
         <div className="w-5/6 lg:w-1/2 md:px-28">
+          <div className="text-lg md:text-2xl pb-8">
+            <p>Please protect your account with SMS authentication.</p>
+            <Typewriter
+              options={{
+                strings: "Your privacy and security is important for us.",
+                autoStart: true,
+                loop: false,
+                delay: 60,
+              }}
+            />
+          </div>
           <form
             onSubmit={handleSubmit(getMobile)}
             className="flex justify-center flex-col mx-auto"

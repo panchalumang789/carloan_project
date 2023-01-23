@@ -29,7 +29,6 @@ const IncomeDetails = () => {
     let loanId = cookie.get("loanDetail");
     try {
       const addIncome = await incomeService.addIncome({
-        path: "income",
         details: { ...data, ...loanId },
         headerData: localStorage.getItem("token"),
       });
@@ -39,11 +38,15 @@ const IncomeDetails = () => {
       }, 2500);
       const functionThatReturnPromise = () =>
         new Promise((resolve) => setTimeout(resolve, 1500));
-      toast.promise(functionThatReturnPromise, {
-        pending: "Storing Additional Incomes",
-        success: `${addIncome.message}`,
-        error: "Something is wrong !",
-      });
+      toast.promise(
+        functionThatReturnPromise,
+        {
+          pending: "Storing Additional Incomes",
+          success: `${addIncome.message}`,
+          error: "Something is wrong !",
+        },
+        { position: "top-center" }
+      );
     } catch (error) {
       console.log(error);
       toast.error(error.message, {
@@ -52,6 +55,7 @@ const IncomeDetails = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
+        position: "top-center",
       });
     }
   };

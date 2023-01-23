@@ -54,6 +54,19 @@ const Navbar = () => {
               </Link>
             </div>
           </div>
+          {localStorage.getItem("token") ? (
+            <div className="flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-5">
+              <Link to={"/"} onClick={logout} className="text-2xl">
+                LOGOUT
+              </Link>
+            </div>
+          ) : (
+            <div className="flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-5">
+              <Link to={"/login"} onClick={toggleNav} className="text-2xl">
+                LOGIN
+              </Link>
+            </div>
+          )}
           <button onClick={toggleNav}>
             <div className="flex flex-col">
               <span
@@ -81,7 +94,7 @@ const Navbar = () => {
       <div
         className={
           Navbar.navbar +
-          " fixed font-medium w-screen md:w-1/3 transition-all duration-700 bg-primary-color-3 text-primary-color-4 dark:bg-primary-color-6 dark:text-primary-color-7 z-10 top-0"
+          " fixed font-medium w-screen md:w-1/3 transition-all duration-500 bg-primary-color-3 text-primary-color-4 dark:bg-primary-color-6 dark:text-primary-color-7 z-10 top-0"
         }
       >
         <div className="flex flex-col justify-center items-center gap-y-5 h-screen uppercase">
@@ -110,19 +123,6 @@ const Navbar = () => {
               Contact US
             </Link>
           </div>
-          {localStorage.getItem("token") ? (
-            <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-5 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
-              <Link to={"/"} onClick={logout} className="text-2xl">
-                LOGOUT
-              </Link>
-            </div>
-          ) : (
-            <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
-              <Link to={"/login"} onClick={toggleNav} className="text-2xl">
-                LOGIN
-              </Link>
-            </div>
-          )}
         </div>
       </div>
     </div>

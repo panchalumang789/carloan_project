@@ -2,8 +2,6 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import customerService from "services/customerServices";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Typewriter from "typewriter-effect";
 import { FormTitle, inputClasses, selectClasses } from "../extra/Widget";
 import Cookies from "universal-cookie";
@@ -30,7 +28,6 @@ const CustomerDetails = () => {
     if (localStorage.getItem("token")) {
       (async () => {
         const findUser = await userService.verifyToken({
-          path: "user/verify",
           headerData: localStorage.getItem("token"),
         });
         const preData = cookie.get("customerDetail");
@@ -45,7 +42,6 @@ const CustomerDetails = () => {
     if (cookie.get("contactNo")) {
       (async () => {
         const result = await userService.findUserbyContact({
-          path: `user/mobile`,
           details: cookie.get("contactNo"),
         });
         const preData = cookie.get("customerDetail");
@@ -96,7 +92,6 @@ const CustomerDetails = () => {
       }}
       className="absolute top-0 left-0 h-full w-full bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7"
     >
-      <ToastContainer />
       <div className="flex flex-col lg:flex-row items-center justify-center gap-y-14 max-w-screen-xl h-full mx-auto">
         <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl md:px-20">
           <Typewriter

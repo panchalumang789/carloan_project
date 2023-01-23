@@ -31,14 +31,15 @@ const VerifyOTP = () => {
       called = true;
       setLoading(true);
       let result = await userService.verifyOTP({
-        path: "verify",
         details: {
           ContactNo: cookie.get("contactNo").contactNo,
           code: OTP.join(""),
         },
       });
       if (result.message === "approved") {
-        toast.success(`OTP: ${result.message}`);
+        toast.success(`OTP: ${result.message}`, {
+          position: "top-center",
+        });
         if (result.token) {
           localStorage.setItem("token", result.token);
         }
@@ -54,6 +55,7 @@ const VerifyOTP = () => {
           draggable: true,
           progress: undefined,
           theme: "light",
+          position: "top-center",
         });
         setOTP(["", "", "", ""]);
         inputRef.current.focus();

@@ -66,6 +66,7 @@ const LicenseDetails = () => {
             draggable: true,
             progress: undefined,
             theme: "light",
+            position: "top-center",
           });
         } else {
           localStorage.setItem("token", output.token);
@@ -77,15 +78,18 @@ const LicenseDetails = () => {
           }, 3000);
           const functionThatReturnPromise = () =>
             new Promise((resolve) => setTimeout(resolve, 2000));
-          toast.promise(functionThatReturnPromise, {
-            pending: "Updating User",
-            success: "Profile updated successfully.",
-            error: "Something is wrong !",
-          });
+          toast.promise(
+            functionThatReturnPromise,
+            {
+              pending: "Updating User",
+              success: "Profile updated successfully.",
+              error: "Something is wrong !",
+            },
+            { position: "top-center" }
+          );
         }
       } else {
         const { output, error } = await userService.registerUser({
-          path: "user",
           details: { ...customerCookie, ...data, ...contactNo },
           headerData: { ...loanId },
         });
@@ -96,6 +100,7 @@ const LicenseDetails = () => {
             draggable: true,
             progress: undefined,
             theme: "light",
+            position: "top-center",
           });
         } else {
           cookie.remove("customerDetail");
@@ -105,11 +110,15 @@ const LicenseDetails = () => {
 
           const functionThatReturnPromise = () =>
             new Promise((resolve) => setTimeout(resolve, 2000));
-          toast.promise(functionThatReturnPromise, {
-            pending: "Registering User",
-            success: `${output.message}`,
-            error: "Something is wrong !",
-          });
+          toast.promise(
+            functionThatReturnPromise,
+            {
+              pending: "Registering User",
+              success: `${output.message}`,
+              error: "Something is wrong !",
+            },
+            { position: "top-center" }
+          );
           localStorage.setItem("token", output.token);
           cookie.remove("contactNo");
           cookie.remove("customerDetail");
@@ -122,6 +131,7 @@ const LicenseDetails = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
+        position: "top-center",
       });
     }
   };

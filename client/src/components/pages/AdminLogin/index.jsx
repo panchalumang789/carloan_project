@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
-import LoadingPage from "../journey/extra/LoadingPage";
 import { toast, ToastContainer } from "react-toastify";
-import LoginImage from "../../../assest/images/Authentication.jpg";
-import { FormTitle, inputClasses } from "../journey/extra/Widget";
-import loginService from "../../../services/loginService";
+import LoadingPage from "components/pages/journey/extra/LoadingPage";
+import loginService from "services/loanService";
+import { FormTitle, inputClasses } from "components/pages/journey/extra/Widget";
 import { useNavigate } from "react-router-dom";
+import LoginImage from "assest/images/OTPPage.jpg";
 
 const AdminLogin = () => {
   const adminService = new loginService();
@@ -70,7 +70,7 @@ const AdminLogin = () => {
       )}
       <ToastContainer />
       <div className="flex flex-col lg:flex-row items-center justify-center gap-y-14 max-w-screen-xl h-full mx-auto">
-        <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl md:px-12">
+        <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl">
           <input
             className="w-full mix-blend-multiply"
             type="image"

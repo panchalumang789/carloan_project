@@ -1,7 +1,5 @@
 import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { AnimatePresence } from "framer-motion";
 
 import CustomerJourney from "./journey/index";
@@ -14,7 +12,6 @@ const Journey = () => {
     <>
       <ProgressProvider>
         <CustomerJourney.ProgressBar />
-        <ToastContainer />
         <AnimatePresence initial={false}>
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<CustomerJourney.LeadDetails />} />

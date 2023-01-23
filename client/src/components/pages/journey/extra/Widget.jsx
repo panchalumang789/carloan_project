@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import CountUp from "react-countup";
 import customerService from "services/customerServices";
 
 const getState = async () => {
@@ -45,4 +46,15 @@ const inputClasses =
 const selectClasses =
   "p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 text-primary-color-1 font-medium";
 
-export { getState, FormTitle, Navigator, inputClasses, selectClasses };
+const CounterUp = (props) => {
+  return <h1>{<CountUp start={0} end={props.num} duration={1} />}</h1>;
+};
+
+export {
+  getState,
+  FormTitle,
+  Navigator,
+  inputClasses,
+  selectClasses,
+  CounterUp,
+};

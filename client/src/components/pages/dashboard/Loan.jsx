@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import loanService from "services/loanService";
+import { CounterUp } from "../journey/extra/Widget";
 
 const Loan = () => {
   const [loanDetails, setLoanData] = useState({});
@@ -40,7 +41,9 @@ const Loan = () => {
   return (
     <>
       {error !== "" ? (
-        <div className="text-2xl font-medium text-primary-color-6 dark:text-primary-color-5">{error.message}</div>
+        <div className="text-2xl font-medium text-primary-color-6 dark:text-primary-color-5">
+          {error.message}
+        </div>
       ) : (
         <div className="flex h-full w-full gap-x-6">
           <div className="w-5/6 border-2 border-primary-color-1 dark:border-primary-color-5 lg:w-1/4 p-3">
@@ -146,32 +149,37 @@ const Loan = () => {
               <div className="flex py-2 gap-x-8">
                 <div className="flex flex-col items-center ">
                   <span>Rental income: </span>
-                  <span className="font-medium text-lg mx-auto">
-                    {incomeDetails.rental_income} &#x20B9;
+                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
+                    <CounterUp num={incomeDetails.rental_income} />
+                    &#x20B9;
                   </span>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Investment income: </span>
-                  <span className="font-medium text-lg mx-auto">
-                    {incomeDetails.investment_income} &#x20B9;
+                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
+                    <CounterUp num={incomeDetails.investment_income} />
+                    &#x20B9;
                   </span>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Salary sacrifice: </span>
-                  <span className="font-medium text-lg mx-auto">
-                    {incomeDetails.salary_sacrifice} &#x20B9;
+                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
+                    <CounterUp num={incomeDetails.salary_sacrifice} />
+                    &#x20B9;
                   </span>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Centralink benifit: </span>
-                  <span className="font-medium text-lg mx-auto">
-                    {incomeDetails.centralink_benifit} &#x20B9;
+                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
+                    <CounterUp num={incomeDetails.centralink_benifit} />
+                    &#x20B9;
                   </span>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Foreign income: </span>
-                  <span className="font-medium text-lg mx-auto">
-                    {incomeDetails.foreign_income} &#x20B9;
+                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
+                    <CounterUp num={incomeDetails.foreign_income} />
+                    &#x20B9;
                   </span>
                 </div>
               </div>
@@ -183,39 +191,45 @@ const Loan = () => {
               <div className="flex py-2 gap-x-8">
                 <div className="flex flex-col items-center ">
                   <span>Vehicle running cost: </span>
-                  <span className="font-medium text-lg mx-auto">
-                    {expensesDetails.vehicle_running_cost} &#x20B9;
-                  </span>
+                  <div className="flex gap-x-1 font-medium text-lg mx-auto">
+                    <CounterUp num={expensesDetails.vehicle_running_cost} />
+                    &#x20B9;
+                  </div>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Travel cost: </span>
-                  <span className="font-medium text-lg mx-auto">
-                    {expensesDetails.travel_cost} &#x20B9;
-                  </span>
+                  <div className="flex gap-x-1 font-medium text-lg mx-auto">
+                    <CounterUp num={expensesDetails.travel_cost} />
+                    &#x20B9;
+                  </div>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Utilities cost: </span>
-                  <span className="font-medium text-lg mx-auto">
-                    {expensesDetails.utilities_cost} &#x20B9;
-                  </span>
+                  <div className="flex gap-x-1 font-medium text-lg mx-auto">
+                    <CounterUp num={expensesDetails.utilities_cost} />
+                    &#x20B9;
+                  </div>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Insurances: </span>
-                  <span className="font-medium text-lg mx-auto">
-                    {expensesDetails.insurance} &#x20B9;
-                  </span>
+                  <div className="flex gap-x-1 font-medium text-lg mx-auto">
+                    <CounterUp num={expensesDetails.insurance} />
+                    &#x20B9;
+                  </div>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Telephone & Internet: </span>
-                  <span className="font-medium text-lg mx-auto">
-                    {expensesDetails.tel_internet} &#x20B9;
-                  </span>
+                  <div className="flex gap-x-1 font-medium text-lg mx-auto">
+                    <CounterUp num={expensesDetails.tel_internet} />
+                    &#x20B9;
+                  </div>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Entertainment: </span>
-                  <span className="font-medium text-lg mx-auto">
-                    {expensesDetails.entertainment} &#x20B9;
-                  </span>
+                  <div className="flex gap-x-1 font-medium text-lg mx-auto">
+                    <CounterUp num={expensesDetails.entertainment} />
+                    &#x20B9;
+                  </div>
                 </div>
               </div>
             </div>

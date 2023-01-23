@@ -4,10 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "universal-cookie";
-import customerService from "services/customerServices";
 import loanService from "services/loanService";
 import Typewriter from "typewriter-effect";
-import LoadingPage from "../extra/LoadingPage";
+import customerService from "services/customerServices";
+import LoadingPage from "components/pages/journey/extra/LoadingPage";
+import OTPImage from "assest/images/OTPPage1.jpg";
 // import useProgress from "useProgress";
 
 const VerifyOTP = () => {
@@ -49,7 +50,7 @@ const VerifyOTP = () => {
           localStorage.setItem("token", result.token);
         }
         if (result.message === "approved") {
-          toast.success(`OTP: ${result.message}`);
+          toast.success(`OTP: ${result.message}`, { position: "top-center" });
           let token = "";
           if (localStorage.getItem("token")) {
             token = localStorage.getItem("token");
@@ -58,7 +59,6 @@ const VerifyOTP = () => {
           }
           loanServices
             .applyLoan({
-              path: "loan",
               details: { loanData: cookie.get("leadDetails") },
               headerData: token,
             })
@@ -76,10 +76,14 @@ const VerifyOTP = () => {
                     navigate("/journey/customerDetail");
                   }, 500);
                 });
-              toast.promise(functionThatReturnPromise, {
-                pending: "Applying Loan...",
-                success: loanResult.message,
-              });
+              toast.promise(
+                functionThatReturnPromise,
+                {
+                  pending: "Applying Loan...",
+                  success: loanResult.message,
+                },
+                { position: "top-center" }
+              );
             })
             .catch((error) => {
               console.error(error);
@@ -92,6 +96,7 @@ const VerifyOTP = () => {
             draggable: true,
             progress: undefined,
             theme: "light",
+            position: "top-center",
           });
           setOTP(["", "", "", ""]);
           inputRef.current.focus();
@@ -126,23 +131,31 @@ const VerifyOTP = () => {
       )}
       <ToastContainer />
       <div className="flex flex-col lg:flex-row items-center justify-center gap-y-14 max-w-screen-xl h-full mx-auto">
-        <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl md:px-20">
-          <p className="">I just send a 4-digit SMS code to you on </p>
-          <span className="text-xl font-medium">
-            {cookie.get("contactNo") && (
-              <Typewriter
-                options={{
-                  strings: cookie.get("contactNo").contactNo,
-                  autoStart: true,
-                  loop: false,
-                  delay: 80,
-                }}
-              />
-            )}
-          </span>
-          <p>Please enter it to verify yourself.</p>
+        <div className="w-5/6 lg:w-1/2 text-left text-lg xl:text-2xl">
+          <input
+            className="w-full mix-blend-multiply"
+            type="image"
+            src={OTPImage}
+            alt="OTP verification image"
+          />
         </div>
         <div className="w-5/6 lg:w-1/2 md:px-28">
+          <div className="text-lg md:text-2xl pb-8">
+            <p>I just send a 4-digit SMS code to you on </p>
+            <span className="text-xl md:text-2xl font-medium">
+              {cookie.get("contactNo") && (
+                <Typewriter
+                  options={{
+                    strings: cookie.get("contactNo").contactNo,
+                    autoStart: true,
+                    loop: false,
+                    delay: 80,
+                  }}
+                />
+              )}
+            </span>
+            <p>Please enter it to verify yourself.</p>
+          </div>
           <p className="px-6 py-1">SMS-Code</p>
           <div
             className="flex gap-x-4 justify-center pb-8"
