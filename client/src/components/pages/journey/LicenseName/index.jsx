@@ -35,9 +35,7 @@ const LicenseName = () => {
   });
 
   const licenseDetail = (data) => {
-    console.log(data);
     let customerCookie = cookie.get("customerDetail");
-    console.log(customerCookie);
     cookie.remove("customerDetail");
     cookie.set(
       "customerDetail",

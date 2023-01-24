@@ -15,6 +15,7 @@ module.exports = {
         "primary-color-8": "#1B2430",
         // "primary-color-8": "#222831",
         // "primary-color-8": "#0a0603",
+        "primary-color-9": "#273950",
       },
     },
   },

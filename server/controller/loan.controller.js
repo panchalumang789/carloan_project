@@ -23,9 +23,8 @@ const dataValidation = Joi.object().keys({
   user_income: Joi.number().min(10000).required(),
   agentId: Joi.number().optional().default(null),
   status: Joi.string()
-    .optional()
-    .default("In progress")
-    .valid(...loanStatus),
+    .valid(...loanStatus)
+    .optional(),
 });
 
 /**
@@ -40,6 +39,53 @@ const getLoan = async (req, res, next) => {
       };
     }
     let loanData = await loanTable.findAll({ where: filter, order: ["id"] });
+    if (loanData.length === 0) {
+      next({
+        error: {
+          status: 500,
+          message: "Something is wrong, loan application not found!",
+        },
+      });
+    } else {
+      res.locals.loans = loanData;
+      next();
+    }
+  } catch (error) {
+    next({
+      error: {
+        status: 500,
+        message: "Something is wrong, loan application not found!",
+      },
+    });
+  }
+};
+
+/**
+ * @return all loans details with pagination
+ */
+const getLoanByStatus = async (req, res, next) => {
+  try {
+    let filter = "";
+    if (res.locals.role === "User") {
+      filter = {
+        userId: res.locals.user.id,
+        status: req.query.status,
+      };
+    } else {
+      filter = {
+        status: req.query.status,
+      };
+    }
+    let allLoans = await loanTable.findAll({
+      where: filter,
+    });
+    res.locals.length = allLoans.length;
+    let loanData = await loanTable.findAll({
+      where: filter,
+      order: ["id"],
+      limit: req.query.limit,
+      offset: req.query.limit * parseInt(req.query.offset - 1),
+    });
     if (loanData.length === 0) {
       next({
         error: {
@@ -92,12 +138,37 @@ const getLoanById = async (req, res, next) => {
       ],
     });
     if (loanFind !== null) {
-      let carFind = await carTable.findOne({ where: { id: loanFind.carId } });
+      let carFind = await carTable.findOne({
+        where: { id: loanFind.carId },
+        attributes: {
+          exclude: ["id", "createdAt", "updatedAt"],
+        },
+      });
       if (carFind.length !== 0) {
-        loanFind.dataValues.carMaker = carFind.dataValues.make;
-        loanFind.dataValues.carModel = carFind.dataValues.model;
-        loanFind.dataValues.carModel_type = carFind.dataValues.model_type;
-        loanFind.dataValues.carImage = carFind.dataValues.image;
+        let UserFind = await userTable.findOne({
+          where: { id: loanFind.userId },
+          attributes: {
+            exclude: [
+              "id",
+              "prefix",
+              "state",
+              "medicalcardImage",
+              "licenseFirstName",
+              "licenseLastName",
+              "licenseIssueDate",
+              "licenceNumber",
+              "licenceType",
+              "licenceExpireDate",
+              "licenceIssueState",
+              "licenceBackImage",
+              "licenceFrontImage",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        });
+        loanFind.dataValues.carDetails = carFind;
+        loanFind.dataValues.userDetails = UserFind;
         res.locals.loans = loanFind;
         next();
       } else {
@@ -203,11 +274,6 @@ const updateLoanStatus = async (req, res, next) => {
         { status: req.body.status },
         { where: { id: req.params.id } }
       );
-      let loanData = await loanTable.findOne({ where: { id: req.params.id } });
-      let userData = await userTable.findOne({
-        where: { id: loanData.userId },
-      });
-      res.locals.email = userData.email
       next();
     } else {
       next({
@@ -226,6 +292,7 @@ const updateLoanStatus = async (req, res, next) => {
 
 module.exports = {
   getLoan,
+  getLoanByStatus,
   getLoanById,
   newLoan,
   updateLoan,

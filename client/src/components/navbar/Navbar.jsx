@@ -27,7 +27,6 @@ const Navbar = () => {
   };
   const logout = () => {
     localStorage.removeItem("token");
-    toggleNav();
     cookie.remove("contactNo");
     cookie.remove("carDetails");
     cookie.remove("leadDetails");

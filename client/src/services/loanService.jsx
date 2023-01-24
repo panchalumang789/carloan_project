@@ -25,7 +25,22 @@ class loanService {
           Authorization: data.headerData,
         },
       });
-      console.log(output);
+      return output.data;
+    } catch (error) {
+      return error.response;
+    }
+  };
+
+  getLoanbyStatus = async (data) => {
+    try {
+      const output = await axios.get(
+        `${process.env.REACT_APP_HOST_URL}loans/status?status=${data.status}&offset=${data.offset}&limit=${data.limit}`,
+        {
+          headers: {
+            Authorization: data.headerData,
+          },
+        }
+      );
       return output.data;
     } catch (error) {
       return error.response;
@@ -63,6 +78,20 @@ class loanService {
         }
       );
       output = updateLoan.data;
+    } catch (err) {
+      error = err.response;
+    }
+    return { output, error };
+  };
+
+  sendMail = async (data) => {
+    let output, error;
+    try {
+      const sendMail = await axios.put(
+        `${process.env.REACT_APP_HOST_URL}loan/sendMail/${data.loanId}`,
+        data.body
+      );
+      output = sendMail.data;
     } catch (err) {
       error = err.response;
     }

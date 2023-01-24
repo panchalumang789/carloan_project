@@ -24,7 +24,6 @@ const LoginDetails = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "all", defaultValues: cookie.get("contactNo") });
-  console.log(cookie.get("contactNo"));
   const sendOTP = async (contactNo) => {
     const result = await loginService.sendOTP({
       details: { ContactNo: contactNo },

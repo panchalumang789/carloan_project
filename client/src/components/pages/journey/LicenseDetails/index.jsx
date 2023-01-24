@@ -25,6 +25,7 @@ const LicenseDetails = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     mode: "all",
@@ -35,6 +36,13 @@ const LicenseDetails = () => {
       licenceIssueState: cookieData.licenceIssueState,
     },
   });
+
+  useEffect(() => {
+    if (cookieData.licenceIssueState) {
+      setValue("licenceIssueState", cookieData.licenceIssueState);
+    }
+    //eslint-disable-next-line
+  }, [cookieData]);
 
   const [States, setStates] = useState([]);
   const getStates = async () => {

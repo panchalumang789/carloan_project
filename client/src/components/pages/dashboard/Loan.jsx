@@ -6,6 +6,35 @@ import { CounterUp, selectClasses } from "../journey/extra/Widget";
 import Swal from "sweetalert2";
 window.Swal = Swal;
 
+const sendMail = async (loanStatus, loanId) => {
+  if (loanStatus === "Approved") {
+    const mailService = new loanService();
+    const { output, error } = await mailService.sendMail({
+      loanId: loanId,
+    });
+    console.log(output);
+    if (!output) {
+      toast.error(error.data.message, {
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+        position: "top-center",
+      });
+    } else {
+      if (output.mailstatus) {
+        toast.success(output.mailstatus, {
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+          position: "top-center",
+        });
+      }
+    }
+  }
+};
+
 const Loan = () => {
   const location = useLocation();
   const state = location.state;
@@ -82,17 +111,7 @@ const Loan = () => {
               position: "top-center",
             });
           } else {
-            if (output.mailstatus) {
-              setTimeout(() => {
-                toast.success(output.mailstatus, {
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  theme: "light",
-                  position: "top-center",
-                });
-              }, 700);
-            }
+            sendMail(e.target.value, loanid.loanId);
             toast.success(output.message, {
               closeOnClick: true,
               pauseOnHover: true,
@@ -116,25 +135,70 @@ const Loan = () => {
         <div className="flex h-full w-full gap-x-6">
           <ToastContainer />
           <div className="w-5/6 border-2 border-primary-color-1 dark:border-primary-color-5 lg:w-1/4 p-3">
-            <p className="text-lg font-medium">Loan Summary</p>
-            <div className="p-5">
-              <div>
-                <span>Loan id: </span>
-                <span className="font-semibold text-lg mx-auto">
-                  {loanDetails.id}
-                </span>
+            <div>
+              <p className="text-lg font-medium">Customer Summary</p>
+              <div className="p-5 text-sm">
+                <div>
+                  <span>Name: </span>
+                  <span className="font-semibold text-base mx-auto">
+                    {loanDetails.userDetails
+                      ? loanDetails.userDetails.firstName +
+                        " " +
+                        loanDetails.userDetails.lastName
+                      : "Invalid"}
+                  </span>
+                </div>
+                <div>
+                  <span>Contact no: </span>
+                  <span className="font-semibold text-base mx-auto">
+                    {loanDetails.userDetails
+                      ? loanDetails.userDetails.contactNo
+                      : "Invalid"}
+                  </span>
+                </div>
+                <div>
+                  <span>Email: </span>
+                  <span className="font-semibold text-base mx-auto">
+                    {loanDetails.userDetails
+                      ? loanDetails.userDetails.email
+                      : "Invalid"}
+                  </span>
+                </div>
+                <div>
+                  <span>Income: </span>
+                  <span className="font-semibold text-base mx-auto">
+                    {loanDetails.user_income} &#x20B9;
+                  </span>
+                </div>
+                <div>
+                  <span>Work status: </span>
+                  <span className="font-semibold text-base mx-auto">
+                    {loanDetails.user_status}
+                  </span>
+                </div>
               </div>
-              <div>
-                <span>Applied on: </span>
-                <span className="font-semibold text-lg mx-auto">
-                  {new Date(loanDetails.createdAt).toLocaleDateString()}
-                </span>
-              </div>
-              <div>
-                <span>Last update on: </span>
-                <span className="font-semibold text-lg mx-auto">
-                  {new Date(loanDetails.updatedAt).toLocaleDateString()}
-                </span>
+            </div>
+            <div>
+              <p className="text-lg font-medium">Loan Summary</p>
+              <div className="p-5 text-sm">
+                <div>
+                  <span>Loan id: </span>
+                  <span className="font-semibold text-base">
+                    {loanDetails.id}
+                  </span>
+                </div>
+                <div>
+                  <span>Applied on: </span>
+                  <span className="font-semibold text-base">
+                    {new Date(loanDetails.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+                <div>
+                  <span>Last update on: </span>
+                  <span className="font-semibold text-base">
+                    {new Date(loanDetails.updatedAt).toLocaleDateString()}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -142,7 +206,7 @@ const Loan = () => {
             <div className="flex justify-between px-1">
               <Link
                 to={"/dashboard"}
-                className="group font-medium flex items-center justify-end gap-x-2 w-32 text-center p-3 border-2 bg-white/30 border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-7"
+                className="group font-medium flex items-center justify-end gap-x-2 w-32 text-center p-3 border-2 bg-white/30 border-primary-color-1 dark:bg-primary-color-9 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-7"
               >
                 <em className="group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left"></em>
                 All loans
@@ -156,7 +220,7 @@ const Loan = () => {
                     id="status"
                     className={
                       selectClasses +
-                      " my-0.5 dark:border-2 dark:border-primary-color-7"
+                      " my-0.5 dark:border-2 dark:border-primary-color-7 dark:bg-primary-color-9"
                     }
                     value={status}
                     onChange={editLoan}
@@ -171,29 +235,33 @@ const Loan = () => {
             </div>
             <div className="border-t-2 border-primary-color-1 dark:border-primary-color-5 px-4 py-2">
               <p className="font-medium text-xl pt-1">Loan Details</p>
-              <div className="flex">
-                <div>
+              <div className="flex gap-x-6 py-2">
+                <div className="flex items-center gap-x-1">
                   <span>Approx amount: </span>
-                  <span className="font-medium text-lg mx-auto">
-                    {loanDetails.approx_price} &#x20B9;
+                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
+                    <CounterUp num={loanDetails.approx_price} />
+                    &#x20B9;
                   </span>
                 </div>
-                <div>
+                <div className="flex items-center gap-x-1">
                   <span>Deposit: </span>
-                  <span className="font-medium text-lg mx-auto">
-                    {loanDetails.deposit} &#x20B9;
+                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
+                    <CounterUp num={loanDetails.deposit} />
+                    &#x20B9;
                   </span>
                 </div>
-                <div>
+                <div className="flex items-center gap-x-1">
                   <span>Term: </span>
-                  <span className="font-medium text-lg mx-auto">
-                    {loanDetails.term} &#x20B9;
+                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
+                    <CounterUp num={loanDetails.term} />
+                    &#x20B9;
                   </span>
                 </div>
-                <div>
+                <div className="flex items-center gap-x-1">
                   <span>Balloon: </span>
-                  <span className="font-medium text-lg mx-auto">
-                    {loanDetails.balloon} &#x20B9;
+                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
+                    <CounterUp num={loanDetails.balloon} />
+                    &#x20B9;
                   </span>
                 </div>
               </div>
@@ -205,25 +273,31 @@ const Loan = () => {
                   <div>
                     <span>Maker: </span>
                     <span className="font-medium text-lg mx-auto">
-                      {loanDetails.carMaker}
+                      {loanDetails.carDetails
+                        ? loanDetails.carDetails.make
+                        : "Invalid"}
                     </span>
                   </div>
                   <div>
                     <span>Model: </span>
                     <span className="font-medium text-lg mx-auto">
-                      {loanDetails.carModel}
+                      {loanDetails.carDetails
+                        ? loanDetails.carDetails.model
+                        : "Invalid"}
                     </span>
                   </div>
                   <div>
                     <span>Mode-type: </span>
                     <span className="font-medium text-lg mx-auto">
-                      {loanDetails.carModel_type}
+                      {loanDetails.carDetails
+                        ? loanDetails.carDetails.model_type
+                        : "Invalid"}
                     </span>
                   </div>
                 </div>
               </div>
               <div className="h-32">
-                {/* <img src={loanDetails.carImage} alt="car preview image" /> */}
+                {/* <img src={loanDetails.carDetails.image} alt="car preview image" /> */}
                 <input
                   className="h-36 pb-1"
                   type="image"
@@ -238,40 +312,35 @@ const Loan = () => {
               <p className="font-medium text-xl pt-1">
                 Income Details <span className="text-sm">(monthly)</span>
               </p>
-              <div className="flex py-2 gap-x-8">
+              <div className="flex pt-3 pb-2 gap-x-8 tex-base">
                 <div className="flex flex-col items-center ">
                   <span>Rental income: </span>
-                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
-                    <CounterUp num={incomeDetails.rental_income} />
-                    &#x20B9;
+                  <span className="font-semibold">
+                    {incomeDetails.rental_income} &#x20B9;
                   </span>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Investment income: </span>
-                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
-                    <CounterUp num={incomeDetails.investment_income} />
-                    &#x20B9;
+                  <span className="font-semibold">
+                    {incomeDetails.investment_income} &#x20B9;
                   </span>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Salary sacrifice: </span>
-                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
-                    <CounterUp num={incomeDetails.salary_sacrifice} />
-                    &#x20B9;
+                  <span className="font-semibold">
+                    {incomeDetails.salary_sacrifice} &#x20B9;
                   </span>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Centralink benifit: </span>
-                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
-                    <CounterUp num={incomeDetails.centralink_benifit} />
-                    &#x20B9;
+                  <span className="font-semibold">
+                    {incomeDetails.centralink_benifit} &#x20B9;
                   </span>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Foreign income: </span>
-                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
-                    <CounterUp num={incomeDetails.foreign_income} />
-                    &#x20B9;
+                  <span className="font-semibold">
+                    {incomeDetails.foreign_income} &#x20B9;
                   </span>
                 </div>
               </div>
@@ -280,51 +349,58 @@ const Loan = () => {
               <p className="font-medium text-xl pt-1">
                 Expenses Details <span className="text-sm">(monthly)</span>
               </p>
-              <div className="flex py-2 gap-x-8">
+              <div className="flex pt-3 pb-2 gap-x-8 text-base">
                 <div className="flex flex-col items-center ">
                   <span>Vehicle running cost: </span>
-                  <div className="flex gap-x-1 font-medium text-lg mx-auto">
-                    <CounterUp num={expensesDetails.vehicle_running_cost} />
-                    &#x20B9;
+                  <div className="font-semibold">
+                    {expensesDetails.vehicle_running_cost} &#x20B9;
                   </div>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Travel cost: </span>
-                  <div className="flex gap-x-1 font-medium text-lg mx-auto">
-                    <CounterUp num={expensesDetails.travel_cost} />
-                    &#x20B9;
+                  <div className="font-semibold">
+                    {expensesDetails.travel_cost} &#x20B9;
                   </div>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Utilities cost: </span>
-                  <div className="flex gap-x-1 font-medium text-lg mx-auto">
-                    <CounterUp num={expensesDetails.utilities_cost} />
-                    &#x20B9;
+                  <div className="font-semibold">
+                    {expensesDetails.utilities_cost} &#x20B9;
                   </div>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Insurances: </span>
-                  <div className="flex gap-x-1 font-medium text-lg mx-auto">
-                    <CounterUp num={expensesDetails.insurance} />
-                    &#x20B9;
+                  <div className="font-semibold">
+                    {expensesDetails.insurance} &#x20B9;
                   </div>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Telephone & Internet: </span>
-                  <div className="flex gap-x-1 font-medium text-lg mx-auto">
-                    <CounterUp num={expensesDetails.tel_internet} />
-                    &#x20B9;
+                  <div className="font-semibold">
+                    {expensesDetails.tel_internet} &#x20B9;
                   </div>
                 </div>
                 <div className="flex flex-col items-center ">
                   <span>Entertainment: </span>
-                  <div className="flex gap-x-1 font-medium text-lg mx-auto">
-                    <CounterUp num={expensesDetails.entertainment} />
-                    &#x20B9;
+                  <div className="font-semibold">
+                    {expensesDetails.entertainment} &#x20B9;
                   </div>
                 </div>
               </div>
             </div>
+            {state !== "Admin" && (
+              <div className="flex justify-around lg:justify-between items-center border-2 max-w-screen-sm w-full mx-auto px-3 border-primary-color-1 dark:border-primary-color-7 rounded-md">
+                <p className="font-medium text-xl pt-1">Upload Document</p>
+                <Link
+                  id="new_loan"
+                  to={"/journey/documents"}
+                  className="font-semibold text-lg text-primary-color-4 py-2 pr-3 border-primary-color-1 dark:border-primary-color-7"
+                >
+                  <span className=" pr-0.5 fa-solid fa-plus"></span>
+                  <span> Add</span>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       )}

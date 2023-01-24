@@ -2,6 +2,8 @@ const nodemailer = require("nodemailer");
 const adminTable = require("../models/admin");
 const fs = require("fs");
 const { promisify } = require("util");
+const loanTable = require("../models/loan");
+const userTable = require("../models/user");
 const readFile = promisify(fs.readFile);
 
 const addAdmin = async (req, res, next) => {
@@ -35,6 +37,12 @@ const adminLogin = async (req, res, next) => {
 };
 
 const sendMail = async (req, res, next) => {
+  let loanData = await loanTable.findOne({ where: { id: req.params.id } });
+  let userData = await userTable.findOne({
+    where: { id: loanData.userId },
+  });
+  res.locals.email = userData.email;
+
   let transporter = nodemailer.createTransport({
     port: 587,
     host: "mail.mailtest.radixweb.net",
@@ -48,7 +56,7 @@ const sendMail = async (req, res, next) => {
     },
   });
   var mailOptions = {
-    from: "testdotnet@mailtest.radixweb.net",
+    from: "Carloan Project testdotnet@mailtest.radixweb.net",
     to: res.locals.email,
     subject: "CARLOAN Update mail for loan status",
     html: await readFile("mailtemp.html", "utf8"),

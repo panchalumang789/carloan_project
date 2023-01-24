@@ -1,20 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import loanService from "services/loanService";
+import { selectClasses } from "../journey/extra/Widget";
 
 const statusClass =
   "font-medium text-base after:w-full hover:after:block after:h-0.5 after:bg-primary-color-1 dark:text-primary-color-7 dark:after:bg-primary-color-7 after:transition-all after:duration-700 after:rounded-xl after:mt-1.5";
 
 const LoanList = () => {
+  const [limit, setlimit] = useState(5);
+  const [page, setpage] = useState(1);
   const [loans, setLoans] = useState([]);
   const [role, setrole] = useState();
+  const [length, setlength] = useState();
   const [status, setstatus] = useState("In progress");
   useEffect(() => {
-    const gerLoans = new loanService();
+    const loanData = new loanService();
     (async () => {
-      const getLoan = await gerLoans.getLoan({
+      // const getLoan = await loanData.getLoan({
+      //   headerData: localStorage.getItem("token"),
+      // });
+      const getLoan = await loanData.getLoanbyStatus({
+        status: status,
+        limit: limit,
+        offset: page,
         headerData: localStorage.getItem("token"),
       });
+      setlength(getLoan.length);
       if (getLoan.user && getLoan.user.role === "Admin") {
         setrole(getLoan.user.role);
       }
@@ -28,7 +39,7 @@ const LoanList = () => {
     })();
 
     return () => {};
-  }, [status]);
+  }, [status, limit, page]);
 
   const filterLoan = (value) => {
     setstatus(value);
@@ -146,6 +157,39 @@ const LoanList = () => {
               </Link>
             );
           })}
+          <div className="flex justify-between py-4 px-20 font-semibold text-lg">
+            <div className="flex gap-x-2">
+              Pages
+              {Array.from({ length: Math.ceil(length / limit) }, (_, index) => (
+                <div key={index} className="">
+                  <button
+                    className=" aria-pressed:text-primary-color-4 aria-pressed:scale-105 px-2 cursor-pointer"
+                    aria-pressed={page === index + 1}
+                    onClick={() => setpage(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div>
+              <span className="text-base font-medium mx-2">Limit</span>
+              <select
+                className={
+                  selectClasses +
+                  " w-20 py-1 outline-2 outline outline-primary-color-4"
+                }
+                onClick={(e) => setlimit(e.target.value)}
+                name="pagelimit"
+                id="limit"
+              >
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
     </div>

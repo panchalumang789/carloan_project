@@ -40,7 +40,6 @@ const CarDetails = () => {
     if (cookie.get("carDetails")) {
       const cookieData = cookie.get("carDetails");
       setCarDetail(cookieData);
-      console.log(CarDetail);
     }
     return () => {};
     // eslint-disable-next-line
@@ -85,7 +84,6 @@ const CarDetails = () => {
   }, [watch("model")]);
 
   const getCar = async (data) => {
-    console.log("formdata", data);
     if (Car.id) {
       let leadCookie = cookie.get("leadDetails");
       cookie.remove("leadDetails");

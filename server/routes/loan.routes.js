@@ -15,6 +15,19 @@ loanRoutes.get(
 );
 
 loanRoutes.get(
+  "/loans/status/",
+  authorization.verifyToken,
+  loanController.getLoanByStatus,
+  (req, res) => {
+    res.status(200).json({
+      loan: res.locals.loans,
+      user: res.locals.user,
+      length: res.locals.length,
+    });
+  }
+);
+
+loanRoutes.get(
   "/loan/:id",
   authorization.verifyToken,
   loanController.getLoanById,
@@ -46,13 +59,14 @@ loanRoutes.put(
   "/loan/status/:id",
   authorization.verifyToken,
   loanController.updateLoanStatus,
-  adminController.sendMail,
   (req, res) => {
     res.status(200).json({
       message: "Loan status updated successfully.",
-      mailstatus: res.locals.mailStatus,
     });
   }
 );
 
+loanRoutes.put("/loan/sendMail/:id", adminController.sendMail, (req, res) => {
+  res.status(200).json({ mailstatus: res.locals.mailStatus });
+});
 module.exports = loanRoutes;
