@@ -60,7 +60,7 @@ const AdminLogin = () => {
         x: window.innerWidth,
         transition: { duration: 0.3 },
       }}
-      className="absolute top-0 left-0 h-full w-full bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7"
+      className="absolute top-0 left-0 h-full w-full bg-primary-color-5 dark:bg-primary-color-8 text-primary-color-4 dark:text-primary-color-7"
     >
       {Loading && (
         <div className="h-screen w-screen flex justify-center items-center mx-auto bg-transparent/30 dark:bg-transparent/60 fixed">
@@ -132,7 +132,7 @@ const AdminLogin = () => {
               <div className="w-full flex mx-auto justify-end">
                 <button
                   type="submit"
-                  className="group font-medium flex items-center justify-start gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
+                  className="group font-medium flex items-center justify-start gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-9 dark:hover:bg-primary-color-8 rounded-md dark:border-2 dark:border-primary-color-5"
                 >
                   Next
                   <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right" />

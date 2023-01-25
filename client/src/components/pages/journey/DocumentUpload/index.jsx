@@ -32,7 +32,7 @@ const DocumentUpload = () => {
         x: window.innerWidth,
         transition: { duration: 0.3 },
       }}
-      className="absolute top-0 left-0 h-full w-full bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7"
+      className="absolute top-0 left-0 h-full w-full bg-primary-color-5 dark:bg-primary-color-8 text-primary-color-4 dark:text-primary-color-7"
     >
       {Loading && (
         <div className="h-screen w-screen flex justify-center items-center mx-auto bg-transparent/30 dark:bg-transparent/60 fixed">
@@ -69,7 +69,7 @@ const DocumentUpload = () => {
               <FormTitle formTitle={"Identity"} />
               <div className="flex flex-col">
                 <div className={inputClasses}>
-                  <div className="flex justify-between items-center text-primary-color-4 px-2">
+                  <div className="flex justify-between items-center text-primary-color-1 px-2 dark:text-primary-color-7">
                     <label>Driving license (front)</label>
                     <label className="py-1 px-2" htmlFor="license_front">
                       Add {console.log(getValues("licenceFrontImage"))}
@@ -93,7 +93,7 @@ const DocumentUpload = () => {
               </div>
               <div className="flex flex-col">
                 <div className={inputClasses}>
-                  <div className="flex justify-between items-center text-primary-color-4 px-2">
+                  <div className="flex justify-between items-center text-primary-color-1 px-2 dark:text-primary-color-7">
                     <label>Driving license (back)</label>
                     <label className="py-1 px-2" htmlFor="license_back">
                       Add
@@ -116,7 +116,7 @@ const DocumentUpload = () => {
               </div>
               <div className="flex flex-col">
                 <div className={inputClasses}>
-                  <div className="flex justify-between items-center text-primary-color-4 px-2">
+                  <div className="flex justify-between items-center text-primary-color-1 px-2 dark:text-primary-color-7">
                     <label>Medicare card</label>
                     <label className="py-1 px-2" htmlFor="medicare_card">
                       Add
@@ -140,7 +140,7 @@ const DocumentUpload = () => {
               <FormTitle formTitle={"Income verification"} />
               <div className="flex flex-col">
                 <div className={inputClasses}>
-                  <div className="flex justify-between items-center text-primary-color-4 px-2">
+                  <div className="flex justify-between items-center text-primary-color-1 px-2 dark:text-primary-color-7">
                     <label>Most recent payslip</label>
                     <label className="py-1 px-2" htmlFor="most_recent_payslip">
                       Add {}
@@ -163,7 +163,7 @@ const DocumentUpload = () => {
               </div>
               <div className="flex flex-col">
                 <div className={inputClasses}>
-                  <div className="flex justify-between items-center text-primary-color-4 px-2">
+                  <div className="flex justify-between items-center text-primary-color-1 px-2 dark:text-primary-color-7">
                     <label>Second most recent payslip</label>
                     <label
                       className="py-1 px-2"
@@ -187,13 +187,15 @@ const DocumentUpload = () => {
                   </span>
                 )}
               </div>
-              <button
-                type="submit"
-                className="group font-medium flex items-center justify-start gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
-              >
-                Next
-                <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right" />
-              </button>
+              <div className="w-full flex justify-end">
+                <button
+                  type="submit"
+                  className="group font-medium flex items-center justify-start gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-9 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-5"
+                >
+                  Next
+                  <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right" />
+                </button>
+              </div>
             </div>
           </form>
         </div>

@@ -54,13 +54,13 @@ const Navbar = () => {
             </div>
           </div>
           {localStorage.getItem("token") ? (
-            <div className="hidden md:flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-5">
+            <div className="hidden md:flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7">
               <Link to={"/"} onClick={logout} className="text-2xl">
                 LOGOUT
               </Link>
             </div>
           ) : (
-            <div className="hidden md:flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-5">
+            <div className="hidden md:flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7">
               <Link to={"/login"} className="text-2xl">
                 LOGIN
               </Link>
@@ -71,19 +71,19 @@ const Navbar = () => {
               <span
                 className={
                   Navbar.span1 +
-                  " transition-all after:duration-500 after:w-9 after:my-1 after:rounded-xl after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:block"
+                  " transition-all after:duration-500 after:w-9 after:my-1 after:rounded-xl after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-5 after:block"
                 }
               ></span>
               <span
                 className={
                   Navbar.span2 +
-                  " transition-all after:duration-500 after:w-5 after:my-1 after:rounded-xl after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:block"
+                  " transition-all after:duration-500 after:w-5 after:my-1 after:rounded-xl after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-5 after:block"
                 }
               ></span>
               <span
                 className={
                   Navbar.span3 +
-                  " transition-all after:duration-500 after:w-9 after:my-1 after:rounded-xl after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-3 after:block"
+                  " transition-all after:duration-500 after:w-9 after:my-1 after:rounded-xl after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-5 after:block"
                 }
               ></span>
             </div>
@@ -93,7 +93,7 @@ const Navbar = () => {
       <div
         className={
           Navbar.navbar +
-          " fixed font-medium w-screen md:w-1/3 transition-all duration-500 bg-primary-color-3 text-primary-color-4 dark:bg-primary-color-6 dark:text-primary-color-7 z-10 top-0"
+          " fixed font-medium w-screen md:w-1/3 transition-all duration-500 bg-primary-color-3 text-primary-color-4 dark:bg-primary-color-9 dark:text-primary-color-7 z-10 top-0"
         }
       >
         <div className="flex flex-col justify-center items-center gap-y-5 h-screen uppercase">

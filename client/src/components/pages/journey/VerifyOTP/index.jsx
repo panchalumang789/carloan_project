@@ -122,7 +122,7 @@ const VerifyOTP = () => {
         x: window.innerWidth,
         transition: { duration: 0.3 },
       }}
-      className="absolute top-0 left-0 h-full w-full bg-primary-color-5 dark:bg-primary-color-1 text-primary-color-4 dark:text-primary-color-7"
+      className="absolute top-0 left-0 h-full w-full bg-primary-color-5 dark:bg-primary-color-8 text-primary-color-4 dark:text-primary-color-7"
     >
       {Loading && (
         <div className="h-screen w-screen flex justify-center items-center mx-auto bg-transparent/30 dark:bg-transparent/60 fixed">
@@ -162,7 +162,7 @@ const VerifyOTP = () => {
             onKeyUp={(e) => handleInput(e)}
           >
             <input
-              className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-30"
+              className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-7 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 5ont-medium placeholder:text-primary-color-1 placeholder:opacity-30"
               type="text"
               value={OTP[0]}
               maxLength="1"
@@ -173,7 +173,7 @@ const VerifyOTP = () => {
               ref={inputRef}
             />
             <input
-              className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-30"
+              className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-7 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 5ont-medium placeholder:text-primary-color-1 placeholder:opacity-30"
               type="text"
               value={OTP[1]}
               maxLength="1"
@@ -182,7 +182,7 @@ const VerifyOTP = () => {
               placeholder="0"
             />
             <input
-              className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-30"
+              className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-7 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 5ont-medium placeholder:text-primary-color-1 placeholder:opacity-30"
               type="text"
               value={OTP[2]}
               maxLength="1"
@@ -191,7 +191,7 @@ const VerifyOTP = () => {
               placeholder="0"
             />
             <input
-              className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-7 dark:bg-primary-color-6 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-30"
+              className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-7 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 5ont-medium placeholder:text-primary-color-1 placeholder:opacity-30"
               type="text"
               value={OTP[3]}
               maxLength="1"
@@ -203,7 +203,7 @@ const VerifyOTP = () => {
           <div className="w-full flex mx-auto justify-start">
             <Link
               to={"/journey/loginDetail"}
-              className="group font-medium flex items-center justify-end gap-x-2 w-28 h-14 text-center p-3 border border-primary-color-1 dark:bg-primary-color-6 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
+              className="group font-medium flex items-center justify-end gap-x-2 w-28 h-14 text-center p-3 border border-primary-color-1 dark:bg-primary-color-9 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-5"
             >
               <em className=" group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left"></em>{" "}
               Edit Number
