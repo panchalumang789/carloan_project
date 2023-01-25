@@ -32,8 +32,9 @@ class loanService {
   };
 
   getLoanbyStatus = async (data) => {
+    let output, error;
     try {
-      const output = await axios.get(
+      const findLoan = await axios.get(
         `${process.env.REACT_APP_HOST_URL}loans/status?status=${data.status}&offset=${data.offset}&limit=${data.limit}`,
         {
           headers: {
@@ -41,10 +42,11 @@ class loanService {
           },
         }
       );
-      return output.data;
-    } catch (error) {
-      return error.response;
+      output = findLoan.data;
+    } catch (err) {
+      error = err.response.data;
     }
+    return { output, error };
   };
 
   getLoanbyId = async (data) => {

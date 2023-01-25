@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Typewriter from "typewriter-effect";
 import { useNavigate } from "react-router-dom";
@@ -7,11 +7,14 @@ import Cookies from "universal-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import { FormTitle, inputClasses } from "../extra/Widget";
 import customerService from "services/customerServices";
-// import useProgress from "useProgress";
+import useProgress from "useProgress";
 
 const IncomeDetails = () => {
-  // const { setProgress } = useProgress();
-  // setProgress("80%");
+  const { setProgress } = useProgress();
+  useEffect(() => {
+    setProgress(80);
+  }, [setProgress]);
+
   let incomeService = new customerService();
   const [additional_income, setadditional_income] = useState(true);
   const cookie = new Cookies();
@@ -27,12 +30,12 @@ const IncomeDetails = () => {
     if (called) return;
     setCalled(true);
     let loanId = cookie.get("loanDetail");
+    console.log(loanId);
     try {
       const addIncome = await incomeService.addIncome({
         details: { ...data, ...loanId },
         headerData: localStorage.getItem("token"),
       });
-      console.log(addIncome);
       setTimeout(() => {
         navigate("/journey/expensesDetail");
       }, 2500);
@@ -48,7 +51,6 @@ const IncomeDetails = () => {
         { position: "top-center" }
       );
     } catch (error) {
-      console.log(error);
       toast.error(error.message, {
         closeOnClick: true,
         pauseOnHover: true,

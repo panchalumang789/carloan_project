@@ -47,7 +47,7 @@ const selectClasses =
   "p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-9 dark:text-primary-color-7 text-primary-color-1 font-medium";
 
 const CounterUp = (props) => {
-  return <h1>{<CountUp start={0} end={props.num} duration={1} />}</h1>;
+  return <h1>{<CountUp start={0} end={props.num} duration={0.5} />}</h1>;
 };
 
 export {

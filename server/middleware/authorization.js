@@ -117,6 +117,14 @@ const verifyOTP = async (req, res, next) => {
       const findUser = await userTable.findOne({
         where: { contactNo: req.body.ContactNo },
       });
+      // if (findUser === null) {
+      //   next({
+      //     error: {
+      //       status: 401,
+      //       message: "Unauthorized login, Please register first!",
+      //     },
+      //   });
+      // }
       if (findUser) {
         res.locals.users = findUser;
         credential = {

@@ -2,7 +2,6 @@ import axios from "axios";
 
 class loginService {
   adminLogin = async (data) => {
-    console.log(data);
     let output, error;
     try {
       const login = await axios.post(
@@ -13,8 +12,6 @@ class loginService {
     } catch (err) {
       error = err.response;
     }
-    console.log(output);
-    console.log(error);
     return { output, error };
   };
 }

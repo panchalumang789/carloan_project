@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,11 +9,13 @@ import Typewriter from "typewriter-effect";
 import customerService from "services/customerServices";
 import LoadingPage from "components/pages/journey/extra/LoadingPage";
 import OTPImage from "assest/images/OTPPage1.jpg";
-// import useProgress from "useProgress";
+import useProgress from "useProgress";
 
 const VerifyOTP = () => {
-  // const { setProgress } = useProgress();
-  // setProgress("40%");
+  const { setProgress } = useProgress();
+  useEffect(() => {
+    setProgress(40);
+  }, [setProgress]);
   const cookie = new Cookies();
   const loanServices = new loanService();
   const navigate = useNavigate();
@@ -40,17 +42,31 @@ const VerifyOTP = () => {
       if (OTP.join("").length === 4 && called === false) {
         called = true;
         setLoading(true);
-        let result = await verifyService.verifyOTP({
+        const { output, error } = await verifyService.verifyOTP({
           details: {
             ContactNo: cookie.get("contactNo").contactNo,
             code: OTP.join(""),
           },
         });
-        if (result.token) {
-          localStorage.setItem("token", result.token);
+        if (error) {
+          setLoading(false);
+          toast.error("Invalid OTP !", {
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            position: "top-center",
+          });
+          setOTP(["", "", "", ""]);
+          inputRef.current.focus();
+        } else {
+          if (output.token) {
+            localStorage.setItem("token", output.token);
+          }
         }
-        if (result.message === "approved") {
-          toast.success(`OTP: ${result.message}`, { position: "top-center" });
+        if (output.message === "approved") {
+          toast.success(`OTP: ${output.message}`, { position: "top-center" });
           let token = "";
           if (localStorage.getItem("token")) {
             token = localStorage.getItem("token");
@@ -88,18 +104,6 @@ const VerifyOTP = () => {
             .catch((error) => {
               console.error(error);
             });
-        } else {
-          setLoading(false);
-          toast.error("Invalid OTP !", {
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            position: "top-center",
-          });
-          setOTP(["", "", "", ""]);
-          inputRef.current.focus();
         }
       }
       while ((next = next.nextElementSibling)) {

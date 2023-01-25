@@ -11,10 +11,14 @@ import {
   inputClasses,
   selectClasses,
 } from "../extra/Widget";
+import { useEffect } from "react";
 
 const LeadDetail = () => {
   const { setProgress } = useProgress();
-  setProgress("0%");
+  useEffect(() => {
+    setProgress(0);
+  }, [setProgress]);
+
   const cookie = new Cookies();
   const [leadDetail] = useState(cookie.get("leadDetails"));
   const navigate = useNavigate();

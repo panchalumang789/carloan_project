@@ -35,7 +35,7 @@ const LandingPage = () => {
             initial={{ x: "-40%", scale: 1, opacity: 0 }}
             animate={{ x: "0%", scale: 1.25, opacity: 1 }}
             transition={{ duration: 0.75 }}
-            className="bg-transparent mix-blend-color-burn"
+            className="bg-transparent mix-blend-color-burn dark:mix-blend-multiply"
             src={LandingPageImage}
             alt="Banner"
           />

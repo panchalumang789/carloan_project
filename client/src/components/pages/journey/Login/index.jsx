@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -10,11 +10,13 @@ import Cookies from "universal-cookie";
 import { Navigator, inputClasses } from "../extra/Widget";
 import LoadingPage from "../extra/LoadingPage";
 import LoginImage from "assest/images/LoginImage.jpg";
-// import useProgress from "useProgress";
+import useProgress from "useProgress";
 
 const LoginDetails = () => {
-  // const { setProgress } = useProgress();
-  // setProgress("30%");
+  const { setProgress } = useProgress();
+  useEffect(() => {
+    setProgress(30);
+  }, [setProgress]);
   const cookie = new Cookies();
   const [Loading, setLoading] = useState(false);
   const navigate = useNavigate();

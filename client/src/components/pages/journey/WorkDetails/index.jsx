@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Typewriter from "typewriter-effect";
 import Cookies from "universal-cookie";
-// import useProgress from "useProgress";
+import useProgress from "useProgress";
 import {
   FormTitle,
   Navigator,
@@ -13,8 +13,10 @@ import {
 } from "../extra/Widget";
 
 const WorkDetails = () => {
-  // const { setProgress } = useProgress();
-  // setProgress("20%");
+  const { setProgress } = useProgress();
+  useEffect(() => {
+    setProgress(20);
+  }, [setProgress]);
   const cookie = new Cookies();
   const navigate = useNavigate();
   const [workDetail] = useState(cookie.get("leadDetails"));

@@ -2,18 +2,20 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-// import carsService from "services/carsServices";
 import Typewriter from "typewriter-effect";
 import Cookies from "universal-cookie";
 import CarMaker from "./CarMaker";
 import CarModel from "./CarModel";
 import CarModelType from "./CarModelType";
 import { FormTitle, Navigator } from "../extra/Widget";
-// import useProgress from "useProgress";
+import useProgress from "useProgress";
 
 const CarDetails = () => {
-  // const { setProgress } = useProgress();
-  // setProgress("10%");
+  const { setProgress } = useProgress();
+  useEffect(() => {
+    setProgress(10);
+  }, [setProgress]);
+
   const cookie = new Cookies();
   const navigate = useNavigate();
   const [Car, setCar] = useState({});
@@ -87,7 +89,7 @@ const CarDetails = () => {
     if (Car.id) {
       let leadCookie = cookie.get("leadDetails");
       cookie.remove("leadDetails");
-      cookie.set("carDetails", Car, { maxAge: 3600 });
+      cookie.set("carDetails", Car);
       cookie.set(
         "leadDetails",
         { ...leadCookie, carId: Car.id },

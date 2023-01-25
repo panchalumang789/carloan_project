@@ -55,13 +55,13 @@ const Navbar = () => {
           </div>
           {localStorage.getItem("token") ? (
             <div className="hidden md:flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7">
-              <Link to={"/"} onClick={logout} className="text-2xl">
+              <Link to={"/"} onClick={logout} className="text-2xl text-primary-color-1 dark:text-primary-color-7">
                 LOGOUT
               </Link>
             </div>
           ) : (
             <div className="hidden md:flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7">
-              <Link to={"/login"} className="text-2xl">
+              <Link to={"/login"} className="text-2xl text-primary-color-1 dark:text-primary-color-7">
                 LOGIN
               </Link>
             </div>

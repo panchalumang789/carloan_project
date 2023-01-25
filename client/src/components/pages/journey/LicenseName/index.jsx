@@ -1,15 +1,18 @@
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Typewriter from "typewriter-effect";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { FormTitle, Navigator, inputClasses } from "../extra/Widget";
-// import useProgress from "useProgress";
+import useProgress from "useProgress";
 
 const LicenseName = () => {
-  // const { setProgress } = useProgress();
-  // setProgress("60%");
+  const { setProgress } = useProgress();
+  useEffect(() => {
+    setProgress(60);
+  }, [setProgress]);
+
   const cookie = new Cookies();
   const navigate = useNavigate();
   let cookieData;
@@ -28,8 +31,8 @@ const LicenseName = () => {
   } = useForm({
     mode: "all",
     defaultValues: {
-      licenseFirstName: cookieData.licenseFirstName,
-      licenseLastName: cookieData.licenseLastName,
+      licenseFirstName: cookieData.licenseFirstName || cookieData.firstName,
+      licenseLastName: cookieData.licenseLastName || cookieData.lastName,
       licenseIssueDate: cookieData.licenseIssueDate,
     },
   });

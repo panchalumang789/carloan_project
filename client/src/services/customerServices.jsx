@@ -27,16 +27,18 @@ class customerService {
   };
 
   verifyOTP = async (data) => {
+    let output, error;
     try {
-      const output = await axios.post(
+      const verifyOTP = await axios.post(
         `${process.env.REACT_APP_HOST_URL}verify`,
         data.details,
         { headers }
       );
-      return output.data;
-    } catch (error) {
-      return error.response;
+      output = verifyOTP.data;
+    } catch (err) {
+      error = err.response;
     }
+    return { output, error };
   };
 
   findUserbyContact = async (data) => {
@@ -85,6 +87,7 @@ class customerService {
   };
 
   addIncome = async (data) => {
+    console.log(data);
     try {
       const output = await axios.post(
         `${process.env.REACT_APP_HOST_URL}income`,
@@ -95,6 +98,7 @@ class customerService {
           },
         }
       );
+      console.log(output.data);
       return output.data;
     } catch (error) {
       return error.response;

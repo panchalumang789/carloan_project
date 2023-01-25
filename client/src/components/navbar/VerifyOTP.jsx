@@ -31,35 +31,54 @@ const VerifyOTP = () => {
     if (OTP.join("").length === 4 && called === false) {
       called = true;
       setLoading(true);
-      let result = await userService.verifyOTP({
+      // let result = await userService.verifyOTP({
+      //   details: {
+      //     ContactNo: cookie.get("contactNo").contactNo,
+      //     code: OTP.join(""),
+      //   },
+      // });
+      let { output, error } = await userService.verifyOTP({
         details: {
           ContactNo: cookie.get("contactNo").contactNo,
           code: OTP.join(""),
         },
       });
-      if (result.message === "approved") {
-        toast.success(`OTP: ${result.message}`, {
-          position: "top-center",
-        });
-        if (result.token) {
-          localStorage.setItem("token", result.token);
+      if (error) {
+        if (error.data.message) {
+          toast.error(error.data.message, {
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            position: "top-center",
+          });
+        } else {
+          toast.error("Invalid OTP !", {
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            position: "top-center",
+          });
         }
-        cookie.remove("contactNo");
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 2000);
-      } else {
         setLoading(false);
-        toast.error("Invalid OTP !", {
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          position: "top-center",
-        });
         setOTP(["", "", "", ""]);
         inputRef.current.focus();
+      } else {
+        if (output.message === "approved") {
+          toast.success(`OTP: ${output.message}`, {
+            position: "top-center",
+          });
+          if (output.token) {
+            localStorage.setItem("token", output.token);
+          }
+          cookie.remove("contactNo");
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 2000);
+        }
       }
     }
   };

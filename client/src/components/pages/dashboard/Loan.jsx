@@ -4,6 +4,8 @@ import loanService from "services/loanService";
 import { toast, ToastContainer } from "react-toastify";
 import { CounterUp, selectClasses } from "../journey/extra/Widget";
 import Swal from "sweetalert2";
+import IncomeDetails from "./Loan/IncomeDetail/index";
+import ExpensesDetails from "./Loan/ExpensesDetail/index";
 window.Swal = Swal;
 
 const sendMail = async (loanStatus, loanId) => {
@@ -12,7 +14,6 @@ const sendMail = async (loanStatus, loanId) => {
     const { output, error } = await mailService.sendMail({
       loanId: loanId,
     });
-    console.log(output);
     if (!output) {
       toast.error(error.data.message, {
         closeOnClick: true,
@@ -41,13 +42,7 @@ const Loan = () => {
   const [loanDetails, setLoanData] = useState({});
   const [error, setError] = useState("");
   const [status, setstatus] = useState("");
-  const [incomeDetails, setIncomeData] = useState({
-    rental_income: "",
-    investment_income: "",
-    salary_sacrifice: "",
-    centralink_benifit: "",
-    foreign_income: "",
-  });
+  const [incomeDetails, setIncomeData] = useState({});
   const [expensesDetails, setExpensesData] = useState({});
   let { loanId } = useParams();
   useEffect(() => {
@@ -308,86 +303,8 @@ const Loan = () => {
                 />
               </div>
             </div>
-            <div className="border-t-2 border-primary-color-1 dark:border-primary-color-5 px-4 py-2">
-              <p className="font-medium text-xl pt-1">
-                Income Details <span className="text-sm">(monthly)</span>
-              </p>
-              <div className="flex pt-3 pb-2 gap-x-8 tex-base">
-                <div className="flex flex-col items-center ">
-                  <span>Rental income: </span>
-                  <span className="font-semibold">
-                    {incomeDetails.rental_income} &#x20B9;
-                  </span>
-                </div>
-                <div className="flex flex-col items-center ">
-                  <span>Investment income: </span>
-                  <span className="font-semibold">
-                    {incomeDetails.investment_income} &#x20B9;
-                  </span>
-                </div>
-                <div className="flex flex-col items-center ">
-                  <span>Salary sacrifice: </span>
-                  <span className="font-semibold">
-                    {incomeDetails.salary_sacrifice} &#x20B9;
-                  </span>
-                </div>
-                <div className="flex flex-col items-center ">
-                  <span>Centralink benifit: </span>
-                  <span className="font-semibold">
-                    {incomeDetails.centralink_benifit} &#x20B9;
-                  </span>
-                </div>
-                <div className="flex flex-col items-center ">
-                  <span>Foreign income: </span>
-                  <span className="font-semibold">
-                    {incomeDetails.foreign_income} &#x20B9;
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="border-y-2 border-primary-color-1 dark:border-primary-color-5 px-4 py-2">
-              <p className="font-medium text-xl pt-1">
-                Expenses Details <span className="text-sm">(monthly)</span>
-              </p>
-              <div className="flex pt-3 pb-2 gap-x-8 text-base">
-                <div className="flex flex-col items-center ">
-                  <span>Vehicle running cost: </span>
-                  <div className="font-semibold">
-                    {expensesDetails.vehicle_running_cost} &#x20B9;
-                  </div>
-                </div>
-                <div className="flex flex-col items-center ">
-                  <span>Travel cost: </span>
-                  <div className="font-semibold">
-                    {expensesDetails.travel_cost} &#x20B9;
-                  </div>
-                </div>
-                <div className="flex flex-col items-center ">
-                  <span>Utilities cost: </span>
-                  <div className="font-semibold">
-                    {expensesDetails.utilities_cost} &#x20B9;
-                  </div>
-                </div>
-                <div className="flex flex-col items-center ">
-                  <span>Insurances: </span>
-                  <div className="font-semibold">
-                    {expensesDetails.insurance} &#x20B9;
-                  </div>
-                </div>
-                <div className="flex flex-col items-center ">
-                  <span>Telephone & Internet: </span>
-                  <div className="font-semibold">
-                    {expensesDetails.tel_internet} &#x20B9;
-                  </div>
-                </div>
-                <div className="flex flex-col items-center ">
-                  <span>Entertainment: </span>
-                  <div className="font-semibold">
-                    {expensesDetails.entertainment} &#x20B9;
-                  </div>
-                </div>
-              </div>
-            </div>
+            <IncomeDetails incomeDetails={incomeDetails} />
+            <ExpensesDetails expensesDetails={expensesDetails} />
             {state !== "Admin" && (
               <div className="flex justify-around lg:justify-between items-center border-2 max-w-screen-sm w-full mx-auto px-3 border-primary-color-1 dark:border-primary-color-7 rounded-md">
                 <p className="font-medium text-xl pt-1">Upload Document</p>

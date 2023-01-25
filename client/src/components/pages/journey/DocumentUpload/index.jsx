@@ -17,7 +17,7 @@ const DocumentUpload = () => {
     formState: { errors },
   } = useForm({ mode: "all" });
 
-  const getMobile = (data) => {
+  const getDocument = (data) => {
     console.log(data);
   };
   const getImage = (data) => {
@@ -62,7 +62,7 @@ const DocumentUpload = () => {
             />
           </div>
           <form
-            onSubmit={handleSubmit(getMobile)}
+            onSubmit={handleSubmit(getDocument)}
             className="flex justify-center flex-col mx-auto"
           >
             <div className="flex flex-col gap-y-4">

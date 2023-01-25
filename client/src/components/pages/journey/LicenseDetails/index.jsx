@@ -6,17 +6,16 @@ import Typewriter from "typewriter-effect";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
+import useProgress from "useProgress";
 import {
   FormTitle,
   Navigator,
   inputClasses,
   selectClasses,
 } from "../extra/Widget";
-// import useProgress from "useProgress";
 
 const LicenseDetails = () => {
-  // const { setProgress } = useProgress();
-  // setProgress("70%");
+  const { setProgress } = useProgress();
   const cookie = new Cookies();
   const navigate = useNavigate();
   const userService = new customerService();
@@ -38,6 +37,7 @@ const LicenseDetails = () => {
   });
 
   useEffect(() => {
+    setProgress(70);
     if (cookieData.licenceIssueState) {
       setValue("licenceIssueState", cookieData.licenceIssueState);
     }
