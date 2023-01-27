@@ -127,12 +127,12 @@ const Loan = () => {
           {error.message}
         </div>
       ) : (
-        <div className="flex h-full w-full gap-x-6">
+        <div className="flex flex-col md:flex-row px-2 md:px-0 w-full gap-x-6 gap-y-2 overflow-auto md:overflow-hidden h-[calc(100%-190px)] md:h-[calc(100%-190px)]">
           <ToastContainer />
-          <div className="w-5/6 border-2 border-primary-color-1 dark:border-primary-color-5 lg:w-1/4 p-3">
+          <div className="w-full md:w-5/6 border-2 border-primary-color-1 dark:border-primary-color-5 lg:w-1/4 p-3">
             <div>
               <p className="text-lg font-medium">Customer Summary</p>
-              <div className="p-5 text-sm">
+              <div className="p-2 md:p-5 text-sm">
                 <div>
                   <span>Name: </span>
                   <span className="font-semibold text-base mx-auto">
@@ -175,7 +175,7 @@ const Loan = () => {
             </div>
             <div>
               <p className="text-lg font-medium">Loan Summary</p>
-              <div className="p-5 text-sm">
+              <div className="p-2 md:p-5 text-sm">
                 <div>
                   <span>Loan id: </span>
                   <span className="font-semibold text-base">
@@ -197,7 +197,7 @@ const Loan = () => {
               </div>
             </div>
           </div>
-          <div className="w-5/6 lg:w-3/4 flex flex-col gap-y-3 h-full overflow-y-auto">
+          <div className="w-full md:w-5/6 lg:w-3/4 flex flex-col gap-y-3 h-full md:overflow-y-auto">
             <div className="flex justify-between px-1">
               <Link
                 to={"/dashboard"}
@@ -230,31 +230,31 @@ const Loan = () => {
             </div>
             <div className="border-t-2 border-primary-color-1 dark:border-primary-color-5 px-4 py-2">
               <p className="font-medium text-xl pt-1">Loan Details</p>
-              <div className="flex gap-x-6 py-2">
+              <div className="flex flex-col md:flex-row gap-x-6 py-2">
                 <div className="flex items-center gap-x-1">
                   <span>Approx amount: </span>
-                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
+                  <span className="flex gap-x-1 font-medium text-lg">
                     <CounterUp num={loanDetails.approx_price} />
                     &#x20B9;
                   </span>
                 </div>
                 <div className="flex items-center gap-x-1">
                   <span>Deposit: </span>
-                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
+                  <span className="flex gap-x-1 font-medium text-lg">
                     <CounterUp num={loanDetails.deposit} />
                     &#x20B9;
                   </span>
                 </div>
                 <div className="flex items-center gap-x-1">
                   <span>Term: </span>
-                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
+                  <span className="flex gap-x-1 font-medium text-lg">
                     <CounterUp num={loanDetails.term} />
                     &#x20B9;
                   </span>
                 </div>
                 <div className="flex items-center gap-x-1">
                   <span>Balloon: </span>
-                  <span className="flex gap-x-1 font-medium text-lg mx-auto">
+                  <span className="flex gap-x-1 font-medium text-lg">
                     <CounterUp num={loanDetails.balloon} />
                     &#x20B9;
                   </span>
@@ -294,7 +294,7 @@ const Loan = () => {
               <div className="h-32">
                 {/* <img src={loanDetails.carDetails.image} alt="car preview image" /> */}
                 <input
-                  className="h-36 pb-1"
+                  className="h-24 md:h-36 pb-1"
                   type="image"
                   src={
                     "https://stimg.cardekho.com/images/carexteriorimages/930x620/Bentley/Flying-Spur/7776/1645012163948/front-left-side-47.jpg?tr=h-48"
@@ -311,7 +311,7 @@ const Loan = () => {
                 <Link
                   id="new_loan"
                   to={"/journey/documents"}
-                  className="font-semibold text-lg text-primary-color-4 py-2 pr-3 border-primary-color-1 dark:border-primary-color-7"
+                  className="font-semibold text-lg text-primary-color-4 dark:text-primary-color-7 py-2 pr-3 border-primary-color-1 dark:border-primary-color-7"
                 >
                   <span className=" pr-0.5 fa-solid fa-plus"></span>
                   <span> Add</span>

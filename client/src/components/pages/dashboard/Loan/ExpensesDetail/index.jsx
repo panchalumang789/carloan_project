@@ -13,39 +13,39 @@ const ExpensesDetail = (props) => {
           Expenses Details <span className="text-sm">(monthly)</span>
         </span>
       </p>
-      <div className="flex pt-3 pb-2 gap-x-8 text-base text-center text-clip">
-        <div className="flex flex-col">
+      <div className="flex flex-col md:flex-row pt-3 pb-2 gap-x-8 text-base md:text-center">
+        <div className="flex md:flex-col">
           <span>Vehicle running cost: </span>
           <div className="font-semibold">
             {expensesDetails ? expensesDetails.vehicle_running_cost : "0"}{" "}
             &#x20B9;
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex md:flex-col">
           <span>Travel cost: </span>
           <div className="font-semibold">
             {expensesDetails ? expensesDetails.travel_cost : "0"} &#x20B9;
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex md:flex-col">
           <span>Utilities cost: </span>
           <div className="font-semibold">
             {expensesDetails ? expensesDetails.utilities_cost : "0"} &#x20B9;
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex md:flex-col">
           <span>Insurances: </span>
           <div className="font-semibold">
             {expensesDetails ? expensesDetails.insurance : "0"} &#x20B9;
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex md:flex-col">
           <span>Telephone & Internet: </span>
           <div className="font-semibold">
             {expensesDetails ? expensesDetails.tel_internet : "0"} &#x20B9;
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex md:flex-col">
           <span>Entertainment: </span>
           <div className="font-semibold">
             {expensesDetails ? expensesDetails.entertainment : "0"} &#x20B9;

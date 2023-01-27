@@ -26,32 +26,32 @@ const IncomeDetails = (props) => {
           </Link>
         )}
       </p>
-      <div className="flex pt-3 pb-2 gap-x-8 tex-base text-center">
-        <div className="flex flex-col">
+      <div className="flex flex-col md:flex-row pt-3 pb-2 gap-x-8 tex-base md:text-center">
+        <div className="flex md:flex-col">
           <span>Rental income: </span>
           <span className="font-semibold">
             {incomeDetails ? incomeDetails.rental_income : 0} &#x20B9;
           </span>
         </div>
-        <div className="flex flex-col">
+        <div className="flex md:flex-col">
           <span>Investment income: </span>
           <span className="font-semibold">
             {incomeDetails ? incomeDetails.investment_income : 0} &#x20B9;
           </span>
         </div>
-        <div className="flex flex-col">
+        <div className="flex md:flex-col">
           <span>Salary sacrifice: </span>
           <span className="font-semibold">
             {incomeDetails ? incomeDetails.salary_sacrifice : 0} &#x20B9;
           </span>
         </div>
-        <div className="flex flex-col">
+        <div className="flex md:flex-col">
           <span>Centralink benifit: </span>
           <span className="font-semibold">
             {incomeDetails ? incomeDetails.centralink_benifit : 0} &#x20B9;
           </span>
         </div>
-        <div className="flex flex-col">
+        <div className="flex md:flex-col">
           <span>Foreign income: </span>
           <span className="font-semibold">
             {incomeDetails ? incomeDetails.foreign_income : 0} &#x20B9;
