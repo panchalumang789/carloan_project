@@ -105,7 +105,7 @@ const VerifyOTP = () => {
     <div className="absolute top-0 left-0 h-full w-full bg-primary-color-5 dark:bg-primary-color-8 text-primary-color-4 dark:text-primary-color-7">
       {Loading && (
         <div className="h-screen w-screen flex justify-center items-center mx-auto bg-transparent/30 dark:bg-transparent/60 fixed">
-          <LoadingPage stroke={"#e0f5f5"} wheel={"#A3BEBE"} />
+          <LoadingPage />
         </div>
       )}
       <ToastContainer />

@@ -5,12 +5,29 @@ let headers = {
 };
 
 class customerService {
-  getState = async (data) => {
-    let output = await axios.get(
-      `${process.env.REACT_APP_HOST_URL}${data.data.url}`,
-      { headers }
-    );
+  getState = async () => {
+    let output = await axios.get(`${process.env.REACT_APP_HOST_URL}states`, {
+      headers,
+    });
     return output.data;
+  };
+
+  getUser = async (data) => {
+    let output, error;
+    try {
+      const getUsers = await axios.get(
+        `${process.env.REACT_APP_HOST_URL}users?offset=${data.offset}&limit=${data.limit}`,
+        {
+          headers: {
+            Authorization: data.headerData,
+          },
+        }
+      );
+      output = getUsers.data;
+    } catch (err) {
+      error = err.response;
+    }
+    return { output, error };
   };
 
   sendOTP = async (data) => {
@@ -87,18 +104,16 @@ class customerService {
   };
 
   addIncome = async (data) => {
-    console.log(data);
     try {
       const output = await axios.post(
         `${process.env.REACT_APP_HOST_URL}income`,
         data.details,
         {
           headers: {
-            Authorization: `${data.headerData}`,
+            Authorization: data.headerData,
           },
         }
       );
-      console.log(output.data);
       return output.data;
     } catch (error) {
       return error.response;

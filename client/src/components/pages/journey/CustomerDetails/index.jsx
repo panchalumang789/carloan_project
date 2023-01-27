@@ -18,7 +18,7 @@ const CustomerDetails = () => {
   useEffect(() => {
     setProgress(50);
     (async () => {
-      const result = await userService.getState({ data: { url: "states" } });
+      const result = await userService.getState();
       setStates(result);
     })();
     //eslint-disable-next-line

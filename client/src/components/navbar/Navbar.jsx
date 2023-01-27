@@ -4,6 +4,7 @@ import Cookies from "universal-cookie";
 
 const Navbar = () => {
   const cookie = new Cookies();
+  const [LoggedIn, setLoggedIn] = useState(localStorage.getItem("token"));
   const [Navbar, setNavbar] = useState({
     navbar: "-right-full",
     span1: "",
@@ -26,6 +27,7 @@ const Navbar = () => {
     setNavbar(Navbar.navbar === "-right-full" ? open : close);
   };
   const logout = () => {
+    setLoggedIn("");
     localStorage.removeItem("token");
     cookie.remove("contactNo");
     cookie.remove("carDetails");
@@ -53,15 +55,22 @@ const Navbar = () => {
               </Link>
             </div>
           </div>
-          {localStorage.getItem("token") ? (
+          {LoggedIn !== "" ? (
             <div className="hidden md:flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7">
-              <Link to={"/"} onClick={logout} className="text-2xl text-primary-color-1 dark:text-primary-color-7">
+              <Link
+                to={"/"}
+                onClick={logout}
+                className="text-2xl text-primary-color-1 dark:text-primary-color-7"
+              >
                 LOGOUT
               </Link>
             </div>
           ) : (
             <div className="hidden md:flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7">
-              <Link to={"/login"} className="text-2xl text-primary-color-1 dark:text-primary-color-7">
+              <Link
+                to={"/login"}
+                className="text-2xl text-primary-color-1 dark:text-primary-color-7"
+              >
                 LOGIN
               </Link>
             </div>
@@ -98,8 +107,8 @@ const Navbar = () => {
       >
         <div className="flex flex-col justify-center items-center gap-y-5 h-screen uppercase">
           <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-5 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">
-            <Link to={"/"} className="text-2xl">
-              Get Overview
+            <Link to={"/dashboard"} onClick={toggleNav} className="text-2xl">
+              Dashboard
             </Link>
           </div>
           <div className="w-3/4 py-3 text-center after:block after:h-1 after:bg-primary-color-1 dark:after:bg-primary-color-5 after:rounded-3xl after:w-0 hover:after:w-full after:transition-all after:duration-700 after:mt-1.5">

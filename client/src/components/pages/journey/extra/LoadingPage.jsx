@@ -1,16 +1,16 @@
 import "./LoadingPage.css";
-const LoadingPage = (props) => {
+const LoadingPage = () => {
   return (
     <div className="loader fixed z-10">
       <svg
-        className="car"
+        className="car stroke-primary-color-1 dark:stroke-primary-color-7"
         width="102"
         height="40"
         xmlns="http://www.w3.org/2000/svg"
       >
         <g
+          id="car"
           transform="translate(2 1)"
-          stroke={props.stroke}
           fill="none"
           fillRule="evenodd"
           strokeLinecap="round"
@@ -22,18 +22,16 @@ const LoadingPage = (props) => {
             strokeWidth="3"
           />
           <ellipse
-            className="car__wheel--left"
+            className="car__wheel--left fill-primary-color-5 dark:fill-primary-color-9"
             strokeWidth="3.2"
-            fill={props.wheel}
             cx="83.493"
             cy="30.25"
             rx="6.922"
             ry="6.808"
           />
           <ellipse
-            className="car__wheel--right"
+            className="car__wheel--right fill-primary-color-5 dark:fill-primary-color-9"
             strokeWidth="3.2"
-            fill={props.wheel}
             cx="46.511"
             cy="30.25"
             rx="6.922"
@@ -56,7 +54,7 @@ const LoadingPage = (props) => {
           />
         </g>
       </svg>
-      <span className="text-xl font-semibold text-primary-color-7 pl-6 animate-pulse duration-50 py-2">
+      <span className="text-xl font-semibold text-primary-color-1 dark:text-primary-color-7 pl-6 animate-pulse duration-50 py-2">
         Loading ...
       </span>
     </div>

@@ -5,7 +5,7 @@ import customerService from "services/customerServices";
 
 const getState = async () => {
   const userService = new customerService();
-  const result = await userService.getState({ data: { url: "states" } });
+  const result = await userService.getState();
   return result;
 };
 

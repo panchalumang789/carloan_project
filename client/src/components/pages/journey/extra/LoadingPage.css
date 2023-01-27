@@ -63,3 +63,13 @@
 		stroke-dashoffset: -22;
 	}
 }
+
+@media (prefers-color-scheme: dark) {
+	#car {
+		stroke: red !important;
+	}
+
+	path {
+		fill: white;
+	}
+}

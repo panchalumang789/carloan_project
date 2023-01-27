@@ -67,6 +67,24 @@ class loanService {
     return { output, error };
   };
 
+  getLoanbyUserId = async (data) => {
+    let output, error;
+    try {
+      const loanData = await axios.get(
+        `${process.env.REACT_APP_HOST_URL}loans/user/${data.userId}?status=${data.status}`,
+        {
+          headers: {
+            Authorization: data.headerData,
+          },
+        }
+      );
+      output = loanData.data;
+    } catch (err) {
+      error = err.response;
+    }
+    return { output, error };
+  };
+
   updateLoan = async (data) => {
     let output, error;
     try {

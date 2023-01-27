@@ -15,7 +15,9 @@ userRoutes.get(
   authorization.verifyToken,
   userController.getUser,
   (req, res) => {
-    res.status(200).send(res.locals.users);
+    res
+      .status(200)
+      .json({ length: res.locals.length, users: res.locals.users });
   }
 );
 
@@ -43,6 +45,9 @@ userRoutes.get(
   }
 );
 
+/**
+ * @returns register user
+ */
 userRoutes.post(
   "/user",
   authorization.generateToken("User"),
@@ -52,14 +57,23 @@ userRoutes.post(
   }
 );
 
+/**
+ * @returns update user
+ */
 userRoutes.put("/user/:id", userController.updateUser, (req, res) => {
   res.status(200).send(res.locals.user);
 });
 
+/**
+ * @returns delete user
+ */
 userRoutes.delete("/user/:id", userController.deleteUser, (req, res) => {
   res.status(200).send(`User deleted successfully.`);
 });
 
+/**
+ * @returns admin login
+ */
 userRoutes.post("/admin", authorization.generateToken("Admin"), (req, res) => {
   res.status(200).send(res.locals.token);
 });

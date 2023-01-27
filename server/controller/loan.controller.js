@@ -5,6 +5,13 @@ const incomeTable = require("../models/income");
 const expensesTable = require("../models/expenses");
 const carTable = require("../models/car");
 const userTable = require("../models/user");
+const {
+  OK,
+  BAD_REQUEST,
+  UNAUTHORIZED,
+  NOT_FOUND,
+  SERVER_ERROR,
+} = require("../config/errorCode");
 
 const userStatus = ["Employee", "Unemployed"];
 const loanStatus = ["In progress", "In review", "Approved", "Rejected"];
@@ -42,7 +49,7 @@ const getLoan = async (req, res, next) => {
     if (loanData.length === 0) {
       next({
         error: {
-          status: 500,
+          status: BAD_REQUEST,
           message: "Something is wrong, loan application not found!",
         },
       });
@@ -53,7 +60,7 @@ const getLoan = async (req, res, next) => {
   } catch (error) {
     next({
       error: {
-        status: 500,
+        status: SERVER_ERROR,
         message: "Something is wrong, loan application not found!",
       },
     });
@@ -89,7 +96,7 @@ const getLoanByStatus = async (req, res, next) => {
     if (loanData.length === 0) {
       next({
         error: {
-          status: 500,
+          status: BAD_REQUEST,
           message: "Something is wrong, loan application not found!",
         },
       });
@@ -100,7 +107,40 @@ const getLoanByStatus = async (req, res, next) => {
   } catch (error) {
     next({
       error: {
-        status: 500,
+        status: SERVER_ERROR,
+        message: "Something is wrong, loan application not found!",
+      },
+    });
+  }
+};
+
+const getLoanByUserId = async (req, res, next) => {
+  try {
+    if (res.locals.role !== "Admin") {
+      next({
+        error: {
+          status: BAD_REQUEST,
+          message: "Something is wrong, loan application not found!",
+        },
+      });
+    }
+    let loanFind = await loanTable.findAll({
+      where: { userId: req.params.id, status: req.query.status },
+    });
+    if (loanFind.length <= 0) {
+      next({
+        error: {
+          status: BAD_REQUEST,
+          message: "Something is wrong, loan application not found!",
+        },
+      });
+    }
+    res.locals.loans = loanFind;
+    next();
+  } catch (error) {
+    next({
+      error: {
+        status: SERVER_ERROR,
         message: "Something is wrong, loan application not found!",
       },
     });
@@ -144,48 +184,47 @@ const getLoanById = async (req, res, next) => {
           exclude: ["id", "createdAt", "updatedAt"],
         },
       });
-      if (carFind.length !== 0) {
-        let UserFind = await userTable.findOne({
-          where: { id: loanFind.userId },
-          attributes: {
-            exclude: [
-              "id",
-              "prefix",
-              "state",
-              "medicalcardImage",
-              "licenseFirstName",
-              "licenseLastName",
-              "licenseIssueDate",
-              "licenceNumber",
-              "licenceType",
-              "licenceExpireDate",
-              "licenceIssueState",
-              "licenceBackImage",
-              "licenceFrontImage",
-              "createdAt",
-              "updatedAt",
-            ],
-          },
-        });
-        loanFind.dataValues.carDetails = carFind;
-        loanFind.dataValues.userDetails = UserFind;
-        res.locals.loans = loanFind;
-        next();
-      } else {
+      if (carFind.length <= 0) {
         next({ error: { status: 500, message: "Something is wrong!" } });
       }
+      let UserFind = await userTable.findOne({
+        where: { id: loanFind.userId },
+        attributes: {
+          exclude: [
+            "id",
+            "prefix",
+            "state",
+            "medicalcardImage",
+            "licenseFirstName",
+            "licenseLastName",
+            "licenseIssueDate",
+            "licenceNumber",
+            "licenceType",
+            "licenceExpireDate",
+            "licenceIssueState",
+            "licenceBackImage",
+            "licenceFrontImage",
+            "createdAt",
+            "updatedAt",
+          ],
+        },
+      });
+      loanFind.dataValues.carDetails = carFind;
+      loanFind.dataValues.userDetails = UserFind;
+      res.locals.loans = loanFind;
+      next();
     } else {
       next({
         error: {
-          status: 500,
+          status: BAD_REQUEST,
           message: "Something is wrong, loan application not found!",
         },
       });
     }
   } catch (error) {
     if (error.original) {
-      next({ error: { status: 500, message: error.original } });
-    } else next({ error: { status: 500, message: "Invalid token" } });
+      next({ error: { status: SERVER_ERROR, message: error.original } });
+    } else next({ error: { status: SERVER_ERROR, message: "Invalid token" } });
   }
 };
 
@@ -207,15 +246,17 @@ const newLoan = async (req, res, next) => {
     }
     let { error } = dataValidation.validate(req.body);
     if (error) {
-      next({ error: { status: 400, message: error.message } });
+      next({ error: { status: BAD_REQUEST, message: error.message } });
     }
     let addLoan = await loanTable.build(req.body).save();
     res.locals.loanId = addLoan.id;
     next();
   } catch (error) {
     if (error.errors)
-      next({ error: { status: 500, message: error.errors[0].message } });
-    else next({ error: { status: 500, message: error } });
+      next({
+        error: { status: SERVER_ERROR, message: error.errors[0].message },
+      });
+    else next({ error: { status: SERVER_ERROR, message: error } });
   }
 };
 
@@ -293,6 +334,7 @@ const updateLoanStatus = async (req, res, next) => {
 module.exports = {
   getLoan,
   getLoanByStatus,
+  getLoanByUserId,
   getLoanById,
   newLoan,
   updateLoan,

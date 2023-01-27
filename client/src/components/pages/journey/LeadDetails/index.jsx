@@ -161,15 +161,15 @@ const LeadDetail = () => {
                       Select loan term
                     </option>
                     <option value="1">1 year</option>
-                    <option value="2">2 year</option>
-                    <option value="3">3 year</option>
-                    <option value="4">4 year</option>
-                    <option value="5">5 year</option>
-                    <option value="6">6 year</option>
-                    <option value="7">7 year</option>
-                    <option value="8">8 year</option>
-                    <option value="9">9 year</option>
-                    <option value="10">10 year</option>
+                    <option value="2">2 years</option>
+                    <option value="3">3 years</option>
+                    <option value="4">4 years</option>
+                    <option value="5">5 years</option>
+                    <option value="6">6 years</option>
+                    <option value="7">7 years</option>
+                    <option value="8">8 years</option>
+                    <option value="9">9 years</option>
+                    <option value="10">10 years</option>
                   </select>
                   {errors.term && (
                     <span className="text-red-500 pt-1 px-1 text-sm">

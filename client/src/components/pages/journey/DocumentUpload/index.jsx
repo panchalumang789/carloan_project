@@ -36,7 +36,7 @@ const DocumentUpload = () => {
     >
       {Loading && (
         <div className="h-screen w-screen flex justify-center items-center mx-auto bg-transparent/30 dark:bg-transparent/60 fixed">
-          <LoadingPage stroke={"#e0f5f5"} wheel={"#A3BEBE"} />
+          <LoadingPage />
         </div>
       )}
       <ToastContainer />
@@ -54,10 +54,10 @@ const DocumentUpload = () => {
             <Typewriter
               options={{
                 strings:
-                  "Please upload the document below to complete your application",
+                  "Please upload the document below to complete your application.",
                 autoStart: true,
                 loop: false,
-                delay: 60,
+                delay: 30,
               }}
             />
           </div>

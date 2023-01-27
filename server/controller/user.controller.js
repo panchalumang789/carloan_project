@@ -82,13 +82,19 @@ const getUser = async (req, res, next) => {
         id: res.locals.user.id,
       };
     }
-    let findUsers = await userTable.findAll({ where: filter, order: ["id"] });
+    let findLength = await userTable.count({});
+    let findUsers = await userTable.findAll({
+      where: filter,
+      limit: req.query.limit,
+      offset: req.query.limit * parseInt(req.query.offset - 1),
+      order: ["id"],
+    });
     if (findUsers.length === 0) {
       next({ error: { status: 404, message: "Users not found!" } });
-    } else {
-      res.locals.users = findUsers;
-      next();
     }
+    res.locals.length = findLength;
+    res.locals.users = findUsers;
+    next();
   } catch (error) {
     next({ error: { status: 404, message: "Users not found!" } });
   }

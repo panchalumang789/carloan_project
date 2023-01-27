@@ -30,31 +30,31 @@ const IncomeDetails = (props) => {
         <div className="flex md:flex-col">
           <span>Rental income: </span>
           <span className="font-semibold">
-            {incomeDetails ? incomeDetails.rental_income : 0} &#x20B9;
+            &#x20B9; {incomeDetails ? incomeDetails.rental_income : 0}
           </span>
         </div>
         <div className="flex md:flex-col">
           <span>Investment income: </span>
           <span className="font-semibold">
-            {incomeDetails ? incomeDetails.investment_income : 0} &#x20B9;
+            &#x20B9; {incomeDetails ? incomeDetails.investment_income : 0}
           </span>
         </div>
         <div className="flex md:flex-col">
           <span>Salary sacrifice: </span>
           <span className="font-semibold">
-            {incomeDetails ? incomeDetails.salary_sacrifice : 0} &#x20B9;
+            &#x20B9; {incomeDetails ? incomeDetails.salary_sacrifice : 0}
           </span>
         </div>
         <div className="flex md:flex-col">
           <span>Centralink benifit: </span>
           <span className="font-semibold">
-            {incomeDetails ? incomeDetails.centralink_benifit : 0} &#x20B9;
+            &#x20B9; {incomeDetails ? incomeDetails.centralink_benifit : 0}
           </span>
         </div>
         <div className="flex md:flex-col">
           <span>Foreign income: </span>
           <span className="font-semibold">
-            {incomeDetails ? incomeDetails.foreign_income : 0} &#x20B9;
+            &#x20B9; {incomeDetails ? incomeDetails.foreign_income : 0}
           </span>
         </div>
       </div>

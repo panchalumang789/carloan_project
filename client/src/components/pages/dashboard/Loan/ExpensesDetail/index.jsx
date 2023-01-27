@@ -17,38 +17,38 @@ const ExpensesDetail = (props) => {
         <div className="flex md:flex-col">
           <span>Vehicle running cost: </span>
           <div className="font-semibold">
+            &#x20B9;{" "}
             {expensesDetails ? expensesDetails.vehicle_running_cost : "0"}{" "}
-            &#x20B9;
           </div>
         </div>
         <div className="flex md:flex-col">
           <span>Travel cost: </span>
           <div className="font-semibold">
-            {expensesDetails ? expensesDetails.travel_cost : "0"} &#x20B9;
+            &#x20B9; {expensesDetails ? expensesDetails.travel_cost : "0"}
           </div>
         </div>
         <div className="flex md:flex-col">
           <span>Utilities cost: </span>
           <div className="font-semibold">
-            {expensesDetails ? expensesDetails.utilities_cost : "0"} &#x20B9;
+            &#x20B9; {expensesDetails ? expensesDetails.utilities_cost : "0"}
           </div>
         </div>
         <div className="flex md:flex-col">
           <span>Insurances: </span>
           <div className="font-semibold">
-            {expensesDetails ? expensesDetails.insurance : "0"} &#x20B9;
+            &#x20B9; {expensesDetails ? expensesDetails.insurance : "0"}
           </div>
         </div>
         <div className="flex md:flex-col">
           <span>Telephone & Internet: </span>
           <div className="font-semibold">
-            {expensesDetails ? expensesDetails.tel_internet : "0"} &#x20B9;
+            &#x20B9; {expensesDetails ? expensesDetails.tel_internet : "0"}
           </div>
         </div>
         <div className="flex md:flex-col">
           <span>Entertainment: </span>
           <div className="font-semibold">
-            {expensesDetails ? expensesDetails.entertainment : "0"} &#x20B9;
+            &#x20B9; {expensesDetails ? expensesDetails.entertainment : "0"}
           </div>
         </div>
       </div>

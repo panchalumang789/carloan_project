@@ -322,7 +322,6 @@ const IncomeDetails = () => {
             ) : (
               <div></div>
             )}
-
             <div className="w-full flex justify-end">
               <button
                 type="submit"

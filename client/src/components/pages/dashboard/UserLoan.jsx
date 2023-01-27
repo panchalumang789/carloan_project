@@ -1,70 +1,51 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import loanService from "services/loanService";
 import LoadingPage from "../journey/extra/LoadingPage";
-import { selectClasses } from "../journey/extra/Widget";
 
 const statusClass =
   "font-medium text-base after:w-full hover:after:block after:h-0.5 after:bg-primary-color-1 dark:text-primary-color-7 dark:after:bg-primary-color-7 after:transition-all after:duration-700 after:rounded-xl after:mt-1.5";
 
-const LoanList = () => {
-  let pageLimit = 5;
-  const [limit, setlimit] = useState(5);
-  const [page, setpage] = useState(1);
+const UserLoan = () => {
   const [loans, setLoans] = useState([]);
-  const [role, setrole] = useState();
-  const [Loading, setLoading] = useState(true);
-  const [length, setlength] = useState();
   const [error, setError] = useState("");
+  const [Loading, setLoading] = useState(true);
   const [status, setstatus] = useState("In progress");
+  console.log(loans);
+  let { id } = useParams();
   useEffect(() => {
     let loadingtime;
     const loanData = new loanService();
     (async () => {
-      const { output, error } = await loanData.getLoanbyStatus({
+      const { output, error } = await loanData.getLoanbyUserId({
         status: status,
-        limit: limit,
-        offset: page,
+        userId: id,
         headerData: localStorage.getItem("token"),
       });
-      if (output) {
-        loadingtime = setTimeout(() => {
-          setLoading(false);
-        }, 1000);
-        setLoading(true);
-        document.getElementById("loanlist").scrollTo(0, 0);
-        document.getElementById("mainDiv").scrollTo(0, 0);
-        window.scrollTo(0, 0);
-        setError("");
-        setlength(output.length);
-        if (output.user && output.user.role === "Admin") {
-          setrole(output.user.role);
-        }
-        let temp = [];
-        output.loan.map((loan) => {
-          if (loan.status === status) {
-            return temp.push(loan);
-          } else return false;
-        });
-        setLoans(temp);
-      } else {
+      if (error) {
         setLoading(false);
         setError(error.message);
+      } else {
+        loadingtime = setTimeout(() => {
+          setLoading(false);
+        }, 700);
+        setLoading(true);
+        setError("");
+        setLoans(output);
       }
     })();
     return () => {
       clearTimeout(loadingtime);
     };
-  }, [status, limit, page]);
+  }, [id, status]);
 
   const filterLoan = (value) => {
-    setpage(1);
     setstatus(value);
   };
   return (
     <div
       id="mainDiv"
-      className="px-4 pt-4 pb-0 md:pb:0 lg:p-0 gap-y-3 flex flex-col h-[calc(100%-190px)] md:h-[calc(100%-190px)] lg:flex-row w-full gap-x-6 overflow-y-auto lg:overflow-y-hidden"
+      className="px-4 pt-4 pb-0 md:pb:0 lg:p-0 gap-y-3 flex flex-col h-[calc(100%-210px)] md:h-[calc(100%-190px)] lg:flex-row w-full gap-x-6 overflow-y-auto lg:overflow-y-hidden"
     >
       <div className="w-full border-2 border-primary-color-1 dark:border-primary-color-7 rounded-md lg:w-1/5 p-3 text-primary-color-1 dark:text-primary-color-7">
         <p className="text-xl">Get loan options</p>
@@ -73,6 +54,7 @@ const LoanList = () => {
           <li>Same day approved with 95% approved rate.</li>
         </ul>
       </div>
+
       <div className="w-full lg:w-4/5 h-full">
         <div className="h-16 md:h-10 flex my-1 gap-x-5">
           <button
@@ -103,13 +85,21 @@ const LoanList = () => {
           >
             Rejected
           </button>
+          <Link
+            to={"/dashboard/user"}
+            className="group font-medium flex items-center justify-end ml-auto gap-x-2 w-24 text-center p-3 border-2 border-primary-color-1 dark:bg-primary-color-9 dark:hover:bg-primary-color-8 rounded-md  dark:border-primary-color-3"
+          >
+            <em className="group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left "></em>
+            Back
+          </Link>
         </div>
+
         <div
           id="loanlist"
-          className="flex flex-col h-auto lg:h-[calc(100%-48px)] lg:overflow-y-auto border-2 border-primary-color-1 dark:border-primary-color-7 rounded-md"
+          className="flex flex-col h-full lg:h-[calc(100%-48px)] lg:overflow-y-auto border-2 border-primary-color-1 dark:border-primary-color-7 rounded-md"
         >
           {Loading ? (
-            <div className="h-40 w-full flex justify-center items-center mx-auto">
+            <div className="h-full w-full flex justify-center items-center mx-auto">
               <LoadingPage />
             </div>
           ) : (
@@ -123,10 +113,10 @@ const LoanList = () => {
                   {loans.map((loan, index) => {
                     return (
                       <Link
-                        state={role}
+                        state={"Admin"}
                         key={index}
                         style={{ "hover:boxShadow": "0px 0px 10px 20px" }}
-                        to={`loan/${loan.id}`}
+                        to={`/dashboard/loan/${loan.id}`}
                         className="w-full hover:cursor-pointer transition-all duration-500 text-primary-color-1 border-b-2 dark:text-primary-color-7 md:px-3 py-2 md:py-4 border-primary-color-1 dark:border-primary-color-7 hover:shadow-2xl shadow-primary-color-4"
                       >
                         <div className="p-2">
@@ -197,58 +187,6 @@ const LoanList = () => {
                       </Link>
                     );
                   })}
-                  <div className="flex justify-between py-4 px-8 md:px-20 font-semibold text-lg">
-                    <div className="flex flex-col md:flex-row items-center gap-2">
-                      Pages
-                      <div>
-                        {Array.from(
-                          { length: Math.ceil(length / limit) },
-                          (_, index) => (
-                            <button
-                              key={index}
-                              className=" text-primary-color-1 dark:text-primary-color-5 aria-pressed:text-primary-color-4 aria-pressed:text-2xl dark:aria-pressed:text-primary-color-7 aria-pressed:scale-105 px-2 cursor-pointer"
-                              aria-pressed={page === index + 1}
-                              onClick={() => setpage(index + 1)}
-                            >
-                              {index + 1}
-                            </button>
-                          )
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex flex-col md:flex-row gap-2 items-center">
-                      <span className="text-base font-medium">Limit</span>
-                      <select
-                        className={
-                          selectClasses +
-                          " w-20 py-1 outline-2 outline outline-primary-color-1 dark:outline-primary-color-5"
-                        }
-                        defaultValue={limit}
-                        onClick={(e) => {
-                          setlimit(e.target.value);
-                          setpage(1);
-                        }}
-                        name="pagelimit"
-                        id="limit"
-                      >
-                        <option value="5">5</option>
-                        {Array.from(
-                          { length: Math.ceil(length) },
-                          (_, index) => {
-                            if (index + 1 >= pageLimit + 5) {
-                              pageLimit += 5;
-                              return (
-                                <option key={index} value={index + 1}>
-                                  {index + 1}
-                                </option>
-                              );
-                            }
-                            return false;
-                          }
-                        )}
-                      </select>
-                    </div>
-                  </div>
                 </>
               )}
             </>
@@ -259,4 +197,4 @@ const LoanList = () => {
   );
 };
 
-export default LoanList;
+export default UserLoan;

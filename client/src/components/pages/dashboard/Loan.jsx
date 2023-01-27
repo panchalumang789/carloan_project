@@ -162,7 +162,7 @@ const Loan = () => {
                 <div>
                   <span>Income: </span>
                   <span className="font-semibold text-base mx-auto">
-                    {loanDetails.user_income} &#x20B9;
+                    &#x20B9; {loanDetails.user_income}
                   </span>
                 </div>
                 <div>
@@ -234,29 +234,28 @@ const Loan = () => {
                 <div className="flex items-center gap-x-1">
                   <span>Approx amount: </span>
                   <span className="flex gap-x-1 font-medium text-lg">
-                    <CounterUp num={loanDetails.approx_price} />
                     &#x20B9;
+                    <CounterUp num={loanDetails.approx_price} />
                   </span>
                 </div>
                 <div className="flex items-center gap-x-1">
                   <span>Deposit: </span>
                   <span className="flex gap-x-1 font-medium text-lg">
-                    <CounterUp num={loanDetails.deposit} />
                     &#x20B9;
+                    <CounterUp num={loanDetails.deposit} />
                   </span>
                 </div>
                 <div className="flex items-center gap-x-1">
                   <span>Term: </span>
                   <span className="flex gap-x-1 font-medium text-lg">
                     <CounterUp num={loanDetails.term} />
-                    &#x20B9;
+                    {loanDetails.term > 1 ? "years" : "year"}
                   </span>
                 </div>
                 <div className="flex items-center gap-x-1">
                   <span>Balloon: </span>
                   <span className="flex gap-x-1 font-medium text-lg">
-                    <CounterUp num={loanDetails.balloon} />
-                    &#x20B9;
+                    <CounterUp num={loanDetails.balloon} /> &#x25;
                   </span>
                 </div>
               </div>
@@ -267,7 +266,7 @@ const Loan = () => {
                 <div className="py-2">
                   <div>
                     <span>Maker: </span>
-                    <span className="font-medium text-lg mx-auto">
+                    <span className="font-medium text-base">
                       {loanDetails.carDetails
                         ? loanDetails.carDetails.make
                         : "Invalid"}
@@ -275,7 +274,7 @@ const Loan = () => {
                   </div>
                   <div>
                     <span>Model: </span>
-                    <span className="font-medium text-lg mx-auto">
+                    <span className="font-medium text-base">
                       {loanDetails.carDetails
                         ? loanDetails.carDetails.model
                         : "Invalid"}
@@ -283,7 +282,7 @@ const Loan = () => {
                   </div>
                   <div>
                     <span>Mode-type: </span>
-                    <span className="font-medium text-lg mx-auto">
+                    <span className="font-medium text-base">
                       {loanDetails.carDetails
                         ? loanDetails.carDetails.model_type
                         : "Invalid"}
@@ -294,10 +293,12 @@ const Loan = () => {
               <div className="h-32">
                 {/* <img src={loanDetails.carDetails.image} alt="car preview image" /> */}
                 <input
-                  className="h-24 md:h-36 pb-1"
+                  className="h-24 md:h-36 pb-1 mix-blend-multiply"
                   type="image"
                   src={
-                    "https://stimg.cardekho.com/images/carexteriorimages/930x620/Bentley/Flying-Spur/7776/1645012163948/front-left-side-47.jpg?tr=h-48"
+                    loanDetails.carDetails
+                      ? loanDetails.carDetails.image
+                      : "Invalid"
                   }
                   alt="car preview image"
                 />

@@ -27,9 +27,7 @@ const Dashboard = () => {
   }, []);
 
   const openWidget = () => {
-    const open = "flex";
-    const close = "hidden";
-    setWidget(Widget === "hidden" ? open : close);
+    setWidget(Widget === "hidden" ? "flex" : "hidden");
   };
   const logout = () => {
     localStorage.removeItem("token");
@@ -59,6 +57,7 @@ const Dashboard = () => {
                     <Link
                       id="new_loan"
                       to={"/journey"}
+                      onClick={openWidget}
                       className="py-2 pr-3 border-b-2 border-primary-color-1 dark:border-primary-color-7 hover:text-primary-color-4 dark:hover:text-white hover:scale-105 transition-all duration-300"
                     >
                       <span className="text-base pr-1 fa-solid fa-plus"></span>
@@ -67,6 +66,7 @@ const Dashboard = () => {
                     <Link
                       id="view_profile"
                       to={"/"}
+                      onClick={openWidget}
                       className="py-2 pr-3 border-b-2 border-primary-color-1 dark:border-primary-color-7 hover:text-primary-color-4 dark:hover:text-white hover:scale-105 transition-all duration-300"
                     >
                       <span className="text-base pr-1 fa-solid fa-user"></span>
@@ -81,6 +81,28 @@ const Dashboard = () => {
                       <em className="text-base pr-1 fa-solid fa-right-from-bracket"></em>
                       <span> Logout</span>
                     </Link>
+                    {user.role === "Admin" && (
+                      <>
+                        <Link
+                          to={"/dashboard"}
+                          id="viewLoans"
+                          onClick={openWidget}
+                          className="py-2 pr-3 border-t-2 border-primary-color-1 dark:border-primary-color-7 hover:text-primary-color-4 dark:hover:text-white hover:scale-105 transition-all duration-300"
+                        >
+                          <em className="text-base pr-1 fa-solid fa-rectangle-list"></em>
+                          <span> All Loans</span>
+                        </Link>
+                        <Link
+                          to={"/dashboard/user"}
+                          id="viewLoans"
+                          onClick={openWidget}
+                          className="py-2 pr-3 border-t-2 border-primary-color-1 dark:border-primary-color-7 hover:text-primary-color-4 dark:hover:text-white hover:scale-105 transition-all duration-300"
+                        >
+                          <em className="text-base pr-1 fa-solid fa-users"></em>
+                          <span> All Users</span>
+                        </Link>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

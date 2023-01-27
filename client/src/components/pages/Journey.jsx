@@ -5,7 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import CustomerJourney from "./journey/index";
 import PageNotFound from "./PageNotFound";
 import { ProgressProvider } from "useProgress";
-
+  
 const Journey = () => {
   const location = useLocation();
   return (

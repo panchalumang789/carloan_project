@@ -11,11 +11,12 @@ import PageNotFound from "components/pages/PageNotFound";
 import Dashboard from "components/pages/dashboard/Dashboard";
 import Login from "components/navbar/Login";
 import Verify from "components/navbar/VerifyOTP";
-import LoadingPage from "components/pages/journey/extra/LoadingPage";
 import Protected from "components/Protected";
 import Loan from "components/pages/dashboard/Loan";
 import LoanList from "components/pages/dashboard/LoanList";
 import AdminLogin from "components/pages/AdminLogin/index";
+import UserList from "components/pages/dashboard/UserList";
+import UserLoan from "components/pages/dashboard/UserLoan";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -34,9 +35,10 @@ root.render(
           }
         >
           <Route path="" element={<LoanList />}></Route>
+          <Route path="user" element={<UserList />}></Route>
+          <Route path="user/loans/:id" element={<UserLoan />}></Route>
           <Route path="loan/:loanId" element={<Loan />}></Route>
         </Route>
-        <Route path="loading" element={<LoadingPage />}></Route>
         <Route path="login" element={<Login />}></Route>
         <Route path="verify" element={<Verify />}></Route>
         <Route path="admin" element={<AdminLogin />}></Route>

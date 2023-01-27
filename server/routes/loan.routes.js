@@ -28,6 +28,15 @@ loanRoutes.get(
 );
 
 loanRoutes.get(
+  "/loans/user/:id",
+  authorization.verifyToken,
+  loanController.getLoanByUserId,
+  (req, res) => {
+    res.status(200).send(res.locals.loans);
+  }
+);
+
+loanRoutes.get(
   "/loan/:id",
   authorization.verifyToken,
   loanController.getLoanById,

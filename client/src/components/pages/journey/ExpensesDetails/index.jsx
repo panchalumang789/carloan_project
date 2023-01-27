@@ -5,7 +5,7 @@ import Typewriter from "typewriter-effect";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { ToastContainer, toast } from "react-toastify";
-import { FormTitle, Navigator, inputClasses } from "../extra/Widget";
+import { FormTitle, inputClasses } from "../extra/Widget";
 import customerService from "services/customerServices";
 import useProgress from "useProgress";
 
@@ -302,7 +302,16 @@ const ExpensesDetails = () => {
                 </span>
               )}
             </div>
-            <Navigator prevForm={"/journey/incomeDetail"} />
+            <div className="w-full flex justify-end">
+              <button
+                type="submit"
+                className="group font-medium flex items-center justify-start gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-9 dark:hover:bg-primary-color-8 rounded-md dark:border-2 dark:border-primary-color-5"
+              >
+                Next
+                <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right" />
+              </button>
+            </div>
+            {/* <Navigator prevForm={"/journey/incomeDetail"} /> */}
           </form>
         </div>
       </div>

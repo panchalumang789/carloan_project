@@ -46,7 +46,7 @@ const LicenseDetails = () => {
 
   const [States, setStates] = useState([]);
   const getStates = async () => {
-    const result = await userService.getState({ data: { url: "states" } });
+    const result = await userService.getState();
     setStates(result);
   };
   useEffect(() => {
@@ -185,8 +185,16 @@ const LicenseDetails = () => {
                 autoComplete="off"
                 {...register("licenceNumber", {
                   required: "Please enter license number!",
+                  minLength: {
+                    value: 15,
+                    message: "License number length should be 15!",
+                  },
+                  maxLength: {
+                    value: 15,
+                    message: "License number length should be 15!",
+                  },
                   pattern: {
-                    value: /^[A-Za-z0-9]{15}$/,
+                    value: /^[A-Z][a-z][0-9]$/,
                     message: "Please entre valid license number",
                   },
                 })}
