@@ -5,13 +5,7 @@ const incomeTable = require("../models/income");
 const expensesTable = require("../models/expenses");
 const carTable = require("../models/car");
 const userTable = require("../models/user");
-const {
-  OK,
-  BAD_REQUEST,
-  UNAUTHORIZED,
-  NOT_FOUND,
-  SERVER_ERROR,
-} = require("../config/errorCode");
+const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require("../config/errorCode");
 
 const userStatus = ["Employee", "Unemployed"];
 const loanStatus = ["In progress", "In review", "Approved", "Rejected"];
@@ -49,7 +43,7 @@ const getLoan = async (req, res, next) => {
     if (loanData.length === 0) {
       next({
         error: {
-          status: BAD_REQUEST,
+          status: NOT_FOUND,
           message: "Something is wrong, loan application not found!",
         },
       });
@@ -96,7 +90,7 @@ const getLoanByStatus = async (req, res, next) => {
     if (loanData.length === 0) {
       next({
         error: {
-          status: BAD_REQUEST,
+          status: NOT_FOUND,
           message: "Something is wrong, loan application not found!",
         },
       });
@@ -130,7 +124,7 @@ const getLoanByUserId = async (req, res, next) => {
     if (loanFind.length <= 0) {
       next({
         error: {
-          status: BAD_REQUEST,
+          status: NOT_FOUND,
           message: "Something is wrong, loan application not found!",
         },
       });
@@ -166,13 +160,13 @@ const getLoanById = async (req, res, next) => {
         {
           model: incomeTable,
           attributes: {
-            exclude: ["userId", "loanId", "createdAt", "updatedAt"],
+            exclude: ["createdAt", "updatedAt"],
           },
         },
         {
           model: expensesTable,
           attributes: {
-            exclude: ["userId", "loanId", "createdAt", "updatedAt"],
+            exclude: ["createdAt", "updatedAt"],
           },
         },
       ],
@@ -190,23 +184,7 @@ const getLoanById = async (req, res, next) => {
       let UserFind = await userTable.findOne({
         where: { id: loanFind.userId },
         attributes: {
-          exclude: [
-            "id",
-            "prefix",
-            "state",
-            "medicalcardImage",
-            "licenseFirstName",
-            "licenseLastName",
-            "licenseIssueDate",
-            "licenceNumber",
-            "licenceType",
-            "licenceExpireDate",
-            "licenceIssueState",
-            "licenceBackImage",
-            "licenceFrontImage",
-            "createdAt",
-            "updatedAt",
-          ],
+          exclude: ["id"],
         },
       });
       loanFind.dataValues.carDetails = carFind;

@@ -22,4 +22,13 @@ expensesRoutes.post(
   }
 );
 
+expensesRoutes.put(
+  "/expenses/:id",
+  authorization.verifyToken,
+  expensesController.updateExpenses,
+  (req, res) => {
+    res.status(200).json({ message: res.locals.expenses });
+  }
+);
+
 module.exports = expensesRoutes;

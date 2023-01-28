@@ -130,3 +130,12 @@ body {
 .Toastify__toast>button>svg {
     display: none;
 }
+
+table,
+th,
+tr,
+td {
+    border: 2px solid #023641;
+    border-collapse: collapse;
+    padding: 8px;
+}

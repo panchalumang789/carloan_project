@@ -22,4 +22,13 @@ incomeRoutes.post(
   }
 );
 
+incomeRoutes.put(
+  "/income/:id",
+  authorization.verifyToken,
+  incomeController.updateIncome,
+  (req, res) => {
+    res.status(200).send({ message: res.locals.income });
+  }
+);
+
 module.exports = incomeRoutes;

@@ -66,7 +66,7 @@ const LoanList = () => {
       id="mainDiv"
       className="px-4 pt-4 pb-0 md:pb:0 lg:p-0 gap-y-3 flex flex-col h-[calc(100%-190px)] md:h-[calc(100%-190px)] lg:flex-row w-full gap-x-6 overflow-y-auto lg:overflow-y-hidden"
     >
-      <div className="w-full border-2 border-primary-color-1 dark:border-primary-color-7 rounded-md lg:w-1/5 p-3 text-primary-color-1 dark:text-primary-color-7">
+      <div className="w-full border-primary-color-1 bg-primary-color-10 dark:border-primary-color-7 rounded-md lg:w-1/5 p-4 text-primary-color-1 dark:text-primary-color-7 shadow-md shadow-primary-color-1">
         <p className="text-xl">Get loan options</p>
         <ul className="list-disc text-sm py-2 mx-3">
           <li>Compare 30+ matched lenders in 60 seconds.</li>
@@ -106,7 +106,7 @@ const LoanList = () => {
         </div>
         <div
           id="loanlist"
-          className="flex flex-col h-auto lg:h-[calc(100%-48px)] lg:overflow-y-auto border-2 border-primary-color-1 dark:border-primary-color-7 rounded-md"
+          className="flex gap-y-3 flex-col h-auto lg:h-[calc(100%-48px)] lg:overflow-y-auto border-2 border-primary-color-1 dark:border-primary-color-7 rounded-md"
         >
           {Loading ? (
             <div className="h-40 w-full flex justify-center items-center mx-auto">
@@ -127,10 +127,10 @@ const LoanList = () => {
                         key={index}
                         style={{ "hover:boxShadow": "0px 0px 10px 20px" }}
                         to={`loan/${loan.id}`}
-                        className="w-full hover:cursor-pointer transition-all duration-500 text-primary-color-1 border-b-2 dark:text-primary-color-7 md:px-3 py-2 md:py-4 border-primary-color-1 dark:border-primary-color-7 hover:shadow-2xl shadow-primary-color-4"
+                        className="w-full hover:cursor-pointer rounded-lg bg-primary-color-10 transition-all duration-500 text-primary-color-1  dark:text-primary-color-7 py-2 md:py-4 "
                       >
                         <div className="p-2">
-                          <div className="flex justify-between">
+                          <div className="flex px-5 justify-between">
                             <p className="font-medium">
                               Application id :
                               <span className="font-semibold">{loan.id}</span>
@@ -143,7 +143,7 @@ const LoanList = () => {
                             </p>
                           </div>
                           <div className="pt-2 grid grid-cols-2 md:grid-cols-5 gap-x-6 gap-y-3 mx-4">
-                            <div className="flex items-center p-2 flex-col h-28 md:h-32 bg-white/10 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-3xl">
+                            <div className="flex items-center p-2 flex-col h-28 md:h-32 bg-white/10 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-md">
                               <span className="text-base md:text-lg lg:text-3xl mr-auto p-1.5 fa-solid fa-money-bill-1"></span>
                               <span className="uppercase text-sm md:text-md xl:text-base">
                                 Approx amount:-
@@ -152,7 +152,7 @@ const LoanList = () => {
                                 &#x20B9; {loan.approx_price}
                               </span>
                             </div>
-                            <div className="flex items-center p-2 flex-col h-28 md:h-32 bg-white/10 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-3xl">
+                            <div className="flex items-center p-2 flex-col h-28 md:h-32 bg-white/10 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-md">
                               <span className="text-base md:text-lg lg:text-3xl mr-auto p-1.5 fa-solid fa-sack-dollar"></span>
                               <span className="uppercase text-sm md:text-md xl:text-base">
                                 Deposit:-
@@ -161,7 +161,7 @@ const LoanList = () => {
                                 &#x20B9; {loan.deposit}
                               </span>
                             </div>
-                            <div className="flex items-center p-2 flex-col h-28 md:h-32 bg-white/10 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-3xl">
+                            <div className="flex items-center p-2 flex-col h-28 md:h-32 bg-white/10 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-md">
                               <span className="text-base md:text-lg lg:text-3xl mr-auto p-1.5 fas">
                                 &#xf201;
                               </span>
@@ -174,7 +174,7 @@ const LoanList = () => {
                                   : `${loan.term} year`}
                               </span>
                             </div>
-                            <div className="flex items-center p-2 flex-col h-28 md:h-32 bg-white/10 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-3xl">
+                            <div className="flex items-center p-2 flex-col h-28 md:h-32 bg-white/10 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-md">
                               <span className="text-base md:text-lg lg:text-3xl mr-auto p-1.5 fa-solid fa-hand-holding-dollar"></span>
                               <span className="uppercase text-sm md:text-md xl:text-base">
                                 Balloon:-
@@ -183,7 +183,7 @@ const LoanList = () => {
                                 {loan.balloon} %
                               </span>
                             </div>
-                            <div className="flex items-center p-2 flex-col h-28 md:h-32 bg-white/10 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-3xl">
+                            <div className="flex items-center p-2 flex-col h-28 md:h-32 bg-white/10 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-md">
                               <span className="text-base md:text-lg lg:text-3xl mr-auto p-1.5 fa-solid fa-calendar-days"></span>
                               <span className="uppercase text-sm md:text-md xl:text-base">
                                 Applied on:-

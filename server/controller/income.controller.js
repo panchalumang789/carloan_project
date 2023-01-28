@@ -1,6 +1,7 @@
 const Joi = require("joi");
 const incomeTable = require("../models/income");
 const loanTable = require("../models/loan");
+const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require("../config/errorCode");
 
 // Validation Rules
 const incomeValidation = Joi.object().keys({
@@ -21,13 +22,15 @@ const getIncome = async (req, res, next) => {
   try {
     const findIncome = await incomeTable.findAll();
     if (findIncome.length === 0) {
-      next({ error: { status: 404, message: "No income details found!" } });
+      next({
+        error: { status: NOT_FOUND, message: "No income details found!" },
+      });
     } else {
       res.locals.income = findIncome;
       next();
     }
   } catch (error) {
-    next({ error: { status: 404, message: "No income details found!" } });
+    next({ error: { status: NOT_FOUND, message: "No income details found!" } });
   }
 };
 
@@ -42,24 +45,54 @@ const addIncome = async (req, res, next) => {
     }
     let { error } = incomeValidation.validate(req.body);
     if (error) {
-      next({ error: { status: 400, message: error.message } });
+      next({ error: { status: BAD_REQUEST, message: error.message } });
     }
     let findLoan = await loanTable.findOne({
       where: { id: req.body.loanId, userId: req.body.userId },
     });
     if (findLoan === null) {
-      next({ error: { status: 500, message: "UserId or LoanId is wrong!" } });
+      next({
+        error: { status: SERVER_ERROR, message: "UserId or LoanId is wrong!" },
+      });
     } else {
       const addIncome = await incomeTable.build(req.body).save();
       res.locals.income = addIncome;
       next();
     }
   } catch (error) {
-    next({ error: { status: 500, message: error.errors } });
+    next({ error: { status: SERVER_ERROR, message: error.errors } });
+  }
+};
+
+const updateIncome = async (req, res, next) => {
+  try {
+    const { error } = incomeValidation.validate(req.body);
+    if (error) {
+      next({ error: { status: BAD_REQUEST, message: error.message } });
+    }
+
+    let updateIncome = await incomeTable.update(
+      { ...req.body },
+      { where: { id: req.params.id } }
+    );
+
+    if (!updateIncome) {
+      next({ error: { status: BAD_REQUEST, message: "Something is wrong!" } });
+    }
+    res.locals.income = "Income updated successfully.";
+    next();
+  } catch (error) {
+    console.log(error);
+    if (error.errors)
+      next({
+        error: { status: SERVER_ERROR, message: error.errors[0].message },
+      });
+    else next({ error: { status: SERVER_ERROR, message: error } });
   }
 };
 
 module.exports = {
   getIncome,
   addIncome,
+  updateIncome,
 };
