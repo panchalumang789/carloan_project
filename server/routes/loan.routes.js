@@ -75,6 +75,18 @@ loanRoutes.put(
   }
 );
 
+loanRoutes.put(
+  "/loan/car/:id",
+  authorization.verifyToken,
+  loanController.updateLoanCar,
+  (req, res) => {
+    res.status(200).json({
+      loanId: res.locals.loanId,
+      message: "Car details updated successfully.",
+    });
+  }
+);
+
 loanRoutes.put("/loan/sendMail/:id", adminController.sendMail, (req, res) => {
   res.status(200).json({ mailstatus: res.locals.mailStatus });
 });

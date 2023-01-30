@@ -92,7 +92,7 @@ const IncomeDetails = () => {
         <div className="w-5/6 lg:w-1/2 md:px-28">
           <form
             onSubmit={handleSubmit(incomeDetails)}
-            className="flex flex-col gap-y-8"
+            className="flex flex-col gap-y-6"
           >
             <FormTitle formTitle={"Additional Income"} />
             <div className="flex text-md flex-col">
@@ -106,7 +106,7 @@ const IncomeDetails = () => {
                     type="radio"
                     name="income"
                     id="yes"
-                    autoFocus
+                    defaultChecked={true}
                     value={true}
                     onClick={additionalIncome}
                     {...register("additional_income", {
@@ -153,6 +153,7 @@ const IncomeDetails = () => {
                   <input
                     id="rental_income"
                     type="number"
+                    autoFocus
                     defaultValue="0"
                     placeholder="Enter rental income"
                     className={inputClasses + " pl-10"}

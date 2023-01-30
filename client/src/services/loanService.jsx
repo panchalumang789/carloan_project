@@ -85,10 +85,10 @@ class loanService {
     return { output, error };
   };
 
-  updateLoan = async (data) => {
+  updateLoanStatus = async (data) => {
     let output, error;
     try {
-      const updateLoan = await axios.put(
+      const updateLoanStatus = await axios.put(
         `${process.env.REACT_APP_HOST_URL}loan/status/${data.loanId}`,
         data.body,
         {
@@ -97,7 +97,7 @@ class loanService {
           },
         }
       );
-      output = updateLoan.data;
+      output = updateLoanStatus.data;
     } catch (err) {
       error = err.response;
     }
@@ -112,6 +112,82 @@ class loanService {
         data.body
       );
       output = sendMail.data;
+    } catch (err) {
+      error = err.response;
+    }
+    return { output, error };
+  };
+
+  updateLoan = async (data) => {
+    let output, error;
+    try {
+      const updateLoan = await axios.put(
+        `${process.env.REACT_APP_HOST_URL}loan/${data.loanId}`,
+        data.bodyData,
+        {
+          headers: {
+            Authorization: data.headerData,
+          },
+        }
+      );
+      output = updateLoan.data;
+    } catch (err) {
+      error = err.response;
+    }
+    return { output, error };
+  };
+
+  updateLoanCar = async (data) => {
+    let output, error;
+    try {
+      const updateLoanCar = await axios.put(
+        `${process.env.REACT_APP_HOST_URL}loan/car/${data.loanId}`,
+        data.bodyData,
+        {
+          headers: {
+            Authorization: data.headerData,
+          },
+        }
+      );
+      output = updateLoanCar.data;
+    } catch (err) {
+      error = err.response;
+    }
+    return { output, error };
+  };
+
+  updateIncome = async (data) => {
+    let output, error;
+    try {
+      const updateExpenses = await axios.put(
+        `${process.env.REACT_APP_HOST_URL}income/${data.incomeId}`,
+        data.bodyData,
+        {
+          headers: {
+            Authorization: data.headerData,
+          },
+        }
+      );
+      output = updateExpenses.data;
+    } catch (err) {
+      error = err.response;
+    }
+    return { output, error };
+  };
+
+  updateExpenses = async (data) => {
+    let output, error;
+    try {
+      const updateExpenses = await axios.put(
+        `${process.env.REACT_APP_HOST_URL}expenses/${data.expensesId}`,
+        data.bodyData,
+        {
+          headers: {
+            Authorization: data.headerData,
+          },
+        }
+      );
+      output = updateExpenses.data;
     } catch (err) {
       error = err.response;
     }

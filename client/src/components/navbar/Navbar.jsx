@@ -1,16 +1,25 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Cookies from "universal-cookie";
 
 const Navbar = () => {
   const cookie = new Cookies();
-  const [LoggedIn, setLoggedIn] = useState(localStorage.getItem("token"));
+  const location = useLocation();
+  const [LoggedIn, setLoggedIn] = useState("");
   const [Navbar, setNavbar] = useState({
     navbar: "-right-full",
     span1: "",
     span2: "",
     span3: "",
   });
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      setLoggedIn("true");
+    } else {
+      setLoggedIn("");
+    }
+  }, [location.pathname]);
+
   const toggleNav = () => {
     let open = {
       navbar: "right-0",
@@ -56,7 +65,7 @@ const Navbar = () => {
             </div>
           </div>
           {LoggedIn !== "" ? (
-            <div className="hidden md:flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7">
+            <div className="hidden md:flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7 my-2 rounded-md border-2 border-primary-color-1 hover:bg-white/60">
               <Link
                 to={"/"}
                 onClick={logout}
@@ -66,7 +75,7 @@ const Navbar = () => {
               </Link>
             </div>
           ) : (
-            <div className="hidden md:flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7">
+            <div className="hidden md:flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7 my-2 rounded-md border-2 border-primary-color-1 hover:bg-white/60">
               <Link
                 to={"/login"}
                 className="text-2xl text-primary-color-1 dark:text-primary-color-7"

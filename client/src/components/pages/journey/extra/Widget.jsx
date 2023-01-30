@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import CountUp from "react-countup";
 import customerService from "services/customerServices";
+import { toast, ToastContainer } from "react-toastify";
 
 const getState = async () => {
   const userService = new customerService();
@@ -50,6 +51,28 @@ const CounterUp = (props) => {
   return <h1>{<CountUp start={0} end={props.num} duration={0.5} />}</h1>;
 };
 
+const errorToast = (props) => {
+  toast.error(props, {
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "light",
+    position: "top-center",
+  });
+  return <ToastContainer />;
+};
+
+const successToast = (props) => {
+  toast.success(props, {
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "light",
+    position: "top-center",
+  });
+  return <ToastContainer />;
+};
+
 export {
   getState,
   FormTitle,
@@ -57,4 +80,6 @@ export {
   inputClasses,
   selectClasses,
   CounterUp,
+  errorToast,
+  successToast,
 };

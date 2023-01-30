@@ -207,8 +207,8 @@ const getLoanById = async (req, res, next) => {
 };
 
 /**
- * @param {*} req get user details from body
- * @param {*} res add new user details
+ * @param {*} req get loan details from body
+ * @param {*} res add new loan
  */
 const newLoan = async (req, res, next) => {
   try {
@@ -239,7 +239,7 @@ const newLoan = async (req, res, next) => {
 };
 
 /**
- * @param {*} req get loan new details from body
+ * @param {*} req get loan details from body
  * @param {*} res update loan details by id
  */
 const updateLoan = async (req, res, next) => {
@@ -283,14 +283,41 @@ const updateLoan = async (req, res, next) => {
 };
 
 /**
- * @param {*} req get loan new details from body
- * @param {*} res update loan details by id
+ * @param {*} req get loan details from body
+ * @param {*} res update loan status
  */
 const updateLoanStatus = async (req, res, next) => {
   try {
     if (res.locals.role === "Admin") {
       await loanTable.update(
         { status: req.body.status },
+        { where: { id: req.params.id } }
+      );
+      next();
+    } else {
+      next({
+        error: {
+          status: 400,
+          message: "Unothorized request!",
+        },
+      });
+    }
+  } catch (error) {
+    if (error.errors)
+      next({ error: { status: 500, message: error.errors[0].message } });
+    else next({ error: { status: 500, message: error } });
+  }
+};
+
+/**
+ * @param {*} req get loan details from body
+ * @param {*} res update loan status
+ */
+const updateLoanCar = async (req, res, next) => {
+  try {
+    if (res.locals.role === "Admin") {
+      await loanTable.update(
+        { carId: req.body.carId },
         { where: { id: req.params.id } }
       );
       next();
@@ -317,4 +344,5 @@ module.exports = {
   newLoan,
   updateLoan,
   updateLoanStatus,
+  updateLoanCar,
 };

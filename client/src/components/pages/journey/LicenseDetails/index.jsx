@@ -193,10 +193,10 @@ const LicenseDetails = () => {
                     value: 15,
                     message: "License number length should be 15!",
                   },
-                  // pattern: {
-                  //   value: /^[A-Z][a-z][0-9]$/,
-                  //   message: "Please entre valid license number",
-                  // },
+                  pattern: {
+                    value: /^[A-Za-z0-9]{15}$/,
+                    message: "Please entre valid license number",
+                  },
                 })}
               />
               {errors.licenceNumber && (

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import loanService from "services/loanService";
 import { toast, ToastContainer } from "react-toastify";
 import Swal from "sweetalert2";
-import { useForm } from "react-hook-form";
 import LoanDetails from "./LoanDetails";
 import UserDetails from "./UserDetails";
 import CarDetails from "./CarDetails";
@@ -43,49 +42,47 @@ const sendMail = async (loanStatus, loanId) => {
 };
 
 const LoanDetail = () => {
-  const location = useLocation();
-  const { state } = location;
-  console.log(location);
   const [Details, setDetails] = useState("loanDetails");
   const [loanDetails, setLoanData] = useState({});
   const [error, setError] = useState("");
   const [status, setstatus] = useState("");
-  const [incomeDetails, setIncomeData] = useState({});
-  const [expensesDetails, setExpensesData] = useState({});
+  const [fetchData, setFetchData] = useState(true);
   let { loanId } = useParams();
 
-  // useEffect(() => {
-  //   const loanServices = new loanService();
-  //   try {
-  //     (async () => {
-  //       const { output, error } = await loanServices.getLoanbyId({
-  //         path: `loan/${loanId}`,
-  //         headerData: localStorage.getItem("token"),
-  //       });
+  useEffect(() => {
+    const loanServices = new loanService();
+    if (fetchData) {
+      try {
+        (async () => {
+          const { output, error } = await loanServices.getLoanbyId({
+            path: `loan/${loanId}`,
+            headerData: localStorage.getItem("token"),
+          });
 
-  //       if (error) {
-  //         setError(error.data);
-  //       } else {
-  //         setLoanData(output);
-  //         setIncomeData(output.incomes[0]);
-  //         setExpensesData(output.expenses[0]);
-  //       }
-  //     })();
-  //   } catch (error) {
-  //     toast.error(error.data.message, {
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       theme: "light",
-  //       position: "top-center",
-  //     });
-  //   }
-  //   return () => {};
-  // }, [loanId]);
+          if (error) {
+            setError(error.data);
+          } else {
+            setLoanData(output);
+          }
+        })();
+      } catch (error) {
+        toast.error(error.data.message, {
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+          position: "top-center",
+        });
+      } finally {
+        setFetchData(false);
+      }
+    }
+    return () => {};
+  }, [loanId, fetchData]);
 
-  // useEffect(() => {
-  //   setstatus(loanDetails.status);
-  // }, [loanDetails]);
+  useEffect(() => {
+    setstatus(loanDetails.status);
+  }, [loanDetails]);
 
   let loanid = useParams("id");
   const editLoan = (e) => {
@@ -101,7 +98,7 @@ const LoanDetail = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         (async () => {
-          const { output, error } = await loanServices.updateLoan({
+          const { output, error } = await loanServices.updateLoanStatus({
             loanId: loanid.loanId,
             body: { status: e.target.value },
             headerData: localStorage.getItem("token"),
@@ -140,7 +137,7 @@ const LoanDetail = () => {
           {error.message}
         </div>
       ) : (
-        <div className="flex flex-col px-2 md:px-0 w-full gap-x-6 gap-y-2 overflow-auto md:overflow-hidden h-[calc(100%-190px)] md:h-[calc(100%-190px)]">
+        <div className="flex flex-col px-2 md:px-0 w-full gap-x-6 gap-y-2 overflow-x-hidden overflow-auto md:overflow-hidden h-[calc(100%-210px)] md:h-[calc(100%-190px)]">
           <ToastContainer />
           <div className="flex items-center justify-between">
             <div className="h-16 md:h-10 flex my-1 gap-x-5">
@@ -199,19 +196,36 @@ const LoanDetail = () => {
             </Link>
           </div>
           {Details === "loanDetails" && (
-            <LoanDetails LoanDetails={loanDetails} />
+            <LoanDetails
+              LoanDetails={loanDetails}
+              UpdateLoan={() => setFetchData(true)}
+            />
           )}
           {Details === "userDetails" && (
-            <UserDetails UserDetails={loanDetails.userDetails} />
+            <UserDetails
+              UserDetails={loanDetails.userDetails}
+              UpdateLoan={() => setFetchData(true)}
+            />
           )}
           {Details === "carDetails" && (
-            <CarDetails CarDetails={loanDetails.carDetails} />
+            <CarDetails
+              CarDetails={loanDetails.carDetails}
+              CarId={loanDetails.carId}
+              LoanId={loanDetails.id}
+              UpdateLoan={() => setFetchData(true)}
+            />
           )}
           {Details === "incomeDetails" && (
-            <IncomeDetails IncomeDetails={loanDetails.incomes} />
+            <IncomeDetails
+              IncomeDetails={loanDetails.incomes[0]}
+              UpdateLoan={() => setFetchData(true)}
+            />
           )}
           {Details === "expenseDetails" && (
-            <ExpensesDetails ExpensesDetails={loanDetails.expenses} />
+            <ExpensesDetails
+              ExpensesDetails={loanDetails.expenses[0]}
+              UpdateLoan={() => setFetchData(true)}
+            />
           )}
         </div>
       )}

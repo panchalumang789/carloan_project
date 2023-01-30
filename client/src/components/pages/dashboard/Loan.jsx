@@ -93,7 +93,7 @@ const Loan = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         (async () => {
-          const { output, error } = await loanServices.updateLoan({
+          const { output, error } = await loanServices.updateLoanStatus({
             loanId: loanid.loanId,
             body: { status: e.target.value },
             headerData: localStorage.getItem("token"),

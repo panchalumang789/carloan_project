@@ -4,7 +4,7 @@ import useProgress from "useProgress";
 const ProgressBar = () => {
   const { progress } = useProgress();
   return (
-    <div className="w-full fixed z-20 top-16 md:top-28">
+    <div className="w-full fixed z-20 top-16 md:top-24">
       <div className="flex w-full max-w-screen-xl mx-auto">
         <div
           className={
