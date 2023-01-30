@@ -54,38 +54,38 @@ const LoanDetail = () => {
   const [expensesDetails, setExpensesData] = useState({});
   let { loanId } = useParams();
 
-  useEffect(() => {
-    const loanServices = new loanService();
-    try {
-      (async () => {
-        const { output, error } = await loanServices.getLoanbyId({
-          path: `loan/${loanId}`,
-          headerData: localStorage.getItem("token"),
-        });
+  // useEffect(() => {
+  //   const loanServices = new loanService();
+  //   try {
+  //     (async () => {
+  //       const { output, error } = await loanServices.getLoanbyId({
+  //         path: `loan/${loanId}`,
+  //         headerData: localStorage.getItem("token"),
+  //       });
 
-        if (error) {
-          setError(error.data);
-        } else {
-          setLoanData(output);
-          setIncomeData(output.incomes[0]);
-          setExpensesData(output.expenses[0]);
-        }
-      })();
-    } catch (error) {
-      toast.error(error.data.message, {
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-        position: "top-center",
-      });
-    }
-    return () => {};
-  }, [loanId]);
+  //       if (error) {
+  //         setError(error.data);
+  //       } else {
+  //         setLoanData(output);
+  //         setIncomeData(output.incomes[0]);
+  //         setExpensesData(output.expenses[0]);
+  //       }
+  //     })();
+  //   } catch (error) {
+  //     toast.error(error.data.message, {
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       theme: "light",
+  //       position: "top-center",
+  //     });
+  //   }
+  //   return () => {};
+  // }, [loanId]);
 
-  useEffect(() => {
-    setstatus(loanDetails.status);
-  }, [loanDetails]);
+  // useEffect(() => {
+  //   setstatus(loanDetails.status);
+  // }, [loanDetails]);
 
   let loanid = useParams("id");
   const editLoan = (e) => {
