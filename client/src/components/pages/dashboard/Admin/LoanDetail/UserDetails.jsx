@@ -2,12 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import customerService from "services/customerServices";
 import {
+  errorToast,
   FormTitle,
   inputClasses,
   selectClasses,
+  successToast,
 } from "components/pages/journey/extra/Widget";
+import { ToastContainer } from "react-toastify";
 
 const UserDetails = (props) => {
+  const updateService = new customerService();
   const [userDetails, setUserData] = useState({});
   const [Editing, setEditing] = useState(false);
   const [States, setStates] = useState([]);
@@ -33,6 +37,19 @@ const UserDetails = (props) => {
 
   useEffect(() => {
     setUserData(props.UserDetails);
+    setValue("prefix", props.UserDetails.prefix);
+    setValue(
+      "medicalcardImage",
+      props.UserDetails.medicalcardImage || "user2medical1.jpf"
+    );
+    setValue(
+      "licenceFrontImage",
+      props.UserDetails.licenceFrontImage || "user2front1.jpf"
+    );
+    setValue(
+      "licenceBackImage",
+      props.UserDetails.licenceBackImage || "user2back1.jpf"
+    );
     setValue("firstName", props.UserDetails.firstName);
     setValue("lastName", props.UserDetails.lastName);
     setValue("email", props.UserDetails.email);
@@ -51,7 +68,6 @@ const UserDetails = (props) => {
         new Date(userDetails.licenseIssueDate).toISOString().split("T")[0]
       );
     }
-    console.log(userDetails);
     if (userDetails.licenceExpireDate) {
       setExpireDate(
         new Date(userDetails.licenceExpireDate).toISOString().split("T")[0]
@@ -65,7 +81,19 @@ const UserDetails = (props) => {
     props.UserDetails.licenceIssueState,
   ]);
 
-  const submitCustomerData = (data) => {
+  const submitCustomerData = async (data) => {
+    const { output, error } = await updateService.updateUser({
+      path: `user/${props.UserId}`,
+      details: data,
+      headerData: localStorage.getItem("token"),
+    });
+    if (!output) {
+      errorToast(error.data.message);
+    } else {
+      successToast(output.message);
+      props.UpdateLoan();
+      setEditing(false);
+    }
     console.log(data);
   };
 
@@ -75,107 +103,18 @@ const UserDetails = (props) => {
         onSubmit={handleSubmit(submitCustomerData)}
         className="flex flex-col gap-5"
       >
+        <ToastContainer />
         <div className="my-3 w-fit">
           <FormTitle formTitle={"Personal Details"} />
         </div>
         <div className="grid grid-cols-2 gap-5 px-2">
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal w-1/5">Firstname :</label>
+            <label htmlFor="contactNo" className="font-normal w-1/5">
+              Contact No :
+            </label>
             <div className="flex flex-col w-3/5">
               <input
-                className={
-                  inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
-                }
-                type="text"
-                disabled={!Editing}
-                autoComplete="off"
-                {...register("firstName", {
-                  required: "Please enter firstname!",
-                  minLength: {
-                    value: 2,
-                    message: "Firstname should be atleast 2 characters long!",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message:
-                      "Firstname should be less than 20 characters length!",
-                  },
-                })}
-              />
-              {errors.firstName && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.firstName?.message}
-                </span>
-              )}
-            </div>
-          </div>
-          <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal w-1/5">Lastname :</label>
-            <div className="flex flex-col w-3/5">
-              <input
-                className={
-                  inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
-                }
-                type="text"
-                disabled={!Editing}
-                autoComplete="off"
-                {...register("lastName", {
-                  required: "Please enter lastname!",
-                  minLength: {
-                    value: 2,
-                    message: "Lastname should be atleast 2 characters long!",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message:
-                      "Lastname should be less than 20 characters length!",
-                  },
-                })}
-              />
-              {errors.lastName && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.lastName?.message}
-                </span>
-              )}
-            </div>
-          </div>
-          <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal w-1/5">Email :</label>
-            <div className="flex flex-col w-3/5">
-              <input
-                className={
-                  inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
-                }
-                type="text"
-                disabled={!Editing}
-                autoComplete="off"
-                {...register("email", {
-                  required: "Please enter you email id!",
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Please enter valid email id!",
-                  },
-                })}
-              />
-              {errors.email?.type === "required" && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.email?.message}
-                </span>
-              )}
-              {errors.email?.type === "pattern" && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.email?.message}
-                </span>
-              )}
-            </div>
-          </div>
-          <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal w-1/5">Contact No :</label>
-            <div className="flex flex-col w-3/5">
-              <input
+                id="contactNo"
                 className={
                   inputClasses +
                   " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
@@ -204,10 +143,139 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal w-1/5">State :</label>
+            <label htmlFor="prefix" className="font-normal w-1/5">
+              Prefix :
+            </label>
             <div className="flex flex-col w-3/5">
               <select
-                id="term"
+                id="prefix"
+                className={selectClasses}
+                disabled={!Editing}
+                {...register("prefix", { required: "Please select prefix!" })}
+              >
+                <option value="" disabled>
+                  Select prefix
+                </option>
+                <option value="Mr.">Mr.</option>
+                <option value="Ms.">Ms.</option>
+                <option value="Mrs.">Mrs.</option>
+              </select>
+              {errors.prefix && (
+                <span className="text-red-500 pt-1 px-1 text-sm">
+                  {errors.prefix?.message}
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="font-medium text-xl flex gap-x-2 items-center">
+            <label htmlFor="firstName" className="font-normal w-1/5">
+              Firstname :
+            </label>
+            <div className="flex flex-col w-3/5">
+              <input
+                id="firstName"
+                className={
+                  inputClasses +
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                }
+                type="text"
+                disabled={!Editing}
+                autoComplete="off"
+                {...register("firstName", {
+                  required: "Please enter firstname!",
+                  minLength: {
+                    value: 2,
+                    message: "Firstname should be atleast 2 characters long!",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message:
+                      "Firstname should be less than 20 characters length!",
+                  },
+                })}
+              />
+              {errors.firstName && (
+                <span className="text-red-500 pt-1 px-1 text-sm">
+                  {errors.firstName?.message}
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="font-medium text-xl flex gap-x-2 items-center">
+            <label htmlFor="lastName" className="font-normal w-1/5">
+              Lastname :
+            </label>
+            <div className="flex flex-col w-3/5">
+              <input
+                id="lastName"
+                className={
+                  inputClasses +
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                }
+                type="text"
+                disabled={!Editing}
+                autoComplete="off"
+                {...register("lastName", {
+                  required: "Please enter lastname!",
+                  minLength: {
+                    value: 2,
+                    message: "Lastname should be atleast 2 characters long!",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message:
+                      "Lastname should be less than 20 characters length!",
+                  },
+                })}
+              />
+              {errors.lastName && (
+                <span className="text-red-500 pt-1 px-1 text-sm">
+                  {errors.lastName?.message}
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="font-medium text-xl flex gap-x-2 items-center">
+            <label htmlFor="email" className="font-normal w-1/5">
+              Email :
+            </label>
+            <div className="flex flex-col w-3/5">
+              <input
+                id="email"
+                className={
+                  inputClasses +
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                }
+                type="text"
+                disabled={!Editing}
+                autoComplete="off"
+                {...register("email", {
+                  required: "Please enter you email id!",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Please enter valid email id!",
+                  },
+                })}
+              />
+              {errors.email?.type === "required" && (
+                <span className="text-red-500 pt-1 px-1 text-sm">
+                  {errors.email?.message}
+                </span>
+              )}
+              {errors.email?.type === "pattern" && (
+                <span className="text-red-500 pt-1 px-1 text-sm">
+                  {errors.email?.message}
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="font-medium text-xl flex gap-x-2 items-center">
+            <label htmlFor="state" className="font-normal w-1/5">
+              State :
+            </label>
+            <div className="flex flex-col w-3/5">
+              <select
+                id="state"
                 className={selectClasses}
                 disabled={!Editing}
                 {...register("state", { required: "Please select state!" })}
@@ -236,9 +304,12 @@ const UserDetails = (props) => {
         </div>
         <div className="grid grid-cols-2 gap-5 px-2">
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal w-1/5">Number :</label>
+            <label htmlFor="licenseNumber" className="font-normal w-1/5">
+              Number :
+            </label>
             <div className="flex flex-col w-3/5">
               <input
+                id="licenseNumber"
                 className={
                   inputClasses +
                   " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
@@ -270,10 +341,12 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal w-1/5">Type :</label>
+            <label htmlFor="licenseType" className="font-normal w-1/5">
+              Type :
+            </label>
             <div className="flex flex-col w-3/5">
               <select
-                id="term"
+                id="licenseType"
                 className={selectClasses}
                 disabled={!Editing}
                 autoComplete="off"
@@ -296,9 +369,12 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal w-1/5">Firstname :</label>
+            <label htmlFor="licenseFirstname" className="font-normal w-1/5">
+              Firstname :
+            </label>
             <div className="flex flex-col w-3/5">
               <input
+                id="licenseFirstname"
                 className={
                   inputClasses +
                   " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
@@ -327,9 +403,12 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal w-1/5">Lastname :</label>
+            <label htmlFor="licenseLastname" className="font-normal w-1/5">
+              Lastname :
+            </label>
             <div className="flex flex-col w-3/5">
               <input
+                id="licenseLastname"
                 className={
                   inputClasses +
                   " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
@@ -358,9 +437,12 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal w-1/5">Issue Date :</label>
+            <label htmlFor="licenseIssueDate" className="font-normal w-1/5">
+              Issue Date :
+            </label>
             <div className="flex flex-col w-3/5">
               <input
+                id="licenseIssueDate"
                 className={
                   inputClasses +
                   " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
@@ -380,9 +462,12 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal w-1/5">Expiry Date :</label>
+            <label htmlFor="licenseExpiryDate" className="font-normal w-1/5">
+              Expiry Date :
+            </label>
             <div className="flex flex-col w-3/5">
               <input
+                id="licenseExpiryDate"
                 className={
                   inputClasses +
                   " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
@@ -402,10 +487,12 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal w-1/5">Issue State :</label>
+            <label htmlFor="licenseIssueState" className="font-normal w-1/5">
+              Issue State :
+            </label>
             <div className="flex flex-col w-3/5">
               <select
-                id="term"
+                id="licenseIssueState"
                 className={selectClasses}
                 disabled={!Editing}
                 {...register("licenceIssueState", {

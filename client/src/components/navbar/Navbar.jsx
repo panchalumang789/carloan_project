@@ -48,7 +48,7 @@ const Navbar = () => {
   return (
     <div>
       <div>
-        <div className="fixed left-1/2 -translate-x-1/2 max-w-screen-2xl h-16 w-full z-20 flex justify-center px-4 md:px-16">
+        <div className="fixed left-1/2 -translate-x-1/2 max-w-screen-2xl h-16 w-full z-30 flex justify-center px-4 md:px-16">
           <div className="flex w-full">
             <div className="font-medium overflow-hidden h-16 text-primary-color-1 dark:text-primary-color-7 flex justify-center items-center top-2 left-0">
               <Link to={"/"} className="flex items-center hover:cursor-pointer">
@@ -111,7 +111,7 @@ const Navbar = () => {
       <div
         className={
           Navbar.navbar +
-          " fixed font-medium w-screen md:w-1/3 transition-all duration-500 bg-primary-color-3 text-primary-color-4 dark:bg-primary-color-9 dark:text-primary-color-7 z-10 top-0"
+          " fixed font-medium w-screen md:w-1/3 transition-all duration-500 bg-primary-color-3 text-primary-color-4 dark:bg-primary-color-9 dark:text-primary-color-7 z-20 top-0"
         }
       >
         <div className="flex flex-col justify-center items-center gap-y-5 h-screen uppercase">

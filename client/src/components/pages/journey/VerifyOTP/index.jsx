@@ -10,6 +10,7 @@ import customerService from "services/customerServices";
 import LoadingPage from "components/pages/journey/extra/LoadingPage";
 import OTPImage from "assest/images/OTPPage1.jpg";
 import useProgress from "useProgress";
+import { errorToast, successToast } from "../extra/Widget";
 
 const VerifyOTP = () => {
   const { setProgress } = useProgress();
@@ -50,14 +51,7 @@ const VerifyOTP = () => {
         });
         if (error) {
           setLoading(false);
-          toast.error("Invalid OTP !", {
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            position: "top-center",
-          });
+          errorToast("Invalid OTP !");
           setOTP(["", "", "", ""]);
           inputRef.current.focus();
         } else {
@@ -66,7 +60,7 @@ const VerifyOTP = () => {
           }
         }
         if (output.message === "approved") {
-          toast.success(`OTP: ${output.message}`, { position: "top-center" });
+          successToast(`OTP: ${output.message}`);
           let token = "";
           if (localStorage.getItem("token")) {
             token = localStorage.getItem("token");
@@ -102,7 +96,7 @@ const VerifyOTP = () => {
               );
             })
             .catch((error) => {
-              console.error(error);
+              errorToast(error);
             });
         }
       }

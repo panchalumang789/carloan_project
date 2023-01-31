@@ -7,12 +7,17 @@ import {
   selectClasses,
   successToast,
 } from "components/pages/journey/extra/Widget";
+import { ToastContainer } from "react-toastify";
+import Swal from "sweetalert2";
+import LoadingPage from "components/pages/journey/extra/LoadingPage";
+window.Swal = Swal;
 
 const LoanDetails = (props) => {
   const updateService = new loanService();
   const [loanDetails, setLoanData] = useState({});
   const [Editing, setEditing] = useState(false);
   const [ApplyDate, setApplyDate] = useState("");
+  const [Loading, setLoading] = useState(false);
 
   const {
     register,
@@ -43,14 +48,15 @@ const LoanDetails = (props) => {
     }
   }, [loanDetails.createdAt]);
 
-  const submitLoan = async (data) => {
+  const updateLoan = async (data) => {
     const { output, error } = await updateService.updateLoan({
       loanId: props.LoanDetails.id,
       bodyData: data,
       headerData: localStorage.getItem("token"),
     });
     if (!output) {
-      errorToast(error, error.data.message);
+      errorToast(error.message);
+      errorToast(error.data.message);
     } else {
       successToast(output.message);
       props.UpdateLoan();
@@ -58,8 +64,49 @@ const LoanDetails = (props) => {
     }
   };
 
+  const submitLoan = async (data) => {
+    setLoading(true);
+    if (data.status === "Approved") {
+      Swal.fire({
+        title: "Do you want to change loan status?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonColor: "#EB5757",
+        confirmButtonColor: "#41aa76",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          (async () => {
+            const { output, error } = await updateService.sendMail({
+              loanId: props.LoanDetails.id,
+            });
+            if (!output) {
+              errorToast(error.data.message);
+            } else {
+              if (output.mailstatus) {
+                successToast(output.mailstatus);
+              }
+            }
+            updateLoan(data);
+            setLoading(false);
+          })();
+        } else {
+          setLoading(false);
+        }
+      });
+    } else {
+      updateLoan(data);
+    }
+  };
+
   return (
     <div className="w-full border-2 rounded-md flex flex-col gap-y-3 h-full md:overflow-y-auto border-primary-color-1 dark:border-primary-color-10 p-4">
+      {/* {Loading && (
+        <div className="h-screen w-screen flex justify-center items-center mx-auto bg-transparent/50 dark:bg-transparent/60 fixed">
+          <LoadingPage />
+        </div>
+      )} */}
+      <ToastContainer />
       <form onSubmit={handleSubmit(submitLoan)} className="flex flex-col gap-5">
         <div className="grid grid-cols-2 gap-5 px-2">
           <input type="hidden" {...register("userId")} />
@@ -100,10 +147,15 @@ const LoanDetails = (props) => {
           <div className="font-medium text-xl flex gap-x-2 items-center">
             <span className="font-normal w-1/5">Approx Amount:</span>
             <div className="flex flex-col w-3/5">
+              <div className="input-group-prepend">
+                <span className="ml-4 my-2 fixed text-lg" id="basic-addon1">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 className={
                   inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
                 }
                 type="number"
                 disabled={!Editing}
@@ -130,10 +182,15 @@ const LoanDetails = (props) => {
           <div className="font-medium text-xl flex gap-x-2 items-center">
             <span className="font-normal w-1/5">Deposit:</span>
             <div className="flex flex-col w-3/5">
+              <div className="input-group-prepend">
+                <span className="ml-4 my-2 fixed text-lg" id="basic-addon1">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 className={
                   inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
                 }
                 type="number"
                 disabled={!Editing}
@@ -203,6 +260,11 @@ const LoanDetails = (props) => {
           <div className="font-medium text-xl flex gap-x-2 items-center">
             <span className="font-normal w-1/5">Balloon:</span>
             <div className="flex flex-col w-3/5">
+              <div className="relative ml-auto input-group-prepend">
+                <span className="-ml-8 my-1.5 fixed text-lg" id="basic-addon1">
+                  &#x25;
+                </span>
+              </div>
               <input
                 className={
                   inputClasses +
@@ -257,11 +319,16 @@ const LoanDetails = (props) => {
           <div className="font-medium text-xl flex gap-x-2 items-center">
             <span className="font-normal w-1/5">User income:</span>
             <div className="flex flex-col w-3/5">
+              <div className="input-group-prepend">
+                <span className="ml-4 my-2 fixed text-lg" id="basic-addon1">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 type="number"
                 className={
                   inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
                 }
                 disabled={!Editing}
                 {...register("user_income", {

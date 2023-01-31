@@ -6,6 +6,7 @@ import {
   successToast,
 } from "components/pages/journey/extra/Widget";
 import loanService from "services/loanService";
+import { ToastContainer } from "react-toastify";
 
 const ExpensesDetails = (props) => {
   const [Editing, setEditing] = useState(false);
@@ -40,7 +41,8 @@ const ExpensesDetails = (props) => {
       headerData: localStorage.getItem("token"),
     });
     if (!output) {
-      errorToast(error, error.data.message);
+      errorToast(error.message);
+      errorToast(error.data.message);
     } else {
       successToast(output.message);
       props.UpdateLoan();
@@ -54,6 +56,7 @@ const ExpensesDetails = (props) => {
         onSubmit={handleSubmit(submitExpensesData)}
         className="flex flex-col gap-5"
       >
+        <ToastContainer />
         <div className="grid md:grid-cols-2 gap-5 px-2">
           <input type="hidden" {...register("userId")} />
           <input type="hidden" {...register("loanId")} />

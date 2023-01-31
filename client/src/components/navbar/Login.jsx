@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import customerService from "services/customerServices";
 import LoadingPage from "components/pages/journey/extra/LoadingPage";
-import { FormTitle, inputClasses } from "components/pages/journey/extra/Widget";
+import { errorToast, FormTitle, inputClasses } from "components/pages/journey/extra/Widget";
 import LoginImage from "assest/images/LoginImage.jpg";
 import { motion, useDragControls } from "framer-motion";
 
@@ -45,14 +45,7 @@ const Login = () => {
         }
       );
     } else {
-      toast.error(result.message, {
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        position: "top-center",
-      });
+      errorToast(result.message);
     }
   };
 
@@ -96,11 +89,9 @@ const Login = () => {
                 </label>
                 <div className="input-group-prepend">
                   <span
-                    className="ml-4 my-1.5 fixed text-lg "
+                    className="ml-4 fixed text-lg fa fa-phone my-2.5"
                     id="basic-addon1"
-                  >
-                    &#x1F4DE;
-                  </span>
+                  ></span>
                 </div>
                 <input
                   id="contact_no"

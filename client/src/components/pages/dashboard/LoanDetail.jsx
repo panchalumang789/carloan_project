@@ -1,8 +1,8 @@
 import React from "react";
 import { useEffect } from "react";
 import customerService from "services/customerServices";
-import LoanListUser from "./User/LoanList/index";
-import LoanListAdmin from "./Admin/LoanList/index";
+import LoanDetailUser from "./User/LoanDetail/index";
+import LoanDetailAdmin from "./Admin/LoanDetail/index";
 import { useState } from "react";
 
 const LoanList = () => {
@@ -22,6 +22,6 @@ const LoanList = () => {
 
   if (!role) return <div className="fixed inset-0 bg-primary-color-5"></div>;
 
-  return role === "Admin" ? <LoanListAdmin /> : <LoanListUser />;
+  return role === "Admin" ? <LoanDetailAdmin /> : <LoanDetailUser />;
 };
 export default LoanList;

@@ -6,6 +6,7 @@ import {
   successToast,
 } from "components/pages/journey/extra/Widget";
 import loanService from "services/loanService";
+import { ToastContainer } from "react-toastify";
 
 const IncomeDetails = (props) => {
   const updateService = new loanService();
@@ -53,7 +54,8 @@ const IncomeDetails = (props) => {
       headerData: localStorage.getItem("token"),
     });
     if (!output) {
-      errorToast(error, error.data.message);
+      errorToast(error.message);
+      errorToast(error.data.message);
     } else {
       successToast(output.message);
       props.UpdateLoan();
@@ -66,7 +68,7 @@ const IncomeDetails = (props) => {
       <form
         onSubmit={handleSubmit(submitIncomeData)}
         className="flex flex-col gap-5"
-      >
+      ><ToastContainer />
         <div className="grid md:grid-cols-2 gap-5 px-2">
           <input type="hidden" {...register("userId")} />
           <input type="hidden" {...register("loanId")} />
@@ -77,50 +79,40 @@ const IncomeDetails = (props) => {
             <div className="flex flex-col w-3/5">
               <div className="flex gap-x-5">
                 <div>
-                  <label htmlFor="yes" className="px-2">
-                    Yes
-                  </label>
                   <input
                     type="radio"
                     name="income"
+                    className="form-radio checked:bg-primary-color-1 checked:text-primary-color-1 "
                     id="yes"
                     value={true}
-                    defaultChecked={
-                      incomeDetails.additional_income &&
-                      incomeDetails.additional_income === true
-                    }
+                    disabled={!Editing}
+                    defaultChecked={incomeDetails.additional_income}
                     onClick={additionalIncome}
                     {...register("additional_income", {
                       required: true,
                     })}
                   />
-                </div>
-                {console.log(
-                  incomeDetails.additional_income &&
-                    incomeDetails.additional_income === true
-                )}
-                {/* {console.log(
-                  incomeDetails.additional_income &&
-                  incomeDetails.additional_income === false
-                )} */}
-                <div>
-                  <label htmlFor="no" className="px-2">
-                    No
+                  <label htmlFor="yes" className="px-2">
+                    Yes
                   </label>
+                </div>
+                <div>
                   <input
                     type="radio"
                     name="income"
                     id="no"
+                    className="form-radio checked:bg-primary-color-1 checked:text-primary-color-1 "
                     value={false}
-                    defaultChecked={
-                      incomeDetails.additional_income &&
-                      incomeDetails.additional_income === false
-                    }
+                    disabled={!Editing}
+                    defaultChecked={!incomeDetails.additional_income}
                     onClick={additionalIncome}
                     {...register("additional_income", {
                       required: true,
                     })}
                   />
+                  <label htmlFor="no" className="px-2">
+                    No
+                  </label>
                 </div>
               </div>
               {errors.additional_income && (

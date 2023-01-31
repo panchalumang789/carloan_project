@@ -7,6 +7,7 @@ import {
 } from "components/pages/journey/extra/Widget";
 import carsService from "services/carsServices";
 import loanService from "services/loanService";
+import { ToastContainer } from "react-toastify";
 
 const CarDetails = (props) => {
   const carService = new carsService();
@@ -88,7 +89,7 @@ const CarDetails = (props) => {
       headerData: localStorage.getItem("token"),
     });
     if (!output) {
-      errorToast(error, error.data.message);
+      errorToast(error.data.message);
     } else {
       successToast(output.message);
       props.UpdateLoan();
@@ -102,6 +103,7 @@ const CarDetails = (props) => {
         onSubmit={handleSubmit(updateCarData)}
         className="flex flex-col gap-5"
       >
+        <ToastContainer />
         <div className="grid grid-cols-2 gap-5 px-2">
           <div className="font-medium text-xl flex gap-x-2 items-center">
             <label className="font-normal w-1/5">Make :</label>

@@ -38,6 +38,9 @@ const verifyToken = async (req, res, next) => {
       req.headers.authorization,
       process.env.JWT_SECRET_KEY
     );
+    if (verify.role) {
+      res.locals.role = verify.role;
+    }
     if (verify.role === "Admin") {
       let findUser = await adminTable.findOne({
         where: { contactNo: verify.contactNo },
@@ -56,7 +59,6 @@ const verifyToken = async (req, res, next) => {
         where: { contactNo: verify.contactNo },
       });
       if (findUser.id) {
-        res.locals.role = verify.role;
         res.locals.userDetail = findUser;
         res.locals.user = {
           id: findUser.id,

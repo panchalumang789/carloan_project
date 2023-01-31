@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import loanService from "services/loanService";
 import LoadingPage from "components/pages/journey/extra/LoadingPage";
 import {
@@ -12,7 +12,6 @@ const statusClass =
 
 const LoanList = () => {
   let pageLimit = 5;
-  const navigate = useNavigate();
   const [limit, setlimit] = useState(5);
   const [page, setpage] = useState(1);
   const [loans, setLoans] = useState([]);
@@ -64,9 +63,6 @@ const LoanList = () => {
   const filterLoan = (value) => {
     setpage(1);
     setstatus(value);
-  };
-  const gotoLoan = (loanId) => {
-    navigate(`loan/${loanId}`);
   };
   return (
     <div
@@ -163,7 +159,6 @@ const LoanList = () => {
                       {loans.map((loan, index) => {
                         return (
                           <tr
-                            onClick={() => gotoLoan(loan.id)}
                             className="text-center hover:bg-primary-color-10"
                             key={index}
                           >
@@ -172,12 +167,11 @@ const LoanList = () => {
                                 state={{ role: role }}
                                 key={index}
                                 to={`loan/${loan.id}`}
-                                className="font-medium"
+                                className="font-medium p-5"
                               >
                                 {loan.id}
                               </Link>
                             </td>
-                            {console.log(role)}
                             <td>{loan.carId}</td>
                             <td>{loan.userId}</td>
                             <td>{loan.approx_price}</td>

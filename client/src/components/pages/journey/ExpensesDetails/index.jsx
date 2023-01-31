@@ -5,7 +5,7 @@ import Typewriter from "typewriter-effect";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { ToastContainer, toast } from "react-toastify";
-import { FormTitle, inputClasses } from "../extra/Widget";
+import { errorToast, FormTitle, inputClasses } from "../extra/Widget";
 import customerService from "services/customerServices";
 import useProgress from "useProgress";
 
@@ -52,14 +52,7 @@ const ExpensesDetails = () => {
         }
       );
     } catch (error) {
-      toast.error(error.message, {
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        position: "top-center",
-      });
+      errorToast(error.message);
     }
   };
   return (

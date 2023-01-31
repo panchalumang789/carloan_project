@@ -12,12 +12,13 @@ import Dashboard from "components/pages/dashboard/Dashboard";
 import Login from "components/navbar/Login";
 import Verify from "components/navbar/VerifyOTP";
 import Protected from "components/Protected";
-// import Loan from "components/pages/dashboard/Loan";
-import LoanList from "components/pages/dashboard/LoanList/index";
-import Loan from "components/pages/dashboard/AdminDisplay/LoanDetails/index";
+import LoanList from "components/pages/dashboard/LoanList";
+import LoanDetail from "components/pages/dashboard/LoanDetail";
+// import LoanDetail from "components/pages/dashboard/User/LoanDetail/index";
+// import LoanDetail from "components/pages/dashboard/Admin/LoanDetail/index";
 import AdminLogin from "components/pages/AdminLogin/index";
-import UserList from "components/pages/dashboard/UserList";
-import UserLoan from "components/pages/dashboard/UserLoan";
+import UserList from "components/pages/dashboard/Admin/UserList/index";
+import UserLoan from "components/pages/dashboard/Admin/UserLoan/index";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -36,9 +37,9 @@ root.render(
           }
         >
           <Route path="" element={<LoanList />}></Route>
+          <Route path="loan/:loanId" element={<LoanDetail />}></Route>
           <Route path="user" element={<UserList />}></Route>
           <Route path="user/loans/:id" element={<UserLoan />}></Route>
-          <Route path="loan/:loanId" element={<Loan />}></Route>
         </Route>
         <Route path="login" element={<Login />}></Route>
         <Route path="verify" element={<Verify />}></Route>

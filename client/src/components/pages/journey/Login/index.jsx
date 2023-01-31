@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import customerService from "services/customerServices";
 import Typewriter from "typewriter-effect";
 import Cookies from "universal-cookie";
-import { Navigator, inputClasses } from "../extra/Widget";
+import { Navigator, inputClasses, errorToast } from "../extra/Widget";
 import LoadingPage from "../extra/LoadingPage";
 import LoginImage from "assest/images/LoginImage.jpg";
 import useProgress from "useProgress";
@@ -48,14 +48,7 @@ const LoginDetails = () => {
         }
       );
     } else {
-      toast.error(result.message, {
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        position: "top-center",
-      });
+      errorToast(result.message);
     }
   };
 
@@ -113,11 +106,9 @@ const LoginDetails = () => {
                 </label>
                 <div className="input-group-prepend">
                   <span
-                    className="ml-4 my-1.5 fixed text-lg "
+                    className="ml-4 fixed text-lg fa fa-phone my-2.5"
                     id="basic-addon1"
-                  >
-                    &#x1F4DE;
-                  </span>
+                  ></span>
                 </div>
                 <input
                   id="contact_no"

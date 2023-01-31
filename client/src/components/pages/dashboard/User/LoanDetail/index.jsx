@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import loanService from "services/loanService";
-import { toast, ToastContainer } from "react-toastify";
-import { CounterUp, selectClasses } from "../journey/extra/Widget";
+import {
+  CounterUp,
+  errorToast,
+  selectClasses,
+  successToast,
+} from "components/pages/journey/extra/Widget";
 import Swal from "sweetalert2";
-import IncomeDetails from "./Loan/IncomeDetail/index";
-import ExpensesDetails from "./Loan/ExpensesDetail/index";
+import IncomeDetails from "./IncomeDetails";
+import ExpensesDetails from "./ExpensesDetails";
+import { ToastContainer } from "react-toastify";
 window.Swal = Swal;
 
 const sendMail = async (loanStatus, loanId) => {
@@ -15,28 +20,16 @@ const sendMail = async (loanStatus, loanId) => {
       loanId: loanId,
     });
     if (!output) {
-      toast.error(error.data.message, {
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-        position: "top-center",
-      });
+      errorToast(error.data.message);
     } else {
       if (output.mailstatus) {
-        toast.success(output.mailstatus, {
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "light",
-          position: "top-center",
-        });
+        successToast(output.mailstatus);
       }
     }
   }
 };
 
-const Loan = () => {
+const LoanDetail = () => {
   const location = useLocation();
   const state = location.state;
   console.log(state);
@@ -64,13 +57,7 @@ const Loan = () => {
         }
       })();
     } catch (error) {
-      toast.error(error.data.message, {
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-        position: "top-center",
-      });
+      errorToast(error.data.message);
     }
     return () => {};
   }, [loanId]);
@@ -99,22 +86,10 @@ const Loan = () => {
             headerData: localStorage.getItem("token"),
           });
           if (!output) {
-            toast.error(error.data.message, {
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              theme: "light",
-              position: "top-center",
-            });
+            errorToast(error.data.message);
           } else {
             sendMail(e.target.value, loanid.loanId);
-            toast.success(output.message, {
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              theme: "light",
-              position: "top-center",
-            });
+            successToast(output.message);
           }
         })();
       }
@@ -131,49 +106,6 @@ const Loan = () => {
         <div className="flex flex-col md:flex-row px-2 md:px-0 w-full gap-x-6 gap-y-2 overflow-auto md:overflow-hidden h-[calc(100%-190px)] md:h-[calc(100%-190px)]">
           <ToastContainer />
           <div className="w-full md:w-5/6 border-2 border-primary-color-1 dark:border-primary-color-5 lg:w-1/4 p-3">
-            <div>
-              <p className="text-lg font-medium">Customer Summary</p>
-              <div className="p-2 md:p-5 text-sm">
-                <div>
-                  <span>Name: </span>
-                  <span className="font-semibold text-base mx-auto">
-                    {loanDetails.userDetails
-                      ? loanDetails.userDetails.firstName +
-                        " " +
-                        loanDetails.userDetails.lastName
-                      : "Invalid"}
-                  </span>
-                </div>
-                <div>
-                  <span>Contact no: </span>
-                  <span className="font-semibold text-base mx-auto">
-                    {loanDetails.userDetails
-                      ? loanDetails.userDetails.contactNo
-                      : "Invalid"}
-                  </span>
-                </div>
-                <div>
-                  <span>Email: </span>
-                  <span className="font-semibold text-base mx-auto">
-                    {loanDetails.userDetails
-                      ? loanDetails.userDetails.email
-                      : "Invalid"}
-                  </span>
-                </div>
-                <div>
-                  <span>Income: </span>
-                  <span className="font-semibold text-base mx-auto">
-                    &#x20B9; {loanDetails.user_income}
-                  </span>
-                </div>
-                <div>
-                  <span>Work status: </span>
-                  <span className="font-semibold text-base mx-auto">
-                    {loanDetails.user_status}
-                  </span>
-                </div>
-              </div>
-            </div>
             <div>
               <p className="text-lg font-medium">Loan Summary</p>
               <div className="p-2 md:p-5 text-sm">
@@ -327,4 +259,4 @@ const Loan = () => {
   );
 };
 
-export default Loan;
+export default LoanDetail;

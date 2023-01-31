@@ -12,6 +12,7 @@ import {
   Navigator,
   inputClasses,
   selectClasses,
+  errorToast,
 } from "../extra/Widget";
 
 const LicenseDetails = () => {
@@ -68,14 +69,7 @@ const LicenseDetails = () => {
           details: { ...customerCookie, ...data, ...contactNo },
         });
         if (!output) {
-          toast.error(error.data.message, {
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            position: "top-center",
-          });
+          errorToast(error.data.message);
         } else {
           localStorage.setItem("token", output.token);
           cookie.remove("contactNo");
@@ -102,14 +96,7 @@ const LicenseDetails = () => {
           headerData: { ...loanId },
         });
         if (!output) {
-          toast.error(error.data.message, {
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            position: "top-center",
-          });
+          errorToast(error.data.message);
         } else {
           cookie.remove("customerDetail");
           setTimeout(() => {
@@ -133,14 +120,7 @@ const LicenseDetails = () => {
         }
       }
     } catch (error) {
-      toast.error(error.message, {
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        position: "top-center",
-      });
+      errorToast(error.message);
     }
   };
   return (

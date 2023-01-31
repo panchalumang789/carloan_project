@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import loanService from "services/loanService";
-import LoadingPage from "../journey/extra/LoadingPage";
+import LoadingPage from "components/pages/journey/extra/LoadingPage";
 
 const statusClass =
   "font-medium text-base after:w-full hover:after:block after:h-0.5 after:bg-primary-color-1 dark:text-primary-color-7 dark:after:bg-primary-color-7 after:transition-all after:duration-700 after:rounded-xl after:mt-1.5";

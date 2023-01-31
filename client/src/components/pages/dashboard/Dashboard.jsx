@@ -53,7 +53,7 @@ const Dashboard = () => {
                   className="fa-solid fa-ellipsis cursor-pointer"
                 ></span>
                 <div className={Widget + " relative right-[167px] -top-2"}>
-                  <div className="fixed text-sm font-medium flex flex-col bg-primary-color-7 dark:bg-primary-color-9 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-lg px-3 py-1">
+                  <div className="fixed text-sm font-medium flex flex-col bg-primary-color-7 dark:bg-primary-color-9 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-lg px-3 py-1 z-10">
                     <Link
                       id="new_loan"
                       to={"/journey"}

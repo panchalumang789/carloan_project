@@ -31,12 +31,18 @@ const CustomerDetails = () => {
           headerData: localStorage.getItem("token"),
         });
         const preData = cookie.get("customerDetail");
-        cookie.set("customerData", findUser, { maxAge: 3600 });
-        setValue("prefix", preData ? preData.prefix : findUser.prefix);
-        setValue("firstName", preData ? preData.firstName : findUser.firstName);
-        setValue("lastName", preData ? preData.lastName : findUser.lastName);
-        setValue("email", preData ? preData.email : findUser.email);
-        setValue("state", preData ? preData.state : findUser.state);
+        cookie.set("customerData", findUser.user, { maxAge: 3600 });
+        setValue("prefix", preData ? preData.prefix : findUser.user.prefix);
+        setValue(
+          "firstName",
+          preData ? preData.firstName : findUser.user.firstName
+        );
+        setValue(
+          "lastName",
+          preData ? preData.lastName : findUser.user.lastName
+        );
+        setValue("email", preData ? preData.email : findUser.user.email);
+        setValue("state", preData ? preData.state : findUser.user.state);
       })();
     }
     if (cookie.get("contactNo")) {

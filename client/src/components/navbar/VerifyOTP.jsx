@@ -1,11 +1,12 @@
 import LoadingPage from "components/pages/journey/extra/LoadingPage";
 import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
 import customerService from "services/customerServices";
 import Typewriter from "typewriter-effect";
 import Cookies from "universal-cookie";
 import OTPImage from "assest/images/OTPPage1.jpg";
+import { errorToast, successToast } from "components/pages/journey/extra/Widget";
+import { ToastContainer } from "react-toastify";
 
 const VerifyOTP = () => {
   const cookie = new Cookies();
@@ -45,32 +46,16 @@ const VerifyOTP = () => {
       });
       if (error) {
         if (error.data.message) {
-          toast.error(error.data.message, {
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            position: "top-center",
-          });
+          errorToast(error.data.message);
         } else {
-          toast.error("Invalid OTP !", {
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            position: "top-center",
-          });
+          errorToast("Invalid OTP !");
         }
         setLoading(false);
         setOTP(["", "", "", ""]);
         inputRef.current.focus();
       } else {
         if (output.message === "approved") {
-          toast.success(`OTP: ${output.message}`, {
-            position: "top-center",
-          });
+          successToast(`OTP: ${output.message}`);
           if (output.token) {
             localStorage.setItem("token", output.token);
           }

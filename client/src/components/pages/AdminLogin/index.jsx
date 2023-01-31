@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
-import { toast, ToastContainer } from "react-toastify";
 import LoadingPage from "components/pages/journey/extra/LoadingPage";
 import loginService from "services/loginService";
-import { FormTitle, inputClasses } from "components/pages/journey/extra/Widget";
+import { errorToast, FormTitle, inputClasses, successToast } from "components/pages/journey/extra/Widget";
 import { useNavigate } from "react-router-dom";
 import LoginImage from "assest/images/OTPPage.jpg";
+import { ToastContainer } from "react-toastify";
 
 const AdminLogin = () => {
   const adminService = new loginService();
@@ -28,21 +28,9 @@ const AdminLogin = () => {
         details: data,
       });
       if (!output) {
-        toast.error(error.data.message, {
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "light",
-          position: "top-center",
-        });
+        errorToast(error.data.message);
       } else {
-        toast.success("Login successful...", {
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "light",
-          position: "top-center",
-        });
+        successToast("Login successful...");
         localStorage.setItem("token", output.message);
         setTimeout(() => {
           navigate("/dashboard");

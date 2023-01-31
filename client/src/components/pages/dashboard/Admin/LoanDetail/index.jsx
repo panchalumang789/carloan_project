@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import loanService from "services/loanService";
-import { toast, ToastContainer } from "react-toastify";
 import Swal from "sweetalert2";
 import LoanDetails from "./LoanDetails";
 import UserDetails from "./UserDetails";
 import CarDetails from "./CarDetails";
 import IncomeDetails from "./IncomeDetails";
 import ExpensesDetails from "./ExpensesDetails";
+import {
+  errorToast,
+  successToast,
+} from "components/pages/journey/extra/Widget";
+import { ToastContainer } from "react-toastify";
 window.Swal = Swal;
 
 const statusClass =
@@ -20,22 +24,10 @@ const sendMail = async (loanStatus, loanId) => {
       loanId: loanId,
     });
     if (!output) {
-      toast.error(error.data.message, {
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-        position: "top-center",
-      });
+      errorToast(error.data.message);
     } else {
       if (output.mailstatus) {
-        toast.success(output.mailstatus, {
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "light",
-          position: "top-center",
-        });
+        successToast(output.mailstatus);
       }
     }
   }
@@ -66,13 +58,7 @@ const LoanDetail = () => {
           }
         })();
       } catch (error) {
-        toast.error(error.data.message, {
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "light",
-          position: "top-center",
-        });
+        errorToast(error.data.message);
       } finally {
         setFetchData(false);
       }
@@ -104,22 +90,10 @@ const LoanDetail = () => {
             headerData: localStorage.getItem("token"),
           });
           if (!output) {
-            toast.error(error.data.message, {
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              theme: "light",
-              position: "top-center",
-            });
+            errorToast(error.data.message);
           } else {
             sendMail(e.target.value, loanid.loanId);
-            toast.success(output.message, {
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              theme: "light",
-              position: "top-center",
-            });
+            successToast(output.message);
           }
         })();
       }
@@ -204,6 +178,7 @@ const LoanDetail = () => {
           {Details === "userDetails" && (
             <UserDetails
               UserDetails={loanDetails.userDetails}
+              UserId={loanDetails.userId}
               UpdateLoan={() => setFetchData(true)}
             />
           )}

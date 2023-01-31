@@ -32,7 +32,7 @@ userRoutes.get(
 
 // @return verify user token
 userRoutes.get("/user/verify", authorization.verifyToken, (req, res) => {
-  res.status(200).send(res.locals.userDetail);
+  res.status(200).json({ user: res.locals.userDetail, role: res.locals.role });
 });
 
 // @admin user details by id
