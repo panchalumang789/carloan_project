@@ -15,8 +15,6 @@ const UserDetails = (props) => {
   const [userDetails, setUserData] = useState({});
   const [Editing, setEditing] = useState(false);
   const [States, setStates] = useState([]);
-  const [IssueDate, setIssueDate] = useState("");
-  const [ExpireDate, setExpireDate] = useState("");
 
   useEffect(() => {
     const userService = new customerService();
@@ -64,13 +62,12 @@ const UserDetails = (props) => {
     setValue("state", props.UserDetails.state);
     setValue("licenceIssueState", props.UserDetails.licenceIssueState);
     if (userDetails.licenseIssueDate) {
-      setIssueDate(
-        new Date(userDetails.licenseIssueDate).toISOString().split("T")[0]
-      );
+      setValue("licenseIssueDate", userDetails.licenseIssueDate.split("T")[0]);
     }
     if (userDetails.licenceExpireDate) {
-      setExpireDate(
-        new Date(userDetails.licenceExpireDate).toISOString().split("T")[0]
+      setValue(
+        "licenceExpireDate",
+        userDetails.licenceExpireDate.split("T")[0]
       );
     }
   }, [
@@ -79,6 +76,8 @@ const UserDetails = (props) => {
     userDetails,
     props.UserDetails.state,
     props.UserDetails.licenceIssueState,
+    userDetails.licenseIssueDate,
+    userDetails.licenceExpireDate,
   ]);
 
   const submitCustomerData = async (data) => {
@@ -94,12 +93,11 @@ const UserDetails = (props) => {
       props.UpdateLoan();
       setEditing(false);
     }
-    console.log(data);
   };
 
   return (
-    <div className="w-full border-2 rounded-md flex flex-col gap-y-3 h-full md:overflow-y-auto border-primary-color-1 dark:border-primary-color-10 p-4">
-      <form
+    <div className="w-full border-2 rounded-md flex flex-col gap-y-3 md:h-full md:overflow-y-auto border-primary-color-1 dark:border-primary-color-10 px-4">
+    <form
         onSubmit={handleSubmit(submitCustomerData)}
         className="flex flex-col gap-5"
       >
@@ -107,17 +105,23 @@ const UserDetails = (props) => {
         <div className="my-3 w-fit">
           <FormTitle formTitle={"Personal Details"} />
         </div>
-        <div className="grid grid-cols-2 gap-5 px-2">
+        <div className="grid md:grid-cols-2 gap-5 px-2">
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="contactNo" className="font-normal w-1/5">
+            <label htmlFor="contactNo" className="font-normal w-1/3 md:w-1/5">
               Contact No :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
+              <div className="relative input-group-prepend">
+                <span
+                  className="ml-4 my-3.5 absolute text-lg fa fa-phone"
+                  id="basic-addon2"
+                ></span>
+              </div>
               <input
                 id="contactNo"
                 className={
                   inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
                 }
                 type="number"
                 disabled={!Editing}
@@ -143,10 +147,10 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="prefix" className="font-normal w-1/5">
+            <label htmlFor="prefix" className="font-normal w-1/3 md:w-1/5">
               Prefix :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
               <select
                 id="prefix"
                 className={selectClasses}
@@ -168,10 +172,10 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="firstName" className="font-normal w-1/5">
+            <label htmlFor="firstName" className="font-normal w-1/3 md:w-1/5">
               Firstname :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
               <input
                 id="firstName"
                 className={
@@ -202,10 +206,10 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="lastName" className="font-normal w-1/5">
+            <label htmlFor="lastName" className="font-normal w-1/3 md:w-1/5">
               Lastname :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
               <input
                 id="lastName"
                 className={
@@ -236,10 +240,10 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="email" className="font-normal w-1/5">
+            <label htmlFor="email" className="font-normal w-1/3 md:w-1/5">
               Email :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
               <input
                 id="email"
                 className={
@@ -270,10 +274,10 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="state" className="font-normal w-1/5">
+            <label htmlFor="state" className="font-normal w-1/3 md:w-1/5">
               State :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
               <select
                 id="state"
                 className={selectClasses}
@@ -302,12 +306,12 @@ const UserDetails = (props) => {
         <div className="my-3 w-fit">
           <FormTitle formTitle={"License Details"} />
         </div>
-        <div className="grid grid-cols-2 gap-5 px-2">
+        <div className="grid md:grid-cols-2 gap-5 px-2">
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="licenseNumber" className="font-normal w-1/5">
+            <label htmlFor="licenseNumber" className="font-normal w-1/3 md:w-1/5">
               Number :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
               <input
                 id="licenseNumber"
                 className={
@@ -341,10 +345,10 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="licenseType" className="font-normal w-1/5">
+            <label htmlFor="licenseType" className="font-normal w-1/3 md:w-1/5">
               Type :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
               <select
                 id="licenseType"
                 className={selectClasses}
@@ -369,10 +373,10 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="licenseFirstname" className="font-normal w-1/5">
+            <label htmlFor="licenseFirstname" className="font-normal w-1/3 md:w-1/5">
               Firstname :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
               <input
                 id="licenseFirstname"
                 className={
@@ -403,10 +407,10 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="licenseLastname" className="font-normal w-1/5">
+            <label htmlFor="licenseLastname" className="font-normal w-1/3 md:w-1/5">
               Lastname :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
               <input
                 id="licenseLastname"
                 className={
@@ -437,10 +441,10 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="licenseIssueDate" className="font-normal w-1/5">
+            <label htmlFor="licenseIssueDate" className="font-normal w-1/3 md:w-1/5">
               Issue Date :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
               <input
                 id="licenseIssueDate"
                 className={
@@ -448,7 +452,6 @@ const UserDetails = (props) => {
                   " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
                 }
                 type="date"
-                defaultValue={IssueDate}
                 disabled={!Editing}
                 {...register("licenseIssueDate", {
                   required: "Please select license issue date!",
@@ -462,10 +465,10 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="licenseExpiryDate" className="font-normal w-1/5">
+            <label htmlFor="licenseExpiryDate" className="font-normal w-1/3 md:w-1/5">
               Expiry Date :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
               <input
                 id="licenseExpiryDate"
                 className={
@@ -473,7 +476,6 @@ const UserDetails = (props) => {
                   " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
                 }
                 type="date"
-                defaultValue={ExpireDate}
                 disabled={!Editing}
                 {...register("licenceExpireDate", {
                   required: "Please select license expiry date!",
@@ -487,10 +489,10 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="licenseIssueState" className="font-normal w-1/5">
+            <label htmlFor="licenseIssueState" className="font-normal w-1/3 md:w-1/5">
               Issue State :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
               <select
                 id="licenseIssueState"
                 className={selectClasses}

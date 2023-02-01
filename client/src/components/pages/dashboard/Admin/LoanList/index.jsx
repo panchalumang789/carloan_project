@@ -167,7 +167,7 @@ const LoanList = () => {
                                 state={{ role: role }}
                                 key={index}
                                 to={`loan/${loan.id}`}
-                                className="font-medium p-5"
+                                className="font-medium text-primary-color-6 text-xl p-5"
                               >
                                 {loan.id}
                               </Link>

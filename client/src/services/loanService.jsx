@@ -18,6 +18,24 @@ class loanService {
     }
   };
 
+  getAgent = async (data) => {
+    let output, error;
+    try {
+      const findAgent = await axios.get(
+        `${process.env.REACT_APP_HOST_URL}agents`,
+        {
+          headers: {
+            Authorization: data.headerData,
+          },
+        }
+      );
+      output = findAgent.data;
+    } catch (err) {
+      error = err.response;
+    }
+    return { output, error };
+  };
+
   getLoan = async (data) => {
     try {
       const output = await axios.get(`${process.env.REACT_APP_HOST_URL}loans`, {

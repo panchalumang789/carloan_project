@@ -14,8 +14,6 @@ import Verify from "components/navbar/VerifyOTP";
 import Protected from "components/Protected";
 import LoanList from "components/pages/dashboard/LoanList";
 import LoanDetail from "components/pages/dashboard/LoanDetail";
-// import LoanDetail from "components/pages/dashboard/User/LoanDetail/index";
-// import LoanDetail from "components/pages/dashboard/Admin/LoanDetail/index";
 import AdminLogin from "components/pages/AdminLogin/index";
 import UserList from "components/pages/dashboard/Admin/UserList/index";
 import UserLoan from "components/pages/dashboard/Admin/UserLoan/index";

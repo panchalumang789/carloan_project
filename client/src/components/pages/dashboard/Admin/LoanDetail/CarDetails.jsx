@@ -104,7 +104,7 @@ const CarDetails = (props) => {
         className="flex flex-col gap-5"
       >
         <ToastContainer />
-        <div className="grid grid-cols-2 gap-5 px-2">
+        <div className="grid md:grid-cols-2 gap-5 px-2">
           <div className="font-medium text-xl flex gap-x-2 items-center">
             <label className="font-normal w-1/5">Make :</label>
             <div className="flex flex-col w-3/5">
@@ -204,9 +204,9 @@ const CarDetails = (props) => {
                   );
                 })}
               </select>
-              {errors.model_type && (
+              {errors.carId && (
                 <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.model_type?.message}
+                  {errors.carId?.message}
                 </span>
               )}
             </div>

@@ -7,37 +7,17 @@ import UserDetails from "./UserDetails";
 import CarDetails from "./CarDetails";
 import IncomeDetails from "./IncomeDetails";
 import ExpensesDetails from "./ExpensesDetails";
-import {
-  errorToast,
-  successToast,
-} from "components/pages/journey/extra/Widget";
+import { errorToast } from "components/pages/journey/extra/Widget";
 import { ToastContainer } from "react-toastify";
 window.Swal = Swal;
 
 const statusClass =
   "font-medium text-base after:w-full after:block after:bg-transparent after:h-1 dark:text-primary-color-7 after:transition-all after:duration-300 hover:after:bg-primary-color-1 dark:hover:after:bg-primary-color-10 after:rounded-xl after:mt-1.5";
 
-const sendMail = async (loanStatus, loanId) => {
-  if (loanStatus === "Approved") {
-    const mailService = new loanService();
-    const { output, error } = await mailService.sendMail({
-      loanId: loanId,
-    });
-    if (!output) {
-      errorToast(error.data.message);
-    } else {
-      if (output.mailstatus) {
-        successToast(output.mailstatus);
-      }
-    }
-  }
-};
-
 const LoanDetail = () => {
   const [Details, setDetails] = useState("loanDetails");
   const [loanDetails, setLoanData] = useState({});
   const [error, setError] = useState("");
-  const [status, setstatus] = useState("");
   const [fetchData, setFetchData] = useState(true);
   let { loanId } = useParams();
 
@@ -65,40 +45,6 @@ const LoanDetail = () => {
     }
     return () => {};
   }, [loanId, fetchData]);
-
-  useEffect(() => {
-    setstatus(loanDetails.status);
-  }, [loanDetails]);
-
-  let loanid = useParams("id");
-  const editLoan = (e) => {
-    const loanServices = new loanService();
-    setstatus(e.target.value);
-    Swal.fire({
-      title: "Do you want to change loan status?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonColor: "#EB5757",
-      confirmButtonColor: "#41aa76",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        (async () => {
-          const { output, error } = await loanServices.updateLoanStatus({
-            loanId: loanid.loanId,
-            body: { status: e.target.value },
-            headerData: localStorage.getItem("token"),
-          });
-          if (!output) {
-            errorToast(error.data.message);
-          } else {
-            sendMail(e.target.value, loanid.loanId);
-            successToast(output.message);
-          }
-        })();
-      }
-    });
-  };
 
   const detailType = (detail) => {
     setDetails(detail);

@@ -1,10 +1,24 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import Typewriter from "typewriter-effect";
+// import Typewriter from "typewriter-effect";
 import LoadingPage from "../extra/LoadingPage";
 import LoginImage from "assest/images/LoginImage.jpg";
 import { FormTitle, inputClasses } from "../extra/Widget";
+import { uploadFile } from "react-s3";
+window.Buffer = window.Buffer || require("buffer").Buffer;
+
+const S3_BUCKET = "car-loan-project";
+const REGION = "ap-south-1";
+const ACCESS_KEY = "APKA4YMVVERVYH7YVW6R";
+const SECRET_ACCESS_KEY = "djhqpSGREEnvYZontqnKL41PTkgyYrp97jKryECS";
+
+const config = {
+  bucketName: S3_BUCKET,
+  region: REGION,
+  accessKeyId: ACCESS_KEY,
+  secretAccessKey: SECRET_ACCESS_KEY,
+};
 
 const inputFileClasses =
   "block w-full file:rounded-sm text-base text-primary-color-1 dark:text-primary-color-7 file:mr-4 file:py-2 file:px-4 file:border file:hover:cursor-pointer file:border-primary-color-1 dark:file:border-white file:text-sm file:font-semibold file:bg-black/10 dark:file:bg-primary-color-9 file:text-primary-color-1 dark:file:text-primary-color-7 hover:file:bg-white/50 dark:hover:file:bg-primary-color-8 hover:file:border-primary-color-1";
@@ -18,8 +32,26 @@ const DocumentUpload = () => {
     formState: { errors },
   } = useForm({ mode: "all" });
 
-  const getDocument = (data) => {
-    console.log(data);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileInput = (e) => {
+    console.log(e.target.files);
+    setSelectedFile(e.target.files[0]);
+  };
+
+  const handleUpload = async (file) => {
+    console.log(file);
+    uploadFile(file, config)
+      .then((data) => console.log(data))
+      .catch((err) => console.error(err));
+  };
+
+  const getDocument = async (data) => {
+    const formData = new FormData();
+    formData.append("file", data.licenceFrontImage[0]);
+    uploadFile(formData, config)
+      .then((data) => console.log(data))
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -48,17 +80,6 @@ const DocumentUpload = () => {
           />
         </div>
         <div className="w-5/6 lg:w-1/2 md:px-28">
-          <div className="text-lg md:text-xl pb-8">
-            <Typewriter
-              options={{
-                strings:
-                  "Please upload the document below to complete your application.",
-                autoStart: true,
-                loop: false,
-                delay: 30,
-              }}
-            />
-          </div>
           <form
             onSubmit={handleSubmit(getDocument)}
             className="flex justify-center flex-col mx-auto"
@@ -72,7 +93,7 @@ const DocumentUpload = () => {
                     <input
                       type="file"
                       className={inputFileClasses}
-                      onChange={() => console.log("true")}
+                      onClick={handleFileInput}
                       {...register("licenceFrontImage", {
                         required: "Please upload license front image !",
                       })}
@@ -85,83 +106,9 @@ const DocumentUpload = () => {
                   </span>
                 )}
               </div>
-              <div className="flex flex-col">
-                <label>Driving license (back)</label>
-                <div className={inputClasses}>
-                  <div className="flex justify-between items-center text-primary-color-1 px-2 dark:text-primary-color-7">
-                    <input
-                      type="file"
-                      className={inputFileClasses}
-                      {...register("licenceBackImage", {
-                        required: "Please upload license back image !",
-                      })}
-                    />
-                  </div>
-                </div>
-                {errors.licenceBackImage && (
-                  <span className="text-red-500 pt-1 px-1 text-sm">
-                    {errors.licenceBackImage?.message}
-                  </span>
-                )}
-              </div>
-              <div className="flex flex-col">
-                <label>Medicare card</label>
-                <div className={inputClasses}>
-                  <div className="flex justify-between items-center text-primary-color-1 px-2 dark:text-primary-color-7">
-                    <input
-                      type="file"
-                      className={inputFileClasses}
-                      {...register("medicalcardImage", {
-                        required: "Please upload medicare card image !",
-                      })}
-                    />
-                  </div>
-                </div>
-                {errors.medicalcardImage && (
-                  <span className="text-red-500 pt-1 px-1 text-sm">
-                    {errors.medicalcardImage?.message}
-                  </span>
-                )}
-              </div>
-              <FormTitle formTitle={"Income verification"} />
-              <div className="flex flex-col">
-                <label>Most recent payslip</label>
-                <div className={inputClasses}>
-                  <div className="flex justify-between items-center text-primary-color-1 px-2 dark:text-primary-color-7">
-                    <input
-                      type="file"
-                      className={inputFileClasses}
-                      {...register("mostRecentPayslip", {
-                        required: "Please upload most recent payslip !",
-                      })}
-                    />
-                  </div>
-                </div>
-                {errors.mostRecentPayslip && (
-                  <span className="text-red-500 pt-1 px-1 text-sm">
-                    {errors.mostRecentPayslip?.message}
-                  </span>
-                )}
-              </div>
-              <div className="flex flex-col">
-                <label>Second most recent payslip</label>
-                <div className={inputClasses}>
-                  <div className="flex justify-between items-center text-primary-color-1 px-2 dark:text-primary-color-7">
-                    <input
-                      type="file"
-                      className={inputFileClasses}
-                      {...register("secondMostRecentPayslip", {
-                        required: "Please upload second most recent payslip !",
-                      })}
-                    />
-                  </div>
-                </div>
-                {errors.secondMostRecentPayslip && (
-                  <span className="text-red-500 pt-1 px-1 text-sm">
-                    {errors.secondMostRecentPayslip?.message}
-                  </span>
-                )}
-              </div>
+              <button onClick={() => handleUpload(selectedFile)}>
+                Upload to S3
+              </button>
               <div className="w-full flex justify-end">
                 <button
                   type="submit"

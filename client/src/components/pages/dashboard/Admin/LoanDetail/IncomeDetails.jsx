@@ -64,19 +64,20 @@ const IncomeDetails = (props) => {
   };
 
   return (
-    <div className="w-full border-2 rounded-md flex flex-col gap-y-3 h-auto md:h-full md:overflow-y-auto border-primary-color-1 dark:border-primary-color-10 p-4">
+    <div className="w-full border-2 rounded-md flex flex-col gap-y-3 md:h-full md:overflow-y-auto border-primary-color-1 dark:border-primary-color-10 p-2 md:p-4">
       <form
         onSubmit={handleSubmit(submitIncomeData)}
         className="flex flex-col gap-5"
-      ><ToastContainer />
+      >
+        <ToastContainer />
         <div className="grid md:grid-cols-2 gap-5 px-2">
           <input type="hidden" {...register("userId")} />
           <input type="hidden" {...register("loanId")} />
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal text-base w-1/4">
+            <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
               Additional Income :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
               <div className="flex gap-x-5">
                 <div>
                   <input
@@ -125,14 +126,22 @@ const IncomeDetails = (props) => {
           {additional_income ? (
             <>
               <div className="font-medium text-xl flex gap-x-2 items-center">
-                <label className="font-normal text-base w-1/4">
+                <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
                   Rental income per month (after tax) :
                 </label>
-                <div className="flex flex-col w-3/5">
+                <div className="flex flex-col w-1/2 md:w-3/5">
+                  <div className="relative input-group-prepend">
+                    <span
+                      className="ml-4 my-2 absolute text-lg"
+                      id="basic-addon2"
+                    >
+                      &#x20B9;
+                    </span>
+                  </div>
                   <input
                     className={
                       inputClasses +
-                      " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                      " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
                     }
                     type="number"
                     disabled={!Editing}
@@ -158,19 +167,26 @@ const IncomeDetails = (props) => {
                 </div>
               </div>
               <div className="font-medium text-xl flex gap-x-2 items-center">
-                <label className="font-normal text-base w-1/4">
+                <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
                   {" "}
                   Investment income per month (after tax) :
                 </label>
-                <div className="flex flex-col w-3/5">
+                <div className="flex flex-col w-1/2 md:w-3/5">
+                  <div className="relative input-group-prepend">
+                    <span
+                      className="ml-4 my-2 absolute text-lg"
+                      id="basic-addon2"
+                    >
+                      &#x20B9;
+                    </span>
+                  </div>
                   <input
                     className={
                       inputClasses +
-                      " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                      " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
                     }
                     type="number"
                     disabled={!Editing}
-                    // defaultValue={incomeDetails.investment_income}
                     autoComplete="off"
                     {...register("investment_income", {
                       min: {
@@ -192,18 +208,25 @@ const IncomeDetails = (props) => {
                 </div>
               </div>
               <div className="font-medium text-xl flex gap-x-2 items-center">
-                <label className="font-normal text-base w-1/4">
+                <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
                   Salary sacrifice per month (after tax) :
                 </label>
-                <div className="flex flex-col w-3/5">
+                <div className="flex flex-col w-1/2 md:w-3/5">
+                  <div className="relative input-group-prepend">
+                    <span
+                      className="ml-4 my-2 absolute text-lg"
+                      id="basic-addon2"
+                    >
+                      &#x20B9;
+                    </span>
+                  </div>
                   <input
                     className={
                       inputClasses +
-                      " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                      " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
                     }
                     type="number"
                     disabled={!Editing}
-                    // defaultValue={incomeDetails.salary_sacrifice}
                     autoComplete="off"
                     {...register("salary_sacrifice", {
                       min: {
@@ -225,18 +248,25 @@ const IncomeDetails = (props) => {
                 </div>
               </div>
               <div className="font-medium text-xl flex gap-x-2 items-center">
-                <label className="font-normal text-base w-1/4">
+                <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
                   Centralink benifit per month (after tax) :
                 </label>
-                <div className="flex flex-col w-3/5">
+                <div className="flex flex-col w-1/2 md:w-3/5">
+                  <div className="relative input-group-prepend">
+                    <span
+                      className="ml-4 my-2 absolute text-lg"
+                      id="basic-addon2"
+                    >
+                      &#x20B9;
+                    </span>
+                  </div>
                   <input
                     className={
                       inputClasses +
-                      " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                      " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
                     }
                     type="number"
                     disabled={!Editing}
-                    // defaultValue={incomeDetails.centralink_benifit}
                     autoComplete="off"
                     {...register("centralink_benifit", {
                       min: {
@@ -258,14 +288,22 @@ const IncomeDetails = (props) => {
                 </div>
               </div>
               <div className="font-medium text-xl flex gap-x-2 items-center">
-                <label className="font-normal text-base w-1/4">
+                <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
                   Foreign income per month (after tax) :
                 </label>
-                <div className="flex flex-col w-3/5">
+                <div className="flex flex-col w-1/2 md:w-3/5">
+                  <div className="relative input-group-prepend">
+                    <span
+                      className="ml-4 my-2 absolute text-lg"
+                      id="basic-addon2"
+                    >
+                      &#x20B9;
+                    </span>
+                  </div>
                   <input
                     className={
                       inputClasses +
-                      " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                      " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
                     }
                     type="number"
                     disabled={!Editing}

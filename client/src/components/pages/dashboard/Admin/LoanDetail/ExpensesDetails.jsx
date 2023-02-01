@@ -51,7 +51,7 @@ const ExpensesDetails = (props) => {
   };
 
   return (
-    <div className="w-full border-2 rounded-md flex flex-col gap-y-3 h-auto md:h-full md:overflow-y-auto border-primary-color-1 dark:border-primary-color-10 p-4">
+    <div className="w-full border-2 rounded-md flex flex-col gap-y-3 md:h-full md:overflow-y-auto border-primary-color-1 dark:border-primary-color-10 p-2 md:p-4">
       <form
         onSubmit={handleSubmit(submitExpensesData)}
         className="flex flex-col gap-5"
@@ -61,14 +61,19 @@ const ExpensesDetails = (props) => {
           <input type="hidden" {...register("userId")} />
           <input type="hidden" {...register("loanId")} />
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal text-sm md:text-lg w-1/4">
+            <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
               Moter vehicle running costs :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
+              <div className="relative input-group-prepend">
+                <span className="ml-4 my-2 absolute text-lg" id="basic-addon2">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 className={
                   inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
                 }
                 type="number"
                 disabled={!Editing}
@@ -94,14 +99,19 @@ const ExpensesDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal text-sm md:text-lg w-1/4">
+            <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
               Travel :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
+              <div className="relative input-group-prepend">
+                <span className="ml-4 my-2 absolute text-lg" id="basic-addon2">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 className={
                   inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
                 }
                 type="number"
                 disabled={!Editing}
@@ -131,14 +141,19 @@ const ExpensesDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal text-sm md:text-lg w-1/4">
+            <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
               Utilities :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
+              <div className="relative input-group-prepend">
+                <span className="ml-4 my-2 absolute text-lg" id="basic-addon2">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 className={
                   inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
                 }
                 type="number"
                 disabled={!Editing}
@@ -164,14 +179,19 @@ const ExpensesDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal text-sm md:text-lg w-1/4">
+            <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
               Insurances :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
+              <div className="relative input-group-prepend">
+                <span className="ml-4 my-2 absolute text-lg" id="basic-addon2">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 className={
                   inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
                 }
                 type="number"
                 disabled={!Editing}
@@ -197,14 +217,19 @@ const ExpensesDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal text-sm md:text-lg w-1/4">
+            <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
               Telephone and Internet :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
+              <div className="relative input-group-prepend">
+                <span className="ml-4 my-2 absolute text-lg" id="basic-addon2">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 className={
                   inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
                 }
                 type="number"
                 disabled={!Editing}
@@ -232,14 +257,19 @@ const ExpensesDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal text-sm md:text-lg w-1/4">
+            <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
               Entertainment :
             </label>
-            <div className="flex flex-col w-3/5">
+            <div className="flex flex-col w-1/2 md:w-3/5">
+              <div className="relative input-group-prepend">
+                <span className="ml-4 my-2 absolute text-lg" id="basic-addon2">
+                  &#x20B9;
+                </span>
+              </div>
               <input
                 className={
                   inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
                 }
                 type="number"
                 disabled={!Editing}

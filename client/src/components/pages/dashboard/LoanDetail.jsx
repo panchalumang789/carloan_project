@@ -7,8 +7,8 @@ import { useState } from "react";
 
 const LoanList = () => {
   const [role, setRole] = useState("");
-  const userService = new customerService();
   useEffect(() => {
+    const userService = new customerService();
     if (localStorage.getItem("token")) {
       (async () => {
         const findUser = await userService.verifyToken({
@@ -22,6 +22,10 @@ const LoanList = () => {
 
   if (!role) return <div className="fixed inset-0 bg-primary-color-5"></div>;
 
-  return role === "Admin" ? <LoanDetailAdmin /> : <LoanDetailUser />;
+  return role === "Admin" || role === "Agent" ? (
+    <LoanDetailAdmin />
+  ) : (
+    <LoanDetailUser />
+  );
 };
 export default LoanList;
