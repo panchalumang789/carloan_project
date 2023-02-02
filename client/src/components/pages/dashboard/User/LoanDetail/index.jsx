@@ -95,6 +95,7 @@ const LoanDetail = () => {
       }
     });
   };
+  console.log(loanDetails);
 
   return (
     <>
@@ -200,39 +201,29 @@ const LoanDetail = () => {
                   <div>
                     <span>Maker: </span>
                     <span className="font-medium text-base">
-                      {loanDetails.carDetails
-                        ? loanDetails.carDetails.make
-                        : "Invalid"}
+                      {loanDetails.car ? loanDetails.car.make : "Invalid"}
                     </span>
                   </div>
                   <div>
                     <span>Model: </span>
                     <span className="font-medium text-base">
-                      {loanDetails.carDetails
-                        ? loanDetails.carDetails.model
-                        : "Invalid"}
+                      {loanDetails.car ? loanDetails.car.model : "Invalid"}
                     </span>
                   </div>
                   <div>
                     <span>Mode-type: </span>
                     <span className="font-medium text-base">
-                      {loanDetails.carDetails
-                        ? loanDetails.carDetails.model_type
-                        : "Invalid"}
+                      {loanDetails.car ? loanDetails.car.model_type : "Invalid"}
                     </span>
                   </div>
                 </div>
               </div>
               <div className="h-32">
-                {/* <img src={loanDetails.carDetails.image} alt="car preview image" /> */}
+                {/* <img src={loanDetails.car.image} alt="car preview image" /> */}
                 <input
                   className="h-24 md:h-36 pb-1 mix-blend-multiply"
                   type="image"
-                  src={
-                    loanDetails.carDetails
-                      ? loanDetails.carDetails.image
-                      : "Invalid"
-                  }
+                  src={loanDetails.car ? loanDetails.car.image : "Invalid"}
                   alt="car preview image"
                 />
               </div>

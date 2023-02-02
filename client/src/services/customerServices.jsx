@@ -16,7 +16,7 @@ class customerService {
     let output, error;
     try {
       const getUsers = await axios.get(
-        `${process.env.REACT_APP_HOST_URL}users?offset=${data.offset}&limit=${data.limit}`,
+        `${process.env.REACT_APP_HOST_URL}users?offset=${data.offset}&limit=${data.limit}&name=${data.name}`,
         {
           headers: {
             Authorization: data.headerData,

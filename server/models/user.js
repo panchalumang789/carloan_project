@@ -86,6 +86,10 @@ const userTable = sequalize.define("users", {
     unique: true,
     isUrl: true,
   },
+  role: {
+    type: DataTypes.STRING,
+    defaultValue: "User",
+  },
 });
 
 module.exports = userTable;

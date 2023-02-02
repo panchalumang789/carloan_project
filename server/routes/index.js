@@ -15,6 +15,8 @@ loanTable.hasMany(expensesTable, {
 });
 
 userTable.hasMany(loanTable);
+loanTable.belongsTo(userTable);
+loanTable.belongsTo(carTable);
 
 userTable.hasMany(incomeTable, {
   onDelete: "SET NULL",

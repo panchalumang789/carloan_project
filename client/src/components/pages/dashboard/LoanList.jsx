@@ -23,7 +23,7 @@ const LoanList = () => {
   if (!role) return <div className="fixed inset-0 bg-primary-color-5"></div>;
 
   return role === "Admin" || role === "Agent" ? (
-    <LoanListAdmin  />
+    <LoanListAdmin role={role} />
   ) : (
     <LoanListUser />
   );

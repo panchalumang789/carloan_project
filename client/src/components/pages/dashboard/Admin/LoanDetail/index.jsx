@@ -14,7 +14,7 @@ window.Swal = Swal;
 const statusClass =
   "font-medium text-base after:w-full after:block after:bg-transparent after:h-1 dark:text-primary-color-7 after:transition-all after:duration-300 hover:after:bg-primary-color-1 dark:hover:after:bg-primary-color-10 after:rounded-xl after:mt-1.5";
 
-const LoanDetail = () => {
+const LoanDetail = (props) => {
   const [Details, setDetails] = useState("loanDetails");
   const [loanDetails, setLoanData] = useState({});
   const [error, setError] = useState("");
@@ -117,20 +117,23 @@ const LoanDetail = () => {
           </div>
           {Details === "loanDetails" && (
             <LoanDetails
+              role={props.role}
               LoanDetails={loanDetails}
               UpdateLoan={() => setFetchData(true)}
             />
           )}
           {Details === "userDetails" && (
             <UserDetails
-              UserDetails={loanDetails.userDetails}
+              role={props.role}
+              UserDetails={loanDetails.user}
               UserId={loanDetails.userId}
               UpdateLoan={() => setFetchData(true)}
             />
           )}
           {Details === "carDetails" && (
             <CarDetails
-              CarDetails={loanDetails.carDetails}
+              role={props.role}
+              CarDetails={loanDetails.car}
               CarId={loanDetails.carId}
               LoanId={loanDetails.id}
               UpdateLoan={() => setFetchData(true)}
@@ -138,12 +141,14 @@ const LoanDetail = () => {
           )}
           {Details === "incomeDetails" && (
             <IncomeDetails
+              role={props.role}
               IncomeDetails={loanDetails.incomes[0]}
               UpdateLoan={() => setFetchData(true)}
             />
           )}
           {Details === "expenseDetails" && (
             <ExpensesDetails
+              role={props.role}
               ExpensesDetails={loanDetails.expenses[0]}
               UpdateLoan={() => setFetchData(true)}
             />

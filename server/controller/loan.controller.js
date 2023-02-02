@@ -72,6 +72,11 @@ const getLoanByStatus = async (req, res, next) => {
         userId: res.locals.user.id,
         status: req.query.status,
       };
+    } else if (res.locals.role === "Agent") {
+      filter = {
+        agentId: res.locals.user.id,
+        status: req.query.status,
+      };
     } else {
       filter = {
         status: req.query.status,
@@ -164,6 +169,18 @@ const getLoanById = async (req, res, next) => {
           },
         },
         {
+          model: userTable,
+          attributes: {
+            exclude: ["id"],
+          },
+        },
+        {
+          model: carTable,
+          attributes: {
+            exclude: ["id", "createdAt", "updatedAt"],
+          },
+        },
+        {
           model: expensesTable,
           attributes: {
             exclude: ["createdAt", "updatedAt"],
@@ -172,23 +189,6 @@ const getLoanById = async (req, res, next) => {
       ],
     });
     if (loanFind !== null) {
-      let carFind = await carTable.findOne({
-        where: { id: loanFind.carId },
-        attributes: {
-          exclude: ["id", "createdAt", "updatedAt"],
-        },
-      });
-      if (carFind.length <= 0) {
-        next({ error: { status: 500, message: "Something is wrong!" } });
-      }
-      let UserFind = await userTable.findOne({
-        where: { id: loanFind.userId },
-        attributes: {
-          exclude: ["id"],
-        },
-      });
-      loanFind.dataValues.carDetails = carFind;
-      loanFind.dataValues.userDetails = UserFind;
       res.locals.loans = loanFind;
       next();
     } else {

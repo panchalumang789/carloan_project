@@ -4,6 +4,7 @@ const incomeTable = require("../models/income");
 const jwt = require("jsonwebtoken");
 const expensesTable = require("../models/expenses");
 const loanTable = require("../models/loan");
+const { Op } = require("sequelize");
 
 const licenceType = ["LMV-NT", "HPMV", "HGMV"];
 const states = [
@@ -75,14 +76,31 @@ const userValidation = Joi.object().keys({
  * @return all users details
  */
 const getUser = async (req, res, next) => {
+  const querydata = req.query.name;
+  console.log(querydata.toLowerCase());
   try {
-    let filter = "";
+    let filter = {
+      [Op.or]: [
+        {
+          firstName: {
+            [Op.iLike]: `%${req.query.name}%`,
+          },
+        },
+        {
+          lastName: {
+            [Op.iLike]: `%${req.query.name}%`,
+          },
+        },
+      ],
+    };
     if (res.locals.role === "User") {
       filter = {
         id: res.locals.user.id,
       };
     }
-    let findLength = await userTable.count({});
+    let findLength = await userTable.count({
+      where: filter,
+    });
     let findUsers = await userTable.findAll({
       where: filter,
       limit: req.query.limit,
@@ -97,6 +115,33 @@ const getUser = async (req, res, next) => {
     next();
   } catch (error) {
     next({ error: { status: 404, message: "Users not found!" } });
+  }
+};
+
+/**
+ * @return all users details
+ */
+const getAgents = async (req, res, next) => {
+  try {
+    if (res.locals.role === "User") {
+      next({
+        error: {
+          status: 400,
+          message: "Unothorized request!",
+        },
+      });
+    }
+    let findAgent = await userTable.findAll({
+      where: { role: "Agent" },
+      order: ["firstName"],
+    });
+    if (findAgent.length === 0) {
+      next({ error: { status: 404, message: "Agent not found!" } });
+    }
+    res.locals.agents = findAgent;
+    next();
+  } catch (error) {
+    next({ error: { status: 404, message: "Agent not found!" } });
   }
 };
 
@@ -240,6 +285,7 @@ const deleteUser = async (req, res, next) => {
 module.exports = {
   states,
   getUser,
+  getAgents,
   getUserById,
   getUserByContactNo,
   createUser,

@@ -2,20 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import loanService from "services/loanService";
 import LoadingPage from "components/pages/journey/extra/LoadingPage";
-import {
-  inputClasses,
-  selectClasses,
-} from "components/pages/journey/extra/Widget";
+import { selectClasses } from "components/pages/journey/extra/Widget";
 
 const statusClass =
   "font-medium text-base after:w-full after:block after:bg-transparent after:h-1 dark:text-primary-color-7 after:transition-all after:duration-300 hover:after:bg-primary-color-1 dark:hover:after:bg-primary-color-10 after:rounded-xl after:mt-1.5";
 
-const LoanList = () => {
+const LoanList = (props) => {
   let pageLimit = 5;
   const [limit, setlimit] = useState(5);
   const [page, setpage] = useState(1);
   const [loans, setLoans] = useState([]);
-  const [role, setrole] = useState();
   const [Loading, setLoading] = useState(true);
   const [length, setlength] = useState();
   const [error, setError] = useState("");
@@ -40,9 +36,6 @@ const LoanList = () => {
         window.scrollTo(0, 0);
         setError("");
         setlength(output.length);
-        if (output.user && output.user.role === "Admin") {
-          setrole(output.user.role);
-        }
         let temp = [];
         output.loan.map((loan) => {
           if (loan.status === status) {
@@ -113,15 +106,6 @@ const LoanList = () => {
               Rejected
             </button>
           </div>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              className={
-                inputClasses + " outline outline-1 outline-primary-color-1"
-              }
-              placeholder="Search.."
-            />
-          </div>
         </div>
         <div
           id="loanlist"
@@ -164,7 +148,7 @@ const LoanList = () => {
                           >
                             <td>
                               <Link
-                                state={{ role: role }}
+                                state={props.role}
                                 key={index}
                                 to={`loan/${loan.id}`}
                                 className="font-medium text-primary-color-6 text-xl p-5"

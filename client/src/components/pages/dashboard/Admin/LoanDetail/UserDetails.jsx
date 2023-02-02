@@ -15,6 +15,7 @@ const UserDetails = (props) => {
   const [userDetails, setUserData] = useState({});
   const [Editing, setEditing] = useState(false);
   const [States, setStates] = useState([]);
+  const [Submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const userService = new customerService();
@@ -28,6 +29,7 @@ const UserDetails = (props) => {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     mode: "all",
@@ -57,6 +59,22 @@ const UserDetails = (props) => {
     setValue("licenseFirstName", props.UserDetails.licenseFirstName);
     setValue("licenseLastName", props.UserDetails.licenseLastName);
   }, [props, setValue]);
+
+  useEffect(() => {
+    let change = false;
+    const preData = watch();
+    Object.keys(preData).forEach((i) => {
+      if (preData[i] !== userDetails[i]) {
+        change = true;
+      }
+    });
+    if (change) {
+      setSubmitting(true);
+    } else {
+      setSubmitting(false);
+    }
+    // eslint-disable-next-line
+  }, [watch()]);
 
   useEffect(() => {
     setValue("state", props.UserDetails.state);
@@ -97,7 +115,7 @@ const UserDetails = (props) => {
 
   return (
     <div className="w-full border-2 rounded-md flex flex-col gap-y-3 md:h-full md:overflow-y-auto border-primary-color-1 dark:border-primary-color-10 px-4">
-    <form
+      <form
         onSubmit={handleSubmit(submitCustomerData)}
         className="flex flex-col gap-5"
       >
@@ -308,7 +326,10 @@ const UserDetails = (props) => {
         </div>
         <div className="grid md:grid-cols-2 gap-5 px-2">
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="licenseNumber" className="font-normal w-1/3 md:w-1/5">
+            <label
+              htmlFor="licenseNumber"
+              className="font-normal w-1/3 md:w-1/5"
+            >
               Number :
             </label>
             <div className="flex flex-col w-1/2 md:w-3/5">
@@ -373,7 +394,10 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="licenseFirstname" className="font-normal w-1/3 md:w-1/5">
+            <label
+              htmlFor="licenseFirstname"
+              className="font-normal w-1/3 md:w-1/5"
+            >
               Firstname :
             </label>
             <div className="flex flex-col w-1/2 md:w-3/5">
@@ -407,7 +431,10 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="licenseLastname" className="font-normal w-1/3 md:w-1/5">
+            <label
+              htmlFor="licenseLastname"
+              className="font-normal w-1/3 md:w-1/5"
+            >
               Lastname :
             </label>
             <div className="flex flex-col w-1/2 md:w-3/5">
@@ -441,7 +468,10 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="licenseIssueDate" className="font-normal w-1/3 md:w-1/5">
+            <label
+              htmlFor="licenseIssueDate"
+              className="font-normal w-1/3 md:w-1/5"
+            >
               Issue Date :
             </label>
             <div className="flex flex-col w-1/2 md:w-3/5">
@@ -465,7 +495,10 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="licenseExpiryDate" className="font-normal w-1/3 md:w-1/5">
+            <label
+              htmlFor="licenseExpiryDate"
+              className="font-normal w-1/3 md:w-1/5"
+            >
               Expiry Date :
             </label>
             <div className="flex flex-col w-1/2 md:w-3/5">
@@ -489,7 +522,10 @@ const UserDetails = (props) => {
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label htmlFor="licenseIssueState" className="font-normal w-1/3 md:w-1/5">
+            <label
+              htmlFor="licenseIssueState"
+              className="font-normal w-1/3 md:w-1/5"
+            >
               Issue State :
             </label>
             <div className="flex flex-col w-1/2 md:w-3/5">
@@ -530,7 +566,7 @@ const UserDetails = (props) => {
           </button>
           <button
             type="submit"
-            disabled={!Editing}
+            disabled={!Submitting}
             className="group font-medium flex items-center justify-start gap-x-2 w-28 text-center p-2 border border-primary-color-1 dark:bg-primary-color-9 bg-primary-color-7 hover:bg-white dark:hover:bg-primary-color-8 rounded-md dark:border-2 dark:border-primary-color-3 disabled:bg-white/40 disabled:hover:cursor-not-allowed"
           >
             SUBMIT

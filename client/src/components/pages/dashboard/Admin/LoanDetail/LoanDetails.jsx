@@ -16,14 +16,16 @@ const LoanDetails = (props) => {
   const updateService = new loanService();
   const [loanDetails, setLoanData] = useState({});
   const [Editing, setEditing] = useState(false);
+  const [Submitting, setSubmitting] = useState(false);
   const [ApplyDate, setApplyDate] = useState("");
   const [Loading, setLoading] = useState(false);
   const [Agents, setAgents] = useState([]);
-
+  console.log(props.role);
   const {
     register,
     getValues,
     setValue,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -31,18 +33,17 @@ const LoanDetails = (props) => {
   });
 
   useEffect(() => {
-    const updateService = new loanService();
     (async () => {
       const { output, error } = await updateService.getAgent({
         headerData: localStorage.getItem("token"),
       });
-      console.log(error);
       if (!output) {
         errorToast(error.message);
       } else {
         setAgents(output);
       }
     })();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -56,14 +57,31 @@ const LoanDetails = (props) => {
     setValue("balloon", props.LoanDetails.balloon);
     setValue("user_status", props.LoanDetails.user_status);
     setValue("user_income", props.LoanDetails.user_income);
+    // eslint-disable-next-line
   }, [props, setValue]);
 
   useEffect(() => {
-    setValue("agentId", props.LoanDetails.agentId);
+    let change = false;
+    const preData = watch();
+    Object.keys(preData).forEach((i) => {
+      if (preData[i] !== loanDetails[i]) {
+        change = true;
+      }
+    });
+    if (change) {
+      setSubmitting(true);
+    } else {
+      setSubmitting(false);
+    }
+    // eslint-disable-next-line
+  }, [watch()]);
+
+  useEffect(() => {
+    setValue("agentId", loanDetails.agentId);
     if (loanDetails.createdAt) {
       setApplyDate(loanDetails.createdAt.split("T")[0]);
     }
-  }, [Agents, setValue, loanDetails.createdAt, props.LoanDetails.agentId]);
+  }, [Agents, setValue, loanDetails.createdAt, loanDetails.agentId]);
 
   const updateLoan = async (data) => {
     const { output, error } = await updateService.updateLoan({
@@ -185,6 +203,7 @@ const LoanDetails = (props) => {
                   type="number"
                   disabled={!Editing}
                   {...register("approx_price", {
+                    valueAsNumber: true,
                     required: "Please enter approx amount!",
                     min: {
                       value: 0,
@@ -262,6 +281,7 @@ const LoanDetails = (props) => {
                   disabled={!Editing}
                   {...register("term", {
                     required: "Please select loan term!",
+                    valueAsNumber: true,
                   })}
                 >
                   <option disabled value="">
@@ -304,6 +324,7 @@ const LoanDetails = (props) => {
                   type="number"
                   disabled={!Editing}
                   {...register("balloon", {
+                    valueAsNumber: true,
                     min: {
                       value: 0,
                       message: "Balloon should be greater than 0!",
@@ -366,6 +387,7 @@ const LoanDetails = (props) => {
                   }
                   disabled={!Editing}
                   {...register("user_income", {
+                    valueAsNumber: true,
                     required: "Please enter your income!",
                     min: {
                       value: 10000,
@@ -405,7 +427,10 @@ const LoanDetails = (props) => {
                   id="agent"
                   className={selectClasses}
                   disabled={!Editing}
-                  {...register("agentId", { required: "Please select agent!" })}
+                  {...register("agentId", {
+                    required: "Please select agent!",
+                    valueAsNumber: true,
+                  })}
                 >
                   <option value="" disabled>
                     Select agent
@@ -436,7 +461,7 @@ const LoanDetails = (props) => {
             </button>
             <button
               type="submit"
-              disabled={!Editing}
+              disabled={!Submitting}
               className="group font-medium flex items-center justify-start gap-x-2 w-28 text-center p-2 border border-primary-color-1 dark:bg-primary-color-9 bg-primary-color-7 hover:bg-white dark:hover:bg-primary-color-8 rounded-md dark:border-2 dark:border-primary-color-3 disabled:bg-white/40 disabled:hover:cursor-not-allowed"
             >
               SUBMIT

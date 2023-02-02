@@ -82,7 +82,6 @@ const updateIncome = async (req, res, next) => {
     res.locals.income = "Income updated successfully.";
     next();
   } catch (error) {
-    console.log(error);
     if (error.errors)
       next({
         error: { status: SERVER_ERROR, message: error.errors[0].message },

@@ -21,6 +21,15 @@ userRoutes.get(
   }
 );
 
+userRoutes.get(
+  "/agents",
+  authorization.verifyToken,
+  userController.getAgents,
+  (req, res) => {
+    res.status(200).send(res.locals.agents);
+  }
+);
+
 // get user by contact no
 userRoutes.get(
   "/user/mobile/:contactNo",
