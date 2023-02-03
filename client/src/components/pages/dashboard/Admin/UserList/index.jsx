@@ -8,7 +8,9 @@ import {
   selectClasses,
 } from "components/pages/journey/extra/Widget";
 
-const UserList = () => {
+const UserList = (props) => {
+  console.log(props);
+
   const [Users, setUsers] = useState([]);
   const [Loading, setLoading] = useState(true);
   let pageLimit = 5;
@@ -22,7 +24,7 @@ const UserList = () => {
     let loadingtime;
     const userService = new customerService();
     (async () => {
-      const { output, error } = await userService.getUser({
+      const { output, error } = await userService.getUsers({
         limit: limit,
         offset: page,
         name: searchName,
@@ -102,7 +104,7 @@ const UserList = () => {
                           return (
                             <tr
                               // onClick={() => gotoLoan(user.id)}
-                              className="text-center hover:bg-primary-color-10"
+                              className="text-center hover:bg-primary-color-7"
                               key={index}
                             >
                               <td>

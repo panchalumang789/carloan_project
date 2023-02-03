@@ -107,9 +107,10 @@ const LoanList = (props) => {
             </button>
           </div>
         </div>
+        {/* <div className="grid grid-cols-12 mt-4 h-full lg:overflow-auto"> */}
         <div
           id="loanlist"
-          className="flex flex-col mt-4 h-auto lg:h-[calc(100%-60px)] lg:overflow-auto"
+          className="flex col-span-10 flex-col mt-4 h-auto lg:h-[calc(100%-60px)] lg:overflow-auto"
         >
           {Loading ? (
             <div className="h-40 w-full flex justify-center items-center mx-auto">
@@ -143,7 +144,7 @@ const LoanList = (props) => {
                       {loans.map((loan, index) => {
                         return (
                           <tr
-                            className="text-center hover:bg-primary-color-10"
+                            className="text-center hover:bg-primary-color-7"
                             key={index}
                           >
                             <td>
@@ -229,6 +230,10 @@ const LoanList = (props) => {
             </>
           )}
         </div>
+        {/* <div className="col-span-2 my-4 mx-2 bg-primary-color-3">
+            {!Loading && <Graph />}
+          </div> */}
+        {/* </div> */}
       </div>
     </div>
   );

@@ -95,7 +95,6 @@ const LoanDetail = () => {
       }
     });
   };
-  console.log(loanDetails);
 
   return (
     <>

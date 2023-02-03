@@ -30,7 +30,6 @@ const IncomeDetails = () => {
     if (called) return;
     setCalled(true);
     let loanId = cookie.get("loanDetail");
-    console.log(loanId);
     try {
       const addIncome = await incomeService.addIncome({
         details: { ...data, ...loanId },

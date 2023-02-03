@@ -76,8 +76,6 @@ const userValidation = Joi.object().keys({
  * @return all users details
  */
 const getUser = async (req, res, next) => {
-  const querydata = req.query.name;
-  console.log(querydata.toLowerCase());
   try {
     let filter = {
       [Op.or]: [

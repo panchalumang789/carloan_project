@@ -20,7 +20,6 @@ const LoanDetails = (props) => {
   const [ApplyDate, setApplyDate] = useState("");
   const [Loading, setLoading] = useState(false);
   const [Agents, setAgents] = useState([]);
-  console.log(props.role);
   const {
     register,
     getValues,

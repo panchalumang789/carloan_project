@@ -87,4 +87,11 @@ userRoutes.post("/admin", authorization.generateToken("Admin"), (req, res) => {
   res.status(200).send(res.locals.token);
 });
 
+/**
+ * @returns loggedin user detail
+ */
+userRoutes.get("/user", authorization.verifyToken, (req, res) => {
+  res.status(200).send(res.locals.user);
+});
+
 module.exports = userRoutes;

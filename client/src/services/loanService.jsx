@@ -53,7 +53,7 @@ class loanService {
     let output, error;
     try {
       const findLoan = await axios.get(
-        `${process.env.REACT_APP_HOST_URL}loans/status?status=${data.status}&offset=${data.offset}&limit=${data.limit}`,
+        `${process.env.REACT_APP_HOST_URL}loans/?status=${data.status}&offset=${data.offset}&limit=${data.limit}`,
         {
           headers: {
             Authorization: data.headerData,

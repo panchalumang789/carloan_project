@@ -74,7 +74,7 @@ const IncomeDetails = (props) => {
           <input type="hidden" {...register("userId")} />
           <input type="hidden" {...register("loanId")} />
           <div className="font-medium text-xl flex gap-x-2 items-center">
-            <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
+            <label className="font-normal text-sm md:text-base w-1/3 md:w-1/4">
               Additional Income :
             </label>
             <div className="flex flex-col w-1/2 md:w-3/5">
@@ -126,7 +126,7 @@ const IncomeDetails = (props) => {
           {additional_income ? (
             <>
               <div className="font-medium text-xl flex gap-x-2 items-center">
-                <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
+                <label className="font-normal text-sm md:text-base w-1/3 md:w-1/4">
                   Rental income per month (after tax) :
                 </label>
                 <div className="flex flex-col w-1/2 md:w-3/5">
@@ -167,7 +167,7 @@ const IncomeDetails = (props) => {
                 </div>
               </div>
               <div className="font-medium text-xl flex gap-x-2 items-center">
-                <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
+                <label className="font-normal text-sm md:text-base w-1/3 md:w-1/4">
                   {" "}
                   Investment income per month (after tax) :
                 </label>
@@ -208,7 +208,7 @@ const IncomeDetails = (props) => {
                 </div>
               </div>
               <div className="font-medium text-xl flex gap-x-2 items-center">
-                <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
+                <label className="font-normal text-sm md:text-base w-1/3 md:w-1/4">
                   Salary sacrifice per month (after tax) :
                 </label>
                 <div className="flex flex-col w-1/2 md:w-3/5">
@@ -248,7 +248,7 @@ const IncomeDetails = (props) => {
                 </div>
               </div>
               <div className="font-medium text-xl flex gap-x-2 items-center">
-                <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
+                <label className="font-normal text-sm md:text-base w-1/3 md:w-1/4">
                   Centralink benifit per month (after tax) :
                 </label>
                 <div className="flex flex-col w-1/2 md:w-3/5">
@@ -288,7 +288,7 @@ const IncomeDetails = (props) => {
                 </div>
               </div>
               <div className="font-medium text-xl flex gap-x-2 items-center">
-                <label className="font-normal text-sm md:text-lg w-1/3 md:w-1/4">
+                <label className="font-normal text-sm md:text-base w-1/3 md:w-1/4">
                   Foreign income per month (after tax) :
                 </label>
                 <div className="flex flex-col w-1/2 md:w-3/5">
@@ -307,7 +307,6 @@ const IncomeDetails = (props) => {
                     }
                     type="number"
                     disabled={!Editing}
-                    // defaultValue={incomeDetails.foreign_income}
                     autoComplete="off"
                     {...register("foreign_income", {
                       min: {

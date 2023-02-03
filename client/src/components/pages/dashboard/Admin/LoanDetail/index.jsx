@@ -12,7 +12,7 @@ import { ToastContainer } from "react-toastify";
 window.Swal = Swal;
 
 const statusClass =
-  "font-medium text-base after:w-full after:block after:bg-transparent after:h-1 dark:text-primary-color-7 after:transition-all after:duration-300 hover:after:bg-primary-color-1 dark:hover:after:bg-primary-color-10 after:rounded-xl after:mt-1.5";
+  "font-medium text-base after:w-full after:block after:bg-transparent after:h-1 dark:text-primary-color-7 dark:after:bg-primary-color-8 after:transition-all after:duration-300 hover:after:bg-primary-color-1 dark:hover:after:bg-primary-color-7 after:rounded-xl after:mt-1.5";
 
 const LoanDetail = (props) => {
   const [Details, setDetails] = useState("loanDetails");
@@ -63,7 +63,8 @@ const LoanDetail = (props) => {
             <div className="h-16 md:h-10 flex my-1 gap-x-5">
               <button
                 className={
-                  statusClass + " aria-pressed:after:bg-primary-color-1"
+                  statusClass +
+                  " aria-pressed:after:bg-primary-color-1 dark:aria-pressed:after:bg-primary-color-7"
                 }
                 aria-pressed={Details === "loanDetails"}
                 onClick={() => detailType("loanDetails")}
@@ -72,7 +73,8 @@ const LoanDetail = (props) => {
               </button>
               <button
                 className={
-                  statusClass + " aria-pressed:after:bg-primary-color-1"
+                  statusClass +
+                  " aria-pressed:after:bg-primary-color-1 dark:aria-pressed:after:bg-primary-color-7"
                 }
                 aria-pressed={Details === "userDetails"}
                 onClick={() => detailType("userDetails")}
@@ -81,7 +83,8 @@ const LoanDetail = (props) => {
               </button>
               <button
                 className={
-                  statusClass + " aria-pressed:after:bg-primary-color-1"
+                  statusClass +
+                  " aria-pressed:after:bg-primary-color-1 dark:aria-pressed:after:bg-primary-color-7"
                 }
                 aria-pressed={Details === "carDetails"}
                 onClick={() => detailType("carDetails")}
@@ -90,7 +93,8 @@ const LoanDetail = (props) => {
               </button>
               <button
                 className={
-                  statusClass + " aria-pressed:after:bg-primary-color-1"
+                  statusClass +
+                  " aria-pressed:after:bg-primary-color-1 dark:aria-pressed:after:bg-primary-color-7"
                 }
                 aria-pressed={Details === "incomeDetails"}
                 onClick={() => detailType("incomeDetails")}
@@ -99,7 +103,8 @@ const LoanDetail = (props) => {
               </button>
               <button
                 className={
-                  statusClass + " aria-pressed:after:bg-primary-color-1"
+                  statusClass +
+                  " aria-pressed:after:bg-primary-color-1 dark:aria-pressed:after:bg-primary-color-7"
                 }
                 aria-pressed={Details === "expenseDetails"}
                 onClick={() => detailType("expenseDetails")}

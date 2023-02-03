@@ -5,23 +5,14 @@ const authorization = require("../middleware/authorization");
 const loanController = require("../controller/loan.controller");
 const adminController = require("../controller/admin.controller");
 
-loanRoutes.get(
-  "/loans",
-  authorization.verifyToken,
-  loanController.getLoan,
-  (req, res) => {
-    res.status(200).json({ loan: res.locals.loans, user: res.locals.user });
-  }
-);
 
 loanRoutes.get(
-  "/loans/status/",
+  "/loans/",
   authorization.verifyToken,
   loanController.getLoanByStatus,
   (req, res) => {
     res.status(200).json({
       loan: res.locals.loans,
-      user: res.locals.user,
       length: res.locals.length,
     });
   }

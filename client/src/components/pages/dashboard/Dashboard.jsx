@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import loanService from "services/loanService";
+import customerServices from "services/customerServices";
 import Cookies from "universal-cookie";
 import Footer from "../Footer";
 
@@ -15,12 +15,17 @@ const Dashboard = () => {
   cookie.remove("customerDetail");
   cookie.remove("loanDetail");
   useEffect(() => {
-    const gerLoans = new loanService();
+    const gerUser = new customerServices();
     (async () => {
-      const getLoan = await gerLoans.getLoan({
+      const { output, error } = await gerUser.getUser({
         headerData: localStorage.getItem("token"),
       });
-      setUser(getLoan.user);
+      if (output) {
+        setUser(output);
+      } else {
+        setUser({});
+        console.log(error);
+      }
     })();
 
     return () => {};
@@ -32,7 +37,6 @@ const Dashboard = () => {
   const logout = () => {
     localStorage.removeItem("token");
   };
-
   return (
     <>
       <div className="absolute top-0 left-0 h-full w-full bg-primary-color-5 dark:bg-primary-color-8 text-primary-color-1 dark:text-primary-color-7">

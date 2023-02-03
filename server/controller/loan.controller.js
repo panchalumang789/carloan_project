@@ -29,39 +29,6 @@ const dataValidation = Joi.object().keys({
 });
 
 /**
- * @return all loans details
- */
-const getLoan = async (req, res, next) => {
-  try {
-    let filter = "";
-    if (res.locals.role === "User") {
-      filter = {
-        userId: res.locals.user.id,
-      };
-    }
-    let loanData = await loanTable.findAll({ where: filter, order: ["id"] });
-    if (loanData.length === 0) {
-      next({
-        error: {
-          status: NOT_FOUND,
-          message: "Something is wrong, loan application not found!",
-        },
-      });
-    } else {
-      res.locals.loans = loanData;
-      next();
-    }
-  } catch (error) {
-    next({
-      error: {
-        status: SERVER_ERROR,
-        message: "Something is wrong, loan application not found!",
-      },
-    });
-  }
-};
-
-/**
  * @return all loans details with pagination
  */
 const getLoanByStatus = async (req, res, next) => {
@@ -337,7 +304,6 @@ const updateLoanCar = async (req, res, next) => {
 };
 
 module.exports = {
-  getLoan,
   getLoanByStatus,
   getLoanByUserId,
   getLoanById,

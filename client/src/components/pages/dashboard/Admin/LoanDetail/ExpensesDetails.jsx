@@ -9,18 +9,23 @@ import loanService from "services/loanService";
 import { ToastContainer } from "react-toastify";
 
 const ExpensesDetails = (props) => {
-  const [Editing, setEditing] = useState(false);
   const updateService = new loanService();
+  const [Editing, setEditing] = useState(false);
+  const [expensesDetails, setExpensesDetails] = useState({});
+  const [Submitting, setSubmitting] = useState(false);
+
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     mode: "all",
   });
 
   useEffect(() => {
+    setExpensesDetails(props.ExpensesDetails);
     setValue(
       "vehicle_running_cost",
       props.ExpensesDetails.vehicle_running_cost
@@ -33,6 +38,22 @@ const ExpensesDetails = (props) => {
     setValue("tel_internet", props.ExpensesDetails.tel_internet);
     setValue("entertainment", props.ExpensesDetails.entertainment);
   }, [props, setValue]);
+
+  useEffect(() => {
+    let change = false;
+    const preData = watch();
+    Object.keys(preData).forEach((i) => {
+      if (preData[i] !== expensesDetails[i]) {
+        change = true;
+      }
+    });
+    if (change) {
+      setSubmitting(true);
+    } else {
+      setSubmitting(false);
+    }
+    // eslint-disable-next-line
+  }, [watch()]);
 
   const submitExpensesData = async (data) => {
     const { output, error } = await updateService.updateExpenses({
@@ -79,6 +100,7 @@ const ExpensesDetails = (props) => {
                 disabled={!Editing}
                 autoComplete="off"
                 {...register("vehicle_running_cost", {
+                  valueAsNumber: true,
                   required: "Vehicle running cost should be greater than 0!",
                   min: {
                     value: 0,
@@ -117,6 +139,7 @@ const ExpensesDetails = (props) => {
                 disabled={!Editing}
                 autoComplete="off"
                 {...register("travel_cost", {
+                  valueAsNumber: true,
                   required: "Travel cost should be greater than 0!",
                   min: {
                     value: 0,
@@ -159,6 +182,7 @@ const ExpensesDetails = (props) => {
                 disabled={!Editing}
                 autoComplete="off"
                 {...register("utilities_cost", {
+                  valueAsNumber: true,
                   required: "Utilities cost should be greater than 0!",
                   min: {
                     value: 0,
@@ -197,6 +221,7 @@ const ExpensesDetails = (props) => {
                 disabled={!Editing}
                 autoComplete="off"
                 {...register("insurance", {
+                  valueAsNumber: true,
                   required: "Insurance cost should be greater than 0!",
                   min: {
                     value: 0,
@@ -235,6 +260,7 @@ const ExpensesDetails = (props) => {
                 disabled={!Editing}
                 autoComplete="off"
                 {...register("tel_internet", {
+                  valueAsNumber: true,
                   required:
                     "Telephone and Internet cost should be greater than 0!",
                   min: {
@@ -275,6 +301,7 @@ const ExpensesDetails = (props) => {
                 disabled={!Editing}
                 autoComplete="off"
                 {...register("entertainment", {
+                  valueAsNumber: true,
                   required: "Entertainment cost should be greater than 0!",
                   min: {
                     value: 0,
@@ -305,7 +332,7 @@ const ExpensesDetails = (props) => {
           </button>
           <button
             type="submit"
-            disabled={!Editing}
+            disabled={!Submitting}
             className="group font-medium flex items-center justify-start gap-x-2 w-28 text-center p-2 border border-primary-color-1 dark:bg-primary-color-9 bg-primary-color-7 hover:bg-white dark:hover:bg-primary-color-8 rounded-md dark:border-2 dark:border-primary-color-3 disabled:bg-white/40 disabled:hover:cursor-not-allowed"
           >
             SUBMIT

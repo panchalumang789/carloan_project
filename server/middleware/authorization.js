@@ -59,6 +59,7 @@ const verifyToken = async (req, res, next) => {
         res.locals.role = findUser.role;
         res.locals.userDetail = findUser;
         res.locals.user = {
+          role: findUser.role,
           id: findUser.id,
           name: `${findUser.firstName} ${findUser.lastName}`,
           contactNo: `${findUser.contactNo}`,

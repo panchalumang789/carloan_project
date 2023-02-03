@@ -19,10 +19,12 @@ const CarDetails = (props) => {
   const [SelectedMaker, setSelectedMaker] = useState("");
   const [SelectedModel, setSelectedModel] = useState("");
   const [SelectedCars, setSelectedCars] = useState("");
+  const [Submitting, setSubmitting] = useState(false);
 
   const {
     register,
     handleSubmit,
+    watch,
     setValue,
     formState: { errors },
   } = useForm({
@@ -63,6 +65,24 @@ const CarDetails = (props) => {
     return () => {};
     // eslint-disable-next-line
   }, [Maker, Model, Cars]);
+
+  useEffect(() => {
+    let change = false;
+    const preData = watch();
+    if (
+      preData.make !== props.CarDetails.make ||
+      preData.model !== props.CarDetails.model ||
+      preData.carId !== props.CarId
+    ) {
+      change = true;
+    }
+    if (change) {
+      setSubmitting(true);
+    } else {
+      setSubmitting(false);
+    }
+    // eslint-disable-next-line
+  }, [watch()]);
 
   const getModel = async (e) => {
     setSelectedMaker(e.target.value);
@@ -186,6 +206,7 @@ const CarDetails = (props) => {
                 }
                 disabled={!Editing}
                 {...register("carId", {
+                  valueAsNumber: true,
                   required: "Please select car model-type!",
                 })}
               >
@@ -222,7 +243,7 @@ const CarDetails = (props) => {
           </button>
           <button
             type="submit"
-            disabled={!Editing}
+            disabled={!Submitting}
             className="group font-medium flex items-center justify-start gap-x-2 w-28 text-center p-2 border border-primary-color-1 dark:bg-primary-color-9 bg-primary-color-7 hover:bg-white dark:hover:bg-primary-color-8 rounded-md dark:border-2 dark:border-primary-color-3 disabled:bg-white/40 disabled:hover:cursor-not-allowed"
           >
             SUBMIT
