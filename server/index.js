@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 require("dotenv").config();
+app.disable("x-powered-by");
 
 const sequalize = require("./config/db.connection");
 

@@ -42,10 +42,10 @@ const Navigator = (props) => {
 };
 
 const inputClasses =
-  "p-2 rounded-md bg-white dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 font-medium placeholder:text-primary-color-6 placeholder:opacity-60 dark:placeholder:opacity-90 outline outline-1 outline-black dark:outline-primary-color-7";
+  "p-2 rounded-md bg-primary-color-12 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 font-medium placeholder:text-primary-color-6 placeholder:opacity-60 dark:placeholder:opacity-90 outline outline-1 outline-black dark:outline-primary-color-7";
 
 const selectClasses =
-  "p-2 rounded-md bg-primary-color-7 dark:bg-primary-color-9 dark:text-primary-color-7 text-primary-color-1 font-medium outline outline-1 outline-black dark:outline-primary-color-7";
+  "p-2 rounded-md bg-primary-color-12 dark:bg-primary-color-9 dark:text-primary-color-7 text-primary-color-1 font-medium outline outline-1 outline-black dark:outline-primary-color-7";
 
 const CounterUp = (props) => {
   return <h1>{<CountUp start={0} end={props.num} duration={0.5} />}</h1>;

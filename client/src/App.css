@@ -131,11 +131,12 @@ body {
     display: none;
 }
 
+/* 
 table,
+tr, */
 th,
-tr,
 td {
-    border: 2px solid #023641;
-    border-collapse: collapse;
+    /* border: 2px solid #023641;
+    border-collapse: collapse; */
     padding: 8px;
 }

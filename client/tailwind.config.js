@@ -16,6 +16,7 @@ module.exports = {
         "primary-color-9": "#273950",
         "primary-color-10": "#cce3de",
         "primary-color-11": "#194e6e",
+        "primary-color-12": "#c5dfdf",
         // "primary-color-5": "#A3BEBE",
         // "primary-color-5": "#fffffe",
         // "primary-color-7": "#e0f5f5",
@@ -27,7 +28,6 @@ module.exports = {
         // "primary-color-11": "#34587fd4",
         // "primary-color-11": "#31708E",
         "navbar-primary-color-1": "#A3BEBE",
-        
       },
       gridTemplateColumns: {
         "user-display": "4fr 4fr 1fr",

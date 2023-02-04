@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import loanService from "services/loanService";
 import LoadingPage from "components/pages/journey/extra/LoadingPage";
-import { selectClasses } from "components/pages/journey/extra/Widget";
+import Table from "../../Table";
+import Graph from "../Graph";
 
 const statusClass =
   "font-medium text-base after:w-full after:block after:bg-transparent after:h-1 dark:text-primary-color-7 after:transition-all after:duration-300 hover:after:bg-primary-color-1 dark:hover:after:bg-primary-color-10 after:rounded-xl after:mt-1.5";
@@ -107,7 +107,6 @@ const LoanList = (props) => {
             </button>
           </div>
         </div>
-        {/* <div className="grid grid-cols-12 mt-4 h-full lg:overflow-auto"> */}
         <div
           id="loanlist"
           className="flex col-span-10 flex-col mt-4 h-auto lg:h-[calc(100%-60px)] lg:overflow-auto"
@@ -124,55 +123,8 @@ const LoanList = (props) => {
                 </div>
               ) : (
                 <div>
-                  <table className="w-full overflow-auto">
-                    <thead className="uppercase text-lg">
-                      <tr>
-                        <th>loan_id</th>
-                        <th>car_Id</th>
-                        <th>user_Id</th>
-                        <th>approx_price</th>
-                        <th>deposit</th>
-                        <th>term</th>
-                        <th>balloon</th>
-                        <th>user_status</th>
-                        <th>user_income</th>
-                        <th>agent_Id</th>
-                        <th>status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {loans.map((loan, index) => {
-                        return (
-                          <tr
-                            className="text-center hover:bg-primary-color-7"
-                            key={index}
-                          >
-                            <td>
-                              <Link
-                                state={props.role}
-                                key={index}
-                                to={`loan/${loan.id}`}
-                                className="font-medium text-primary-color-6 text-xl p-5"
-                              >
-                                {loan.id}
-                              </Link>
-                            </td>
-                            <td>{loan.carId}</td>
-                            <td>{loan.userId}</td>
-                            <td>{loan.approx_price}</td>
-                            <td>{loan.deposit}</td>
-                            <td>{loan.term}</td>
-                            <td>{loan.balloon}</td>
-                            <td>{loan.user_status}</td>
-                            <td>{loan.user_income}</td>
-                            <td>{loan.agentId || "NULL"}</td>
-                            <td>{loan.status}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-
+                  <Table tableData={loans} />
+                  <Graph />
                   <div className="flex justify-between my-4 px-8 md:px-20 font-semibold text-lg">
                     <div className="flex flex-col md:flex-row items-center gap-2">
                       Pages
@@ -195,10 +147,7 @@ const LoanList = (props) => {
                     <div className="flex flex-col md:flex-row gap-2 items-center">
                       <span className="text-base font-medium">Limit</span>
                       <select
-                        className={
-                          selectClasses +
-                          " w-20 py-1 outline-2 outline outline-primary-color-1 dark:outline-primary-color-5"
-                        }
+                        className=" w-20 py-1 outline-2 outline outline-primary-color-1 bg-white p-2 rounded-md dark:bg-primary-color-9 dark:text-primary-color-7 text-primary-color-1 font-medium dark:outline-primary-color-7"
                         defaultValue={limit}
                         onClick={(e) => {
                           setlimit(e.target.value);
@@ -230,10 +179,6 @@ const LoanList = (props) => {
             </>
           )}
         </div>
-        {/* <div className="col-span-2 my-4 mx-2 bg-primary-color-3">
-            {!Loading && <Graph />}
-          </div> */}
-        {/* </div> */}
       </div>
     </div>
   );
