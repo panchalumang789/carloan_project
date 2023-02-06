@@ -73,6 +73,82 @@ const successToast = (props) => {
   return <ToastContainer />;
 };
 
+const PrependInput = (props) => {
+  return (
+    <>
+      <div className="relative input-group-prepend">
+        <span
+          className={"ml-4 my-3.5 absolute text-lg " + props.prependClass}
+        ></span>
+      </div>
+      <input
+        id={props.id}
+        className={
+          inputClasses +
+          " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
+        }
+        type={props.type}
+        disabled={props.disabled}
+        autoComplete="off"
+        {...props.register}
+      />
+      {props.error && (
+        <span className="text-red-500 pt-1 px-1 text-sm">
+          {props.error?.message}
+        </span>
+      )}
+    </>
+  );
+};
+
+const Input = (props) => {
+  return (
+    <>
+      <input
+        id={props.id}
+        className={
+          inputClasses +
+          " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+        }
+        type={props.type}
+        disabled={props.disabled}
+        autoComplete="off"
+        {...props.register}
+      />
+      {props.error && (
+        <span className="text-red-500 pt-1 px-1 text-sm">
+          {props.error?.message}
+        </span>
+      )}
+    </>
+  );
+};
+
+const DateInput = (props) => {
+  return (
+    <>
+      <input
+        id={props.id}
+        min={props.min || ""}
+        max={props.max || ""}
+        className={
+          inputClasses +
+          " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+        }
+        type="date"
+        disabled={props.disabled}
+        autoComplete="off"
+        {...props.register}
+      />
+      {props.error && (
+        <span className="text-red-500 pt-1 px-1 text-sm">
+          {props.error?.message}
+        </span>
+      )}
+    </>
+  );
+};
+
 export {
   getState,
   FormTitle,
@@ -82,4 +158,7 @@ export {
   CounterUp,
   errorToast,
   successToast,
+  PrependInput,
+  Input,
+  DateInput,
 };

@@ -2,20 +2,67 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import customerService from "services/customerServices";
 import {
+  DateInput,
   errorToast,
   FormTitle,
-  inputClasses,
+  Input,
+  PrependInput,
   selectClasses,
   successToast,
 } from "components/pages/journey/extra/Widget";
 import { ToastContainer } from "react-toastify";
+import { Link, useLocation } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
-const UserDetails = (props) => {
+const schema = yup.object({
+  contactNo: yup
+    .string()
+    .required("Please enter you contact no!")
+    .min(10, "Please enter valid contact no!")
+    .max(10, "Please enter valid contact no!"),
+  firstName: yup
+    .string()
+    .required("Please enter Firstname!")
+    .min(2, "Firstname should be atleast 2 characters long!")
+    .max(20, "Firstname should be less than 20 characters length!"),
+  lastName: yup
+    .string()
+    .required("Please enter Lastname!")
+    .min(2, "Lastname should be atleast 2 characters long!")
+    .max(20, "Lastname should be less than 20 characters length!"),
+  email: yup
+    .string()
+    .required("Please enter you email id!")
+    .email("Please enter valid email id!"),
+  licenceNumber: yup
+    .string("Please enter license number!")
+    .min(15, "License number length should be 15!")
+    .max(15, "License number length should be 15!")
+    .matches(/^[A-Za-z0-9]{15}$/, "Please entre valid license number!"),
+  licenseFirstName: yup
+    .string()
+    .required("Please enter license holder's firstname!")
+    .min(2, "Firstname should be atleast 2 characters long!")
+    .max(20, "Firstname should be less than 20 characters length!"),
+  licenseLastName: yup
+    .string()
+    .required("Please enter license holder's lastname!")
+    .min(2, "Lastname should be atleast 2 characters long!")
+    .max(20, "Lastname should be less than 20 characters length!"),
+  licenseIssueDate: yup.date().required("Please select license issue date!"),
+  licenceExpireDate: yup
+    .string()
+    .required("Please select license expiry date!"),
+});
+
+const Profile = () => {
   const updateService = new customerService();
+  const location = useLocation();
+  const contactNo = location.state;
   const [userDetails, setUserData] = useState({});
-  const [Editing, setEditing] = useState(false);
   const [States, setStates] = useState([]);
-  const [Submitting, setSubmitting] = useState(false);
+  const [Editing, setEditing] = useState(false);
 
   useEffect(() => {
     const userService = new customerService();
@@ -23,62 +70,43 @@ const UserDetails = (props) => {
       const result = await userService.getState();
       setStates(result);
     })();
-  }, []);
+
+    (async () => {
+      const userDetails = await userService.findUserbyContact({
+        details: contactNo,
+      });
+      if (userDetails.status === 404) {
+        errorToast(userDetails.data.message);
+        console.log(userDetails);
+      } else {
+        setUserData(userDetails);
+      }
+    })();
+  }, [contactNo, location]);
 
   const {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm({
-    mode: "all",
+    resolver: yupResolver(schema),
   });
 
   useEffect(() => {
-    setUserData(props.UserDetails);
-    setValue("prefix", props.UserDetails.prefix);
-    setValue(
-      "medicalcardImage",
-      props.UserDetails.medicalcardImage || "user2medical1.jpf"
-    );
-    setValue(
-      "licenceFrontImage",
-      props.UserDetails.licenceFrontImage || "user2front1.jpf"
-    );
-    setValue(
-      "licenceBackImage",
-      props.UserDetails.licenceBackImage || "user2back1.jpf"
-    );
-    setValue("firstName", props.UserDetails.firstName);
-    setValue("lastName", props.UserDetails.lastName);
-    setValue("email", props.UserDetails.email);
-    setValue("contactNo", props.UserDetails.contactNo);
-    setValue("licenceNumber", props.UserDetails.licenceNumber);
-    setValue("licenceType", props.UserDetails.licenceType);
-    setValue("licenseFirstName", props.UserDetails.licenseFirstName);
-    setValue("licenseLastName", props.UserDetails.licenseLastName);
-  }, [props, setValue]);
-
-  useEffect(() => {
-    let change = false;
-    const preData = watch();
-    Object.keys(preData).forEach((i) => {
-      if (preData[i] !== userDetails[i]) {
-        change = true;
-      }
-    });
-    if (change) {
-      setSubmitting(true);
-    } else {
-      setSubmitting(false);
-    }
-    // eslint-disable-next-line
-  }, [watch()]);
-
-  useEffect(() => {
-    setValue("state", props.UserDetails.state);
-    setValue("licenceIssueState", props.UserDetails.licenceIssueState);
+    setUserData(userDetails);
+    setValue("prefix", userDetails.prefix);
+    setValue("medicalcardImage", userDetails.medicalcardImage);
+    setValue("licenceFrontImage", userDetails.licenceFrontImage);
+    setValue("licenceBackImage", userDetails.licenceBackImage);
+    setValue("firstName", userDetails.firstName);
+    setValue("lastName", userDetails.lastName);
+    setValue("email", userDetails.email);
+    setValue("contactNo", userDetails.contactNo);
+    setValue("licenceNumber", userDetails.licenceNumber);
+    setValue("licenceType", userDetails.licenceType);
+    setValue("licenseFirstName", userDetails.licenseFirstName);
+    setValue("licenseLastName", userDetails.licenseLastName);
     if (userDetails.licenseIssueDate) {
       setValue("licenseIssueDate", userDetails.licenseIssueDate.split("T")[0]);
     }
@@ -88,27 +116,24 @@ const UserDetails = (props) => {
         userDetails.licenceExpireDate.split("T")[0]
       );
     }
-  }, [
-    States,
-    setValue,
-    userDetails,
-    props.UserDetails.state,
-    props.UserDetails.licenceIssueState,
-    userDetails.licenseIssueDate,
-    userDetails.licenceExpireDate,
-  ]);
+  }, [userDetails, setValue]);
+
+  useEffect(() => {
+    setValue("state", userDetails.state);
+    setValue("licenceIssueState", userDetails.licenceIssueState);
+  }, [States, setValue, userDetails]);
 
   const submitCustomerData = async (data) => {
     const { output, error } = await updateService.updateUser({
-      path: `user/${props.UserId}`,
+      path: `user/${userDetails.id}`,
       details: data,
       headerData: localStorage.getItem("token"),
     });
     if (!output) {
       errorToast(error.data.message);
     } else {
+      localStorage.setItem("token", output.token);
       successToast(output.message);
-      props.UpdateLoan();
       setEditing(false);
     }
   };
@@ -129,39 +154,14 @@ const UserDetails = (props) => {
               Contact No :
             </label>
             <div className="flex flex-col w-1/2 md:w-3/5">
-              <div className="relative input-group-prepend">
-                <span
-                  className="ml-4 my-3.5 absolute text-lg fa fa-phone"
-                  id="basic-addon2"
-                ></span>
-              </div>
-              <input
+              <PrependInput
+                prependClass="fa fa-phone"
                 id="contactNo"
-                className={
-                  inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
-                }
                 type="number"
                 disabled={!Editing}
-                autoComplete="off"
-                {...register("contactNo", {
-                  required: "Please enter you contact no!",
-                  pattern: {
-                    value: /^[0-9]{10}$/,
-                    message: "Please enter valid contact no!",
-                  },
-                })}
+                register={register("contactNo")}
+                error={errors.contactNo}
               />
-              {errors.contactNo?.type === "required" && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.contactNo?.message}
-                </span>
-              )}
-              {errors.contactNo?.type === "pattern" && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.contactNo?.message}
-                </span>
-              )}
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
@@ -197,33 +197,13 @@ const UserDetails = (props) => {
               Firstname :
             </label>
             <div className="flex flex-col w-1/2 md:w-3/5">
-              <input
+              <Input
                 id="firstName"
-                className={
-                  inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
-                }
                 type="text"
                 disabled={!Editing}
-                autoComplete="off"
-                {...register("firstName", {
-                  required: "Please enter firstname!",
-                  minLength: {
-                    value: 2,
-                    message: "Firstname should be atleast 2 characters long!",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message:
-                      "Firstname should be less than 20 characters length!",
-                  },
-                })}
+                register={register("firstName")}
+                error={errors.firstName}
               />
-              {errors.firstName && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.firstName?.message}
-                </span>
-              )}
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
@@ -231,33 +211,13 @@ const UserDetails = (props) => {
               Lastname :
             </label>
             <div className="flex flex-col w-1/2 md:w-3/5">
-              <input
+              <Input
                 id="lastName"
-                className={
-                  inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
-                }
                 type="text"
                 disabled={!Editing}
-                autoComplete="off"
-                {...register("lastName", {
-                  required: "Please enter lastname!",
-                  minLength: {
-                    value: 2,
-                    message: "Lastname should be atleast 2 characters long!",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message:
-                      "Lastname should be less than 20 characters length!",
-                  },
-                })}
+                register={register("lastName")}
+                error={errors.lastName}
               />
-              {errors.lastName && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.lastName?.message}
-                </span>
-              )}
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
@@ -265,33 +225,13 @@ const UserDetails = (props) => {
               Email :
             </label>
             <div className="flex flex-col w-1/2 md:w-3/5">
-              <input
+              <Input
                 id="email"
-                className={
-                  inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
-                }
                 type="text"
                 disabled={!Editing}
-                autoComplete="off"
-                {...register("email", {
-                  required: "Please enter you email id!",
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Please enter valid email id!",
-                  },
-                })}
+                register={register("email")}
+                error={errors.email}
               />
-              {errors.email?.type === "required" && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.email?.message}
-                </span>
-              )}
-              {errors.email?.type === "pattern" && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.email?.message}
-                </span>
-              )}
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
@@ -339,36 +279,13 @@ const UserDetails = (props) => {
               Number :
             </label>
             <div className="flex flex-col w-1/2 md:w-3/5">
-              <input
+              <Input
                 id="licenseNumber"
-                className={
-                  inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
-                }
                 type="text"
                 disabled={!Editing}
-                autoComplete="off"
-                {...register("licenceNumber", {
-                  required: "Please enter license number!",
-                  minLength: {
-                    value: 15,
-                    message: "License number length should be 15!",
-                  },
-                  maxLength: {
-                    value: 15,
-                    message: "License number length should be 15!",
-                  },
-                  pattern: {
-                    value: /^[A-Za-z0-9]{15}$/,
-                    message: "Please entre valid license number",
-                  },
-                })}
+                register={register("licenceNumber")}
+                error={errors.licenceNumber}
               />
-              {errors.licenceNumber && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.licenceNumber?.message}
-                </span>
-              )}
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
@@ -410,33 +327,13 @@ const UserDetails = (props) => {
               Firstname :
             </label>
             <div className="flex flex-col w-1/2 md:w-3/5">
-              <input
+              <Input
                 id="licenseFirstname"
-                className={
-                  inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
-                }
                 type="text"
                 disabled={!Editing}
-                autoComplete="off"
-                {...register("licenseFirstName", {
-                  required: "Please enter license holder's firstname!",
-                  minLength: {
-                    value: 2,
-                    message: "Firstname should be atleast 2 characters long!",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message:
-                      "Firstname should be less than 20 characters length!",
-                  },
-                })}
+                register={register("licenseFirstName")}
+                error={errors.licenseFirstName}
               />
-              {errors.licenseFirstName && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.licenseFirstName?.message}
-                </span>
-              )}
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
@@ -447,33 +344,13 @@ const UserDetails = (props) => {
               Lastname :
             </label>
             <div className="flex flex-col w-1/2 md:w-3/5">
-              <input
+              <Input
                 id="licenseLastname"
-                className={
-                  inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
-                }
                 type="text"
-                autoComplete="off"
                 disabled={!Editing}
-                {...register("licenseLastName", {
-                  required: "Please enter license holder's lastname!",
-                  minLength: {
-                    value: 2,
-                    message: "Lastname should be atleast 2 characters long!",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message:
-                      "Lastname should be less than 20 characters length!",
-                  },
-                })}
+                register={register("licenseLastName")}
+                error={errors.licenseLastName}
               />
-              {errors.licenseLastName && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.licenseLastName?.message}
-                </span>
-              )}
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
@@ -484,23 +361,13 @@ const UserDetails = (props) => {
               Issue Date :
             </label>
             <div className="flex flex-col w-1/2 md:w-3/5">
-              <input
+              <DateInput
                 id="licenseIssueDate"
-                className={
-                  inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
-                }
-                type="date"
+                max={new Date().toISOString().split("T")[0]}
                 disabled={!Editing}
-                {...register("licenseIssueDate", {
-                  required: "Please select license issue date!",
-                })}
+                register={register("licenseIssueDate")}
+                error={errors.licenseIssueDate}
               />
-              {errors.licenseIssueDate && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.licenseIssueDate?.message}
-                </span>
-              )}
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
@@ -511,23 +378,13 @@ const UserDetails = (props) => {
               Expiry Date :
             </label>
             <div className="flex flex-col w-1/2 md:w-3/5">
-              <input
+              <DateInput
+                min={new Date().toISOString().split("T")[0]}
                 id="licenseExpiryDate"
-                className={
-                  inputClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
-                }
-                type="date"
                 disabled={!Editing}
-                {...register("licenceExpireDate", {
-                  required: "Please select license expiry date!",
-                })}
+                register={register("licenceExpireDate")}
+                error={errors.licenceExpireDate}
               />
-              {errors.licenceExpireDate && (
-                <span className="text-red-500 pt-1 px-1 text-sm">
-                  {errors.licenceExpireDate?.message}
-                </span>
-              )}
             </div>
           </div>
           <div className="font-medium text-xl flex gap-x-2 items-center">
@@ -569,6 +426,13 @@ const UserDetails = (props) => {
           </div>
         </div>
         <div className="w-full flex justify-end px-36 gap-4">
+          <Link
+            to={"/dashboard"}
+            className="group font-medium flex items-center justify-end gap-x-2 w-24 text-center py-2 px-3 border border-primary-color-1 bg-primary-color-7 dark:bg-primary-color-9 rounded-md dark:border-2 dark:border-primary-color-3"
+          >
+            <em className="group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left "></em>
+            Back
+          </Link>
           <button
             type="button"
             onClick={() => setEditing(true)}
@@ -578,7 +442,7 @@ const UserDetails = (props) => {
           </button>
           <button
             type="submit"
-            disabled={!Submitting}
+            disabled={!Editing}
             className="group font-medium flex items-center justify-start gap-x-2 w-28 text-center p-2 border border-primary-color-1 dark:bg-primary-color-9 bg-primary-color-7 hover:bg-white dark:hover:bg-primary-color-8 rounded-md dark:border-2 dark:border-primary-color-3 disabled:bg-white/40 disabled:hover:cursor-not-allowed"
           >
             SUBMIT
@@ -590,4 +454,4 @@ const UserDetails = (props) => {
   );
 };
 
-export default UserDetails;
+export default Profile;

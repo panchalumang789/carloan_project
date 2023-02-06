@@ -11,7 +11,6 @@ const UserLoan = () => {
   const [error, setError] = useState("");
   const [Loading, setLoading] = useState(true);
   const [status, setstatus] = useState("In progress");
-  console.log(loans);
   let { id } = useParams();
   useEffect(() => {
     let loadingtime;

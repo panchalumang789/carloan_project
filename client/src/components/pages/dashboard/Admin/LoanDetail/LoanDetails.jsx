@@ -424,7 +424,10 @@ const LoanDetails = (props) => {
               <div className="flex flex-col w-1/2 md:w-3/5">
                 <select
                   id="agent"
-                  className={selectClasses}
+                  className={
+                    selectClasses +
+                    " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                  }
                   disabled={!Editing}
                   {...register("agentId", {
                     required: "Please select agent!",

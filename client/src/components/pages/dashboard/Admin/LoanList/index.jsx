@@ -16,6 +16,9 @@ const LoanList = (props) => {
   const [length, setlength] = useState();
   const [error, setError] = useState("");
   const [status, setstatus] = useState("In progress");
+  const [graph, setgraph] = useState("hidden");
+  const [tableKeys, setTableKeys] = useState([]);
+
   useEffect(() => {
     let loadingtime;
     const loanData = new loanService();
@@ -26,6 +29,7 @@ const LoanList = (props) => {
         offset: page,
         headerData: localStorage.getItem("token"),
       });
+
       if (output) {
         loadingtime = setTimeout(() => {
           setLoading(false);
@@ -57,6 +61,17 @@ const LoanList = (props) => {
     setpage(1);
     setstatus(value);
   };
+
+  useEffect(() => {
+    if (loans.length > 0) {
+      const filteredKeys = Object.keys(loans[0]).filter(
+        (key) => key !== "createdAt" && key !== "updatedAt"
+      );
+      setTableKeys(filteredKeys);
+    }
+    return () => {};
+  }, [loans]);
+
   return (
     <div
       id="mainDiv"
@@ -106,6 +121,12 @@ const LoanList = (props) => {
               Rejected
             </button>
           </div>
+          <button
+            className="font-medium border-2 rounded-md hover:bg-white dark:hover:bg-primary-color-9 border-primary-color-1 dark:border-primary-color-5 py-2 px-3"
+            onClick={() => setgraph("visible")}
+          >
+            Loan Summary
+          </button>
         </div>
         <div
           id="loanlist"
@@ -123,8 +144,12 @@ const LoanList = (props) => {
                 </div>
               ) : (
                 <div>
-                  <Table tableData={loans} />
-                  <Graph />
+                  <Table tableKeys={tableKeys} tableData={loans} />
+                  <Graph
+                    display={graph}
+                    visible={setgraph}
+                    chartID="LoanSummary"
+                  />
                   <div className="flex justify-between my-4 px-8 md:px-20 font-semibold text-lg">
                     <div className="flex flex-col md:flex-row items-center gap-2">
                       Pages

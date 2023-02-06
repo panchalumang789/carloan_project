@@ -152,14 +152,14 @@ const getUserByContactNo = async (req, res, next) => {
       where: { contactNo: req.params.contactNo },
     });
     if (Object.keys(findUser).length <= 0) {
-      next({ error: { status: 404, message: "Users not found!" } });
+      next({ error: { status: 404, message: "User not found!" } });
     } else {
       res.locals.users = findUser;
       res.locals.userName = `${findUser.firstName} ${findUser.lastName}`;
       next();
     }
   } catch (error) {
-    next({ error: { status: 404, message: "Users not found!" } });
+    next({ error: { status: 404, message: "User not found!" } });
   }
 };
 
@@ -250,7 +250,7 @@ const updateUser = async (req, res, next) => {
       };
       let token = jwt.sign(credential, process.env.JWT_SECRET_KEY);
       res.locals.user = {
-        message: `${req.body.firstName} ${req.body.lastName} updated successfully.`,
+        message: `${req.body.firstName} ${req.body.lastName} profile updated successfully.`,
         token: token,
       };
       next();

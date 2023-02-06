@@ -5,8 +5,6 @@ import LoadingPage from "components/pages/journey/extra/LoadingPage";
 import useDebound from "useDebounce";
 
 const UserList = (props) => {
-  console.log(props);
-
   const [Users, setUsers] = useState([]);
   const [Loading, setLoading] = useState(true);
   let pageLimit = 5;
@@ -26,7 +24,6 @@ const UserList = (props) => {
         name: searchName,
         headerData: localStorage.getItem("token"),
       });
-      console.log(output);
       if (error) {
         setError(error.data.message);
       } else {
@@ -117,11 +114,11 @@ const UserList = (props) => {
                               className="text-center hover:bg-primary-color-10 dark:hover:bg-primary-color-8 border-primary-color-1 dark:border-primary-color-5"
                               key={index}
                             >
-                              <td className="border border-primary-color-1 dark:border-primary-color-5">
+                              <td className="border border-primary-color-1 dark:border-primary-color-5 relative">
                                 <Link
                                   key={index}
                                   to={`loans/${user.id}`}
-                                  className="font-medium text-primary-color-6 dark:text-primary-color-7 text-xl p-5"
+                                  className="font-medium text-primary-color-6 grid place-content-center dark:text-primary-color-7 text-xl absolute top-0 left-0 w-full h-full hover:text-2xl"
                                 >
                                   {user.id}
                                 </Link>

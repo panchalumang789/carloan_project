@@ -32,7 +32,6 @@ const sendMail = async (loanStatus, loanId) => {
 const LoanDetail = () => {
   const location = useLocation();
   const state = location.state;
-  console.log(state);
   const [loanDetails, setLoanData] = useState({});
   const [error, setError] = useState("");
   const [status, setstatus] = useState("");

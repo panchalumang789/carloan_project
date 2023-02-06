@@ -69,7 +69,8 @@ const Dashboard = () => {
                     </Link>
                     <Link
                       id="view_profile"
-                      to={"/"}
+                      to={"profile"}
+                      state={{ contactNo: user.contactNo }}
                       onClick={openWidget}
                       className="py-2 pr-3 border-b-2 border-primary-color-1 dark:border-primary-color-7 hover:text-primary-color-4 dark:hover:text-white hover:scale-105 transition-all duration-300"
                     >

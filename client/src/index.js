@@ -17,6 +17,7 @@ import LoanDetail from "components/pages/dashboard/LoanDetail";
 import AdminLogin from "components/pages/AdminLogin/index";
 import UserList from "components/pages/dashboard/Admin/UserList/index";
 import UserLoan from "components/pages/dashboard/Admin/UserLoan/index";
+import Profile from "components/pages/dashboard/Profile";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -38,6 +39,7 @@ root.render(
           <Route path="loan/:loanId" element={<LoanDetail />}></Route>
           <Route path="user" element={<UserList />}></Route>
           <Route path="user/loans/:id" element={<UserLoan />}></Route>
+          <Route path="profile" element={<Profile />}></Route>
         </Route>
         <Route path="login" element={<Login />}></Route>
         <Route path="verify" element={<Verify />}></Route>
