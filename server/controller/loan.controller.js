@@ -9,6 +9,9 @@ const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require("../config/errorCode");
 
 const userStatus = ["Employee", "Unemployed"];
 const loanStatus = ["In progress", "In review", "Approved", "Rejected"];
+const AWS = require("aws-sdk");
+const fs = require("fs");
+const { Sequelize } = require("sequelize");
 
 // Validation Rules
 const dataValidation = Joi.object().keys({
@@ -21,12 +24,33 @@ const dataValidation = Joi.object().keys({
   user_status: Joi.string()
     .required()
     .valid(...userStatus),
-  user_income: Joi.number().min(10000).required(),
+  user_income: Joi.number().min(0).required(),
   agentId: Joi.number().optional().default(null),
   status: Joi.string()
     .valid(...loanStatus)
     .optional(),
 });
+
+const loanCount = async (req, res, next) => {
+  let filter = "";
+  if (res.locals.role === "Agent") {
+    filter = {
+      agentId: res.locals.user.id,
+    };
+  } else {
+    filter = "";
+  }
+  let loanDetail = await loanTable.findAll({
+    group: "status",
+    attributes: [
+      ["status", "category"],
+      [Sequelize.fn("count", "status"), "value"],
+    ],
+    where: filter,
+  });
+  res.locals.loanCount = loanDetail;
+  next();
+};
 
 /**
  * @return all loans details with pagination
@@ -215,7 +239,7 @@ const updateLoan = async (req, res, next) => {
     if (validate.error) {
       next({ error: { status: 400, message: validate.error.message } });
     }
-    if (res.locals.role === "Admin") {
+    if (res.locals.role === "Admin" || res.locals.role === "Agent") {
       await loanTable.update({ ...req.body }, { where: { id: req.params.id } });
       next();
     } else if (res.locals.role === "User") {
@@ -255,7 +279,7 @@ const updateLoan = async (req, res, next) => {
  */
 const updateLoanStatus = async (req, res, next) => {
   try {
-    if (res.locals.role === "Admin") {
+    if (res.locals.role === "Admin" || res.locals.role === "Agent") {
       await loanTable.update(
         { status: req.body.status },
         { where: { id: req.params.id } }
@@ -282,7 +306,7 @@ const updateLoanStatus = async (req, res, next) => {
  */
 const updateLoanCar = async (req, res, next) => {
   try {
-    if (res.locals.role === "Admin") {
+    if (res.locals.role === "Admin" || res.locals.role === "Agent") {
       await loanTable.update(
         { carId: req.body.carId },
         { where: { id: req.params.id } }
@@ -303,12 +327,45 @@ const updateLoanCar = async (req, res, next) => {
   }
 };
 
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: "ap-south-1",
+});
+
+/**
+ * @param {*} req get user documents
+ */
+const updateDocument = async (req, res, next) => {
+  try {
+    const fileContent = fs.readFileSync(`./document/${req.file.filename}`);
+
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: `${req.file.filename}.jpg`,
+      Body: fileContent,
+    };
+
+    s3.upload(params, (err, data) => {
+      if (err) console.log(err);
+      else console.log(data);
+    });
+    next();
+  } catch (error) {
+    if (error.errors)
+      next({ error: { status: 500, message: error.errors[0].message } });
+    else next({ error: { status: 500, message: error } });
+  }
+};
+
 module.exports = {
   getLoanByStatus,
+  loanCount,
   getLoanByUserId,
   getLoanById,
   newLoan,
   updateLoan,
   updateLoanStatus,
   updateLoanCar,
+  updateDocument,
 };

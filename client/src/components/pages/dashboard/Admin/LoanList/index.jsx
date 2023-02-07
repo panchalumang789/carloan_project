@@ -18,6 +18,7 @@ const LoanList = (props) => {
   const [status, setstatus] = useState("In progress");
   const [graph, setgraph] = useState("hidden");
   const [tableKeys, setTableKeys] = useState([]);
+  const [graphData, setGraphData] = useState([]);
 
   useEffect(() => {
     let loadingtime;
@@ -29,12 +30,12 @@ const LoanList = (props) => {
         offset: page,
         headerData: localStorage.getItem("token"),
       });
-
       if (output) {
         loadingtime = setTimeout(() => {
           setLoading(false);
         }, 1000);
         setLoading(true);
+        setGraphData(output.loanCount);
         document.getElementById("loanlist").scrollTo(0, 0);
         document.getElementById("mainDiv").scrollTo(0, 0);
         window.scrollTo(0, 0);
@@ -149,6 +150,7 @@ const LoanList = (props) => {
                     display={graph}
                     visible={setgraph}
                     chartID="LoanSummary"
+                    graphData={graphData}
                   />
                   <div className="flex justify-between my-4 px-8 md:px-20 font-semibold text-lg">
                     <div className="flex flex-col md:flex-row items-center gap-2">

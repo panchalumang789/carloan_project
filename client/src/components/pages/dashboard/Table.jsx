@@ -13,10 +13,7 @@ const Table = (props) => {
   return (
     <table className="w-full overflow-auto bg-white dark:bg-primary-color-9 border border-collapse">
       <thead className="uppercase text-lg">
-        <tr
-          ke
-          className="border border-primary-color-1 dark:border-primary-color-5"
-        >
+        <tr className="border border-primary-color-1 dark:border-primary-color-5">
           {tableKeys.map((key, index) => {
             if (key === "id") {
               return (
@@ -49,10 +46,12 @@ const Table = (props) => {
               {tableKeys.map((key, index) => {
                 if (key === "id") {
                   return (
-                    <td className="border border-primary-color-1 dark:border-primary-color-5 relative">
+                    <td
+                      key={index}
+                      className="border border-primary-color-1 dark:border-primary-color-5 relative"
+                    >
                       <Link
                         state={props.role}
-                        key={index}
                         to={`loan/${data.id}`}
                         className="font-medium text-primary-color-6 grid place-content-center dark:text-primary-color-7 text-lg absolute top-0 left-0 w-full h-full hover:text-xl"
                       >

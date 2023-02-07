@@ -33,7 +33,7 @@ const loanTable = sequalize.define("loans", {
     type: DataTypes.INTEGER,
     isNumeric: true,
     allowNull: false,
-    min: 100000,
+    min: 0,
   },
   agentId: {
     type: DataTypes.INTEGER,

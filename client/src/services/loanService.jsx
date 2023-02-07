@@ -211,5 +211,28 @@ class loanService {
     }
     return { output, error };
   };
+
+  uploadDocument = async (data) => {
+    let formData = new FormData();
+    formData.append("file", data.bodyData.licenceFrontImage[0]);
+
+    let output, error;
+    try {
+      const uploadDocument = await axios.post(
+        `${process.env.REACT_APP_HOST_URL}documentUpload/${data.loanId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: data.headerData,
+          },
+        }
+      );
+      output = uploadDocument.data;
+    } catch (err) {
+      error = err.response;
+    }
+    return { output, error };
+  };
 }
 export default loanService;

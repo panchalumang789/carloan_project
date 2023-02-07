@@ -108,8 +108,8 @@ const WorkDetails = () => {
                     {...register("user_income", {
                       required: "Please enter your income!",
                       min: {
-                        value: 10000,
-                        message: "Income should be greater than 10000!",
+                        value: 0,
+                        message: "Income should be greater than 0!",
                       },
                       max: {
                         value: 1000000000,

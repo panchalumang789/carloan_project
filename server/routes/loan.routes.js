@@ -4,16 +4,21 @@ const loanRoutes = router;
 const authorization = require("../middleware/authorization");
 const loanController = require("../controller/loan.controller");
 const adminController = require("../controller/admin.controller");
-
+const multer = require("multer");
+const loanTable = require("../models/loan");
+const { Sequelize } = require("sequelize");
+const upload = multer({ dest: "./document/" });
 
 loanRoutes.get(
   "/loans/",
   authorization.verifyToken,
+  loanController.loanCount,
   loanController.getLoanByStatus,
   (req, res) => {
     res.status(200).json({
       loan: res.locals.loans,
       length: res.locals.length,
+      loanCount: res.locals.loanCount,
     });
   }
 );
@@ -24,6 +29,15 @@ loanRoutes.get(
   loanController.getLoanByUserId,
   (req, res) => {
     res.status(200).send(res.locals.loans);
+  }
+);
+
+loanRoutes.get(
+  "/loans/count",
+  authorization.verifyToken,
+  loanController.loanCount,
+  (req, res) => {
+    res.status(200).send(res.locals.loanCount);
   }
 );
 
@@ -81,4 +95,14 @@ loanRoutes.put(
 loanRoutes.put("/loan/sendMail/:id", adminController.sendMail, (req, res) => {
   res.status(200).json({ mailstatus: res.locals.mailStatus });
 });
+
+loanRoutes.post(
+  "/documentUpload/:loanId",
+  authorization.verifyToken,
+  upload.single("file"),
+  loanController.updateDocument,
+  (req, res) => {
+    res.status(200).json({ message: "Doneee" });
+  }
+);
 module.exports = loanRoutes;

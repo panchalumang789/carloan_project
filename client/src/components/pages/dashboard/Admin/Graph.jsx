@@ -37,24 +37,7 @@ const Graph = (props) => {
       endAngle: -90,
     });
 
-    let data = [
-      {
-        category: "InProgress",
-        value: 15,
-      },
-      {
-        category: "InReview",
-        value: 9,
-      },
-      {
-        category: "Approved",
-        value: 20,
-      },
-      {
-        category: "Rejected",
-        value: 5,
-      },
-    ];
+    let data = props.graphData;
     series.data.setAll(data);
 
     var legend = chart.children.push(

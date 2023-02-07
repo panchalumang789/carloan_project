@@ -232,6 +232,7 @@ const LoanDetail = () => {
               <div className="flex justify-around lg:justify-between items-center border-2 max-w-screen-sm w-full mx-auto px-3 border-primary-color-1 dark:border-primary-color-7 rounded-md">
                 <p className="font-medium text-xl pt-1">Upload Document</p>
                 <Link
+                  state={loanDetails.id}
                   id="new_loan"
                   to={"/journey/documents"}
                   className="font-semibold text-lg text-primary-color-4 dark:text-primary-color-7 py-2 pr-3 border-primary-color-1 dark:border-primary-color-7"

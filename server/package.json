@@ -10,6 +10,7 @@
   "author": "Umang Panchal",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.1310.0",
     "body-parser": "^1.20.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -18,6 +19,8 @@
     "express": "^4.18.2",
     "joi": "^17.7.0",
     "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.0",
     "nodemon": "^2.0.20",
     "pg": "^8.8.0",

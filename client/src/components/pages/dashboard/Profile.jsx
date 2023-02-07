@@ -96,9 +96,18 @@ const Profile = () => {
   useEffect(() => {
     setUserData(userDetails);
     setValue("prefix", userDetails.prefix);
-    setValue("medicalcardImage", userDetails.medicalcardImage);
-    setValue("licenceFrontImage", userDetails.licenceFrontImage);
-    setValue("licenceBackImage", userDetails.licenceBackImage);
+    setValue(
+      "medicalcardImage",
+      userDetails.medicalcardImage || `medicalcardImage${userDetails.id}.jpg`
+    );
+    setValue(
+      "licenceFrontImage",
+      userDetails.licenceFrontImage || `licenceFrontImage${userDetails.id}.jpg`
+    );
+    setValue(
+      "licenceBackImage",
+      userDetails.licenceBackImage || `licenceBackImage${userDetails.id}.jpg`
+    );
     setValue("firstName", userDetails.firstName);
     setValue("lastName", userDetails.lastName);
     setValue("email", userDetails.email);

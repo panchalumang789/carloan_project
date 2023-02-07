@@ -53,6 +53,7 @@ const Dashboard = () => {
                   {user.contactNo}
                 </span>
                 <span
+                  title="Menu"
                   onClick={openWidget}
                   className="fa-solid fa-ellipsis cursor-pointer"
                 ></span>
@@ -67,16 +68,18 @@ const Dashboard = () => {
                       <span className="text-base pr-1 fa-solid fa-plus"></span>
                       <span> New</span>
                     </Link>
-                    <Link
-                      id="view_profile"
-                      to={"profile"}
-                      state={{ contactNo: user.contactNo }}
-                      onClick={openWidget}
-                      className="py-2 pr-3 border-b-2 border-primary-color-1 dark:border-primary-color-7 hover:text-primary-color-4 dark:hover:text-white hover:scale-105 transition-all duration-300"
-                    >
-                      <span className="text-base pr-1 fa-solid fa-user"></span>
-                      <span> View Profile</span>
-                    </Link>
+                    {user.role !== "Admin" && (
+                      <Link
+                        id="view_profile"
+                        to={"profile"}
+                        state={{ contactNo: user.contactNo }}
+                        onClick={openWidget}
+                        className="py-2 pr-3 border-b-2 border-primary-color-1 dark:border-primary-color-7 hover:text-primary-color-4 dark:hover:text-white hover:scale-105 transition-all duration-300"
+                      >
+                        <span className="text-base pr-1 fa-solid fa-user"></span>
+                        <span> View Profile</span>
+                      </Link>
+                    )}
                     <Link
                       id="logout"
                       to={"/"}

@@ -27,6 +27,7 @@ const UserList = (props) => {
       if (error) {
         setError(error.data.message);
       } else {
+        setError("");
         setLoading(true);
         loadingtime = setTimeout(() => {
           setLoading(false);
@@ -38,7 +39,6 @@ const UserList = (props) => {
     })();
     return () => clearTimeout(loadingtime);
   }, [limit, page, searchName]);
-
   return (
     <div
       id="mainDiv"

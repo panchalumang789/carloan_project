@@ -193,8 +193,10 @@ const LeadDetail = () => {
                     type="number"
                     id="balloon"
                     placeholder="0"
+                    defaultValue="0"
                     className={inputClasses}
                     {...register("balloon", {
+                      required: "Please enter balloon percentage!",
                       min: {
                         value: 0,
                         message: "Balloon should be greater than 0!",

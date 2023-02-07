@@ -129,7 +129,7 @@ const VerifyOTP = () => {
             onKeyUp={(e) => handleInput(e)}
           >
             <input
-              className="px-5 text-xl h-12 w-14 rounded-xl 12 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-7 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-50 dark:outline dark:outline-2 dark:outline-primary-color-5"
+              className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-12 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-7 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-50 outline outline-1 dark:outline-primary-color-5"
               type="text"
               value={OTP[0]}
               maxLength="1"
@@ -140,7 +140,7 @@ const VerifyOTP = () => {
               ref={inputRef}
             />
             <input
-              className="px-5 text-xl h-12 w-14 rounded-xl 12 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-7 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-50 dark:outline dark:outline-2 dark:outline-primary-color-5"
+              className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-12 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-7 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-50 outline outline-1 dark:outline-primary-color-5"
               type="text"
               value={OTP[1]}
               maxLength="1"
@@ -149,7 +149,7 @@ const VerifyOTP = () => {
               placeholder="0"
             />
             <input
-              className="px-5 text-xl h-12 w-14 rounded-xl 12 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-7 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-50 dark:outline dark:outline-2 dark:outline-primary-color-5"
+              className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-12 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-7 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-50 outline outline-1 dark:outline-primary-color-5"
               type="text"
               value={OTP[2]}
               maxLength="1"
@@ -158,7 +158,7 @@ const VerifyOTP = () => {
               placeholder="0"
             />
             <input
-              className="px-5 text-xl h-12 w-14 rounded-xl 12 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-7 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-50 dark:outline dark:outline-2 dark:outline-primary-color-5"
+              className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-12 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-7 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-50 outline outline-1 dark:outline-primary-color-5"
               type="text"
               value={OTP[3]}
               maxLength="1"

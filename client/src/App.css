@@ -44,6 +44,10 @@ input[type="number"]::-webkit-outer-spin-button {
     width: 90%;
 }
 
+.w-p95 {
+    width: 95%;
+}
+
 html,
 body {
     /* overflow: hidden; */
