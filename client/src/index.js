@@ -18,6 +18,7 @@ import AdminLogin from "components/pages/AdminLogin/index";
 import UserList from "components/pages/dashboard/Admin/UserList/index";
 import UserLoan from "components/pages/dashboard/Admin/UserLoan/index";
 import Profile from "components/pages/dashboard/Profile";
+import CodingTest from "components/reviewTest/CodingTest";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -44,6 +45,7 @@ root.render(
         <Route path="login" element={<Login />}></Route>
         <Route path="verify" element={<Verify />}></Route>
         <Route path="admin" element={<AdminLogin />}></Route>
+        <Route path="review-test" element={<CodingTest />}></Route>
         <Route path="*" element={<PageNotFound />}></Route>
       </Route>
     </Routes>

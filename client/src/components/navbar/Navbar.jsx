@@ -68,20 +68,20 @@ const Navbar = () => {
             </div>
           </div>
           {LoggedIn !== "" ? (
-            <div className="hidden md:flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7 my-2 rounded-md border-2 border-primary-color-1 dark:border-primary-color-5 dark:hover:bg-black hover:bg-white/60">
+            <div className="hidden md:flex items-center p-1.5 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7 my-2 rounded-md border-2 border-primary-color-1 dark:border-primary-color-5 dark:hover:bg-black hover:bg-white/60">
               <Link
                 to={"/"}
                 onClick={logout}
-                className="text-2xl text-primary-color-1 dark:text-primary-color-7"
+                className="text-xl text-primary-color-1 dark:text-primary-color-7"
               >
                 LOGOUT
               </Link>
             </div>
           ) : (
-            <div className="hidden md:flex items-center py-3 px-2 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7 my-2 rounded-md border-2 border-primary-color-1 dark:border-primary-color-5 dark:hover:bg-black hover:bg-white/60">
+            <div className="hidden md:flex items-center p-1.5 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7 my-2 rounded-md border-2 border-primary-color-1 dark:border-primary-color-5 dark:hover:bg-black hover:bg-white/60">
               <Link
                 to={"/login"}
-                className="text-2xl text-primary-color-1 dark:text-primary-color-7"
+                className="text-xl text-primary-color-1 dark:text-primary-color-7"
               >
                 LOGIN
               </Link>
@@ -121,19 +121,19 @@ const Navbar = () => {
           <Link to={"/dashboard"} onClick={toggleNav} className={LinkClasses}>
             Dashboard
           </Link>
-          <Link to={"/"} className={LinkClasses}>
+          <Link to={"/"} onClick={toggleNav} className={LinkClasses}>
             Services
           </Link>
-          <Link to={"/"} className={LinkClasses}>
+          <Link to={"/"} onClick={toggleNav} className={LinkClasses}>
             Partners
           </Link>
-          <Link to={"/"} className={LinkClasses}>
+          <Link to={"/"} onClick={toggleNav} className={LinkClasses}>
             About
           </Link>
-          <Link to={"/"} className={LinkClasses}>
+          <Link to={"/"} onClick={toggleNav} className={LinkClasses}>
             Contact US
           </Link>
-          <Link to={"/review"} className={LinkClasses}>
+          <Link to={"/review-test"} onClick={toggleNav} className={LinkClasses}>
             Coding Test
           </Link>
         </div>
