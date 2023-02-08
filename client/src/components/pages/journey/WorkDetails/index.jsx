@@ -54,10 +54,10 @@ const WorkDetails = () => {
             }}
           />
         </div>
-        <div className="w-5/6 lg:w-1/2 md:px-28">
+        <div className="w-5/6 lg:w-1/2 md:px-20">
           <form
             onSubmit={handleSubmit(WorkDetails)}
-            className="flex justify-center flex-col mx-auto"
+            className="flex justify-center flex-col mx-auto rounded-xl p-8 shadow-wrapper"
           >
             <div className="flex flex-col gap-y-6">
               <FormTitle formTitle={"Work Details"} />

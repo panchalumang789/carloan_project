@@ -5,7 +5,11 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import customerService from "services/customerServices";
 import LoadingPage from "components/pages/journey/extra/LoadingPage";
-import { errorToast, FormTitle, inputClasses } from "components/pages/journey/extra/Widget";
+import {
+  errorToast,
+  FormTitle,
+  inputClasses,
+} from "components/pages/journey/extra/Widget";
 import LoginImage from "assest/images/LoginImage.jpg";
 import { motion, useDragControls } from "framer-motion";
 
@@ -76,58 +80,60 @@ const Login = () => {
             alt="OTP verification image"
           />
         </div>
-        <div className="w-5/6 lg:w-1/2 md:px-28">
-          <FormTitle formTitle={"Login"} />
-          <form
-            onSubmit={handleSubmit(getMobile)}
-            className="flex justify-center flex-col mx-auto mt-5"
-          >
-            <div className="flex flex-col gap-y-12">
-              <div className="flex flex-col">
-                <label htmlFor="contact_no" className="px-1">
-                  Contact no. <span className="text-red-500">*</span>
-                </label>
-                <div className="input-group-prepend">
-                  <span
-                    className="ml-4 fixed text-lg fa fa-phone my-2.5"
-                    id="basic-addon1"
-                  ></span>
+        <div className="w-5/6 lg:w-1/2 md:px-20">
+          <div className="rounded-xl p-8 shadow-wrapper">
+            <FormTitle formTitle={"Login"} />
+            <form
+              onSubmit={handleSubmit(getMobile)}
+              className="flex justify-center flex-col mx-auto mt-5"
+            >
+              <div className="flex flex-col gap-y-12">
+                <div className="flex flex-col">
+                  <label htmlFor="contact_no" className="px-1">
+                    Contact no. <span className="text-red-500">*</span>
+                  </label>
+                  <div className="input-group-prepend">
+                    <span
+                      className="ml-4 fixed text-lg fa fa-phone my-2.5"
+                      id="basic-addon1"
+                    ></span>
+                  </div>
+                  <input
+                    id="contact_no"
+                    type="number"
+                    autoFocus
+                    placeholder="9876543210"
+                    className={inputClasses + " pl-12"}
+                    {...register("contactNo", {
+                      required: "Please enter your contact no !",
+                      minLength: {
+                        value: 10,
+                        message: "Please enter valid contact no !",
+                      },
+                      maxLength: {
+                        value: 10,
+                        message: "Please enter valid contact no !",
+                      },
+                    })}
+                  />
+                  {errors.contactNo && (
+                    <span className="text-red-500 pt-1 px-1 text-sm">
+                      {errors.contactNo?.message}
+                    </span>
+                  )}
                 </div>
-                <input
-                  id="contact_no"
-                  type="number"
-                  autoFocus
-                  placeholder="9876543210"
-                  className={inputClasses + " pl-12"}
-                  {...register("contactNo", {
-                    required: "Please enter your contact no !",
-                    minLength: {
-                      value: 10,
-                      message: "Please enter valid contact no !",
-                    },
-                    maxLength: {
-                      value: 10,
-                      message: "Please enter valid contact no !",
-                    },
-                  })}
-                />
-                {errors.contactNo && (
-                  <span className="text-red-500 pt-1 px-1 text-sm">
-                    {errors.contactNo?.message}
-                  </span>
-                )}
+                <div className="ml-auto">
+                  <button
+                    type="submit"
+                    className="group font-medium flex items-center justify-start gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-9 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
+                  >
+                    Next
+                    <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right" />
+                  </button>
+                </div>
               </div>
-              <div className="ml-auto">
-                <button
-                  type="submit"
-                  className="group font-medium flex items-center justify-start gap-x-2 w-24 text-center p-3 border border-primary-color-1 dark:bg-primary-color-9 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-3"
-                >
-                  Next
-                  <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right" />
-                </button>
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>

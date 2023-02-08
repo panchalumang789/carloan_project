@@ -79,29 +79,29 @@ const UserList = (props) => {
                   <div>
                     <table className="w-full overflow-auto bg-white dark:bg-primary-color-9 border border-collapse">
                       <thead className="uppercase text-lg">
-                        <tr className="border border-primary-color-1 dark:border-primary-color-5">
-                          <th className="border border-primary-color-1 dark:border-primary-color-5">
+                        <tr className="border border-primary-color-1 dark:border-primary-color-5 bg-primary-color-9 dark:bg-primary-color-8 text-primary-color-7">
+                          <th className="border border-primary-color-7 px-5 py-2">
                             User_id
                           </th>
-                          <th className="border border-primary-color-1 dark:border-primary-color-5">
+                          <th className="border border-primary-color-7 px-5 py-2">
                             Name
                           </th>
-                          <th className="border border-primary-color-1 dark:border-primary-color-5">
+                          <th className="border border-primary-color-7 px-5 py-2">
                             Email
                           </th>
-                          <th className="border border-primary-color-1 dark:border-primary-color-5">
+                          <th className="border border-primary-color-7 px-5 py-2">
                             Contact-No
                           </th>
-                          <th className="border border-primary-color-1 dark:border-primary-color-5">
+                          <th className="border border-primary-color-7 px-5 py-2">
                             State
                           </th>
-                          <th className="border border-primary-color-1 dark:border-primary-color-5">
+                          <th className="border border-primary-color-7 px-5 py-2">
                             License-Number
                           </th>
-                          <th className="border border-primary-color-1 dark:border-primary-color-5">
+                          <th className="border border-primary-color-7 px-5 py-2">
                             License-Type
                           </th>
-                          <th className="border border-primary-color-1 dark:border-primary-color-5">
+                          <th className="border border-primary-color-7 px-5 py-2">
                             Registration Date
                           </th>
                         </tr>
@@ -111,7 +111,7 @@ const UserList = (props) => {
                           return (
                             <tr
                               // onClick={() => gotoLoan(user.id)}
-                              className="text-center hover:bg-primary-color-10 dark:hover:bg-primary-color-8 border-primary-color-1 dark:border-primary-color-5"
+                              className="text-center hover:bg-primary-color-9/20 dark:hover:bg-primary-color-8 border-primary-color-1 dark:border-primary-color-5"
                               key={index}
                             >
                               <td className="border border-primary-color-1 dark:border-primary-color-5 relative">
@@ -142,12 +142,9 @@ const UserList = (props) => {
                                 {user.licenceType}
                               </td>
                               <td className="border border-primary-color-1 dark:border-primary-color-5">
-                                {
-                                  new Date(user.createdAt)
-                                    .toISOString()
-                                    .split("T")[0]
-                                }
+                                {new Date(user.createdAt).toLocaleDateString()}
                               </td>
+                              {console.log(user.createdAt)}
                             </tr>
                           );
                         })}

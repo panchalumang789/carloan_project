@@ -11,7 +11,7 @@ const LoanList = () => {
     const userService = new customerService();
     if (localStorage.getItem("token")) {
       (async () => {
-        const findUser = await userService.verifyToken({
+        const findUser = await userService.verifyRole({
           headerData: localStorage.getItem("token"),
         });
         setRole(findUser.role);

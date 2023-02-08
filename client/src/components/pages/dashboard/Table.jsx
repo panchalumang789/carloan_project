@@ -13,13 +13,13 @@ const Table = (props) => {
   return (
     <table className="w-full overflow-auto bg-white dark:bg-primary-color-9 border border-collapse">
       <thead className="uppercase text-lg">
-        <tr className="border border-primary-color-1 dark:border-primary-color-5">
+        <tr className="border border-primary-color-1 dark:border-primary-color-5 bg-primary-color-9 dark:bg-primary-color-8 text-primary-color-7">
           {tableKeys.map((key, index) => {
             if (key === "id") {
               return (
                 <th
                   key={index}
-                  className="border border-primary-color-1 dark:border-primary-color-5 px-5 py-2"
+                  className="border border-primary-color-7 px-5 py-2"
                 >
                   {key}
                 </th>
@@ -28,7 +28,7 @@ const Table = (props) => {
             return (
               <th
                 key={index}
-                className="border border-primary-color-1 dark:border-primary-color-5 px-5 py-2"
+                className="border border-primary-color-7 px-5 py-2"
               >
                 {key}
               </th>
@@ -40,7 +40,7 @@ const Table = (props) => {
         {tableData.map((data, index) => {
           return (
             <tr
-              className="text-center hover:bg-primary-color-10 dark:hover:bg-primary-color-8 border-primary-color-1 dark:border-primary-color-5"
+              className="text-center hover:bg-primary-color-9/20 dark:hover:bg-primary-color-8 border-primary-color-1 dark:border-primary-color-5"
               key={index}
             >
               {tableKeys.map((key, index) => {

@@ -104,7 +104,7 @@ const LoanDetail = () => {
       ) : (
         <div className="flex flex-col md:flex-row px-2 md:px-0 w-full gap-x-6 gap-y-2 overflow-auto md:overflow-hidden h-[calc(100%-190px)] md:h-[calc(100%-190px)]">
           <ToastContainer />
-          <div className="w-full md:w-5/6 border-2 border-primary-color-1 dark:border-primary-color-5 lg:w-1/4 p-3">
+          <div className="w-full md:w-5/6 border-2 border-primary-color-1 bg-primary-color-9/10 dark:border-primary-color-5 lg:w-1/4 p-3">
             <div>
               <p className="text-lg font-medium">Loan Summary</p>
               <div className="p-2 md:p-5 text-sm">
@@ -133,7 +133,7 @@ const LoanDetail = () => {
             <div className="flex justify-between px-1">
               <Link
                 to={"/dashboard"}
-                className="group font-medium flex items-center justify-end gap-x-2 w-32 text-center p-3 border-2 bg-white/30 border-primary-color-1 dark:bg-primary-color-9 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-7"
+                className="group font-medium flex items-center justify-end gap-x-2 w-32 text-center p-3 border-2 bg-primary-color-9/10 border-primary-color-1 dark:bg-primary-color-9 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-7"
               >
                 <em className="group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left"></em>
                 All loans
@@ -229,7 +229,7 @@ const LoanDetail = () => {
             <IncomeDetails incomeDetails={incomeDetails} />
             <ExpensesDetails expensesDetails={expensesDetails} />
             {state !== "Admin" && (
-              <div className="flex justify-around lg:justify-between items-center border-2 max-w-screen-sm w-full mx-auto px-3 border-primary-color-1 dark:border-primary-color-7 rounded-md">
+              <div className="flex justify-around lg:justify-between items-center border-2 max-w-screen-sm w-full mx-auto px-3 border-primary-color-1 dark:border-primary-color-7 bg-primary-color-9/10 rounded-md">
                 <p className="font-medium text-xl pt-1">Upload Document</p>
                 <Link
                   state={loanDetails.id}

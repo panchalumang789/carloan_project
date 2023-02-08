@@ -11,15 +11,17 @@ router.post("/login", authorization.sendOTP, async (req, res) => {
   });
 });
 
-router.post("/verify", authorization.verifyOTP, async (req, res) => {
-  res
-    .status(200)
-    .json({
+router.post(
+  "/verify",
+  authorization.verifyOTP,
+  async (req, res) => {
+    res.status(200).json({
       message: res.locals.response,
       user: res.locals.userData,
       token: res.locals.token,
     });
-});
+  }
+);
 
 router.post(
   "/verifyUser",

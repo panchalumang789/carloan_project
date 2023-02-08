@@ -104,6 +104,22 @@ class customerService {
     return { output, error };
   };
 
+  registerAgent = async (data) => {
+    let output, error;
+    try {
+      const createUser = await axios.post(
+        `${process.env.REACT_APP_HOST_URL}agent`,
+        data.bodyData
+      );
+      output = createUser.data;
+    } catch (err) {
+      error = err.response;
+    }
+    console.log(output);
+    console.log(error);
+    return { output, error };
+  };
+
   updateUser = async (data) => {
     let output, error;
     try {
@@ -157,6 +173,22 @@ class customerService {
     try {
       const result = await axios.get(
         `${process.env.REACT_APP_HOST_URL}user/verify`,
+        {
+          headers: {
+            Authorization: data.headerData,
+          },
+        }
+      );
+      return result.data;
+    } catch (error) {
+      return error.response;
+    }
+  };
+
+  verifyRole = async (data) => {
+    try {
+      const result = await axios.get(
+        `${process.env.REACT_APP_HOST_URL}user/verify/role`,
         {
           headers: {
             Authorization: data.headerData,

@@ -78,10 +78,10 @@ const ExpensesDetails = () => {
             }}
           />
         </div>
-        <div className="w-5/6 lg:w-1/2 md:px-28">
+        <div className="w-5/6 lg:w-1/2 md:px-24">
           <form
             onSubmit={handleSubmit(expensesDetails)}
-            className="flex flex-col gap-y-3"
+            className="flex flex-col gap-y-3 rounded-xl p-8 shadow-wrapper"
           >
             <FormTitle formTitle={"Expenses"} />
             <div className="flex text-md flex-col">

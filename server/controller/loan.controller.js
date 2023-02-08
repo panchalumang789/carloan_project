@@ -338,20 +338,35 @@ const s3 = new AWS.S3({
  */
 const updateDocument = async (req, res, next) => {
   try {
-    const fileContent = fs.readFileSync(`./document/${req.file.filename}`);
-
-    const params = {
-      Bucket: process.env.AWS_BUCKET_NAME,
-      Key: `${req.file.filename}.jpg`,
-      Body: fileContent,
-    };
-
-    s3.upload(params, (err, data) => {
-      if (err) console.log(err);
-      else console.log(data);
+    const findLoan = await loanTable.findOne({
+      where: { id: req.params.loanId },
+    });
+    
+    console.log(req.files);
+    Object.keys(req.files).forEach(async (key) => {
+      const fileContent = fs.readFileSync(
+        `./document/${req.files[key][0].filename}`
+      );
+      const params = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: `${req.files[key][0].filename}.jpg`,
+        Body: fileContent,
+      };
+      const uploadImage = s3.upload(params, async (err, data) => {
+        if (err) {
+          console.log(err);
+        } else {
+          fs.unlinkSync(`./document/${req.files[key][0].filename}`);
+          const updateUser = await userTable.update(
+            { [key]: data.Location },
+            { where: { id: findLoan.userId } }
+          );
+        }
+      });
     });
     next();
   } catch (error) {
+    console.log(error);
     if (error.errors)
       next({ error: { status: 500, message: error.errors[0].message } });
     else next({ error: { status: 500, message: error } });

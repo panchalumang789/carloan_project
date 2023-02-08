@@ -29,6 +29,20 @@ const generateToken = (role) => {
   };
 };
 
+const getUserRole = async (req, res, next) => {
+  try {
+    let verify = jwt.verify(
+      req.headers.authorization,
+      process.env.JWT_SECRET_KEY
+    );
+    res.locals.role = verify.role;
+    next();
+  } catch (error) {
+    if (error.original) {
+      next({ error: { status: 500, message: error.original } });
+    } else next({ error: { status: 500, message: "Invalid token" } });
+  }
+};
 /**
  * @return verify token of loggedin user or admin
  */
@@ -118,14 +132,6 @@ const verifyOTP = async (req, res, next) => {
       const findUser = await userTable.findOne({
         where: { contactNo: req.body.ContactNo },
       });
-      // if (findUser === null) {
-      //   next({
-      //     error: {
-      //       status: 401,
-      //       message: "Unauthorized login, Please register first!",
-      //     },
-      //   });
-      // }
       if (findUser) {
         res.locals.users = findUser;
         credential = {
@@ -155,7 +161,7 @@ const verifyOTP = async (req, res, next) => {
         next({
           error: {
             status: 400,
-            message: "Something is wrong, Internal error!",
+            message: "Invalid OTP!",
           },
         });
       } else {
@@ -188,4 +194,10 @@ const verifyOTP = async (req, res, next) => {
   }
 };
 
-module.exports = { generateToken, verifyToken, sendOTP, verifyOTP };
+module.exports = {
+  generateToken,
+  getUserRole,
+  verifyToken,
+  sendOTP,
+  verifyOTP,
+};

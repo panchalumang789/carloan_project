@@ -68,7 +68,7 @@ const Navbar = () => {
             </div>
           </div>
           {LoggedIn !== "" ? (
-            <div className="hidden md:flex items-center p-1.5 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7 my-2 rounded-md border-2 border-primary-color-1 dark:border-primary-color-5 dark:hover:bg-black hover:bg-white/60">
+            <div className="hidden md:flex items-center p-1.5 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7 my-2 rounded-md border-2 border-primary-color-1 dark:border-primary-color-5 dark:hover:bg-white/20 hover:bg-primary-color-9/20">
               <Link
                 to={"/"}
                 onClick={logout}
@@ -78,7 +78,7 @@ const Navbar = () => {
               </Link>
             </div>
           ) : (
-            <div className="hidden md:flex items-center p-1.5 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7 my-2 rounded-md border-2 border-primary-color-1 dark:border-primary-color-5 dark:hover:bg-black hover:bg-white/60">
+            <div className="hidden md:flex items-center p-1.5 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7 my-2 rounded-md border-2 border-primary-color-1 dark:border-primary-color-5 dark:hover:bg-white/20 hover:bg-primary-color-9/20">
               <Link
                 to={"/login"}
                 className="text-xl text-primary-color-1 dark:text-primary-color-7"

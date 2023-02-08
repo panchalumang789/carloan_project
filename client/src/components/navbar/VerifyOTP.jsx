@@ -106,75 +106,77 @@ const VerifyOTP = () => {
             alt="OTP verification image"
           />
         </div>
-        <div className="w-5/6 lg:w-1/2 md:px-28">
-          <div className="text-lg md:text-2xl pb-8">
-            <p className="">I just send a 4-digit SMS code to you on </p>
-            <span className="text-xl font-medium">
-              {cookie.get("contactNo") && (
-                <Typewriter
-                  options={{
-                    strings: cookie.get("contactNo").contactNo,
-                    autoStart: true,
-                    loop: false,
-                    delay: 80,
-                  }}
-                />
-              )}
-            </span>
-            <p>Please enter it to verify yourself.</p>
-          </div>
-          <p className="px-6 py-1">SMS Code</p>
-          <div
-            className="flex gap-x-4 justify-center pb-8"
-            onKeyUp={(e) => handleInput(e)}
-          >
-            <input
-              className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-12 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-7 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-50 outline outline-1 dark:outline-primary-color-5"
-              type="text"
-              value={OTP[0]}
-              maxLength="1"
-              alt="1"
-              onChange={handleChange}
-              placeholder="0"
-              autoFocus
-              ref={inputRef}
-            />
-            <input
-              className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-12 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-7 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-50 outline outline-1 dark:outline-primary-color-5"
-              type="text"
-              value={OTP[1]}
-              maxLength="1"
-              alt="2"
-              onChange={handleChange}
-              placeholder="0"
-            />
-            <input
-              className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-12 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-7 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-50 outline outline-1 dark:outline-primary-color-5"
-              type="text"
-              value={OTP[2]}
-              maxLength="1"
-              alt="3"
-              onChange={handleChange}
-              placeholder="0"
-            />
-            <input
-              className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-12 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-7 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-50 outline outline-1 dark:outline-primary-color-5"
-              type="text"
-              value={OTP[3]}
-              maxLength="1"
-              alt="4"
-              onChange={handleChange}
-              placeholder="0"
-            />
-          </div>
-          <div className="w-full flex mx-auto justify-start">
-            <Link
-              to={"/login"}
-              className="group font-medium flex items-center justify-end gap-x-2 w-28 h-14 text-center p-3 border border-primary-color-1 dark:bg-primary-color-9 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-5"
+        <div className="w-5/6 lg:w-1/2 md:px-24 ">
+          <div className="rounded-xl p-8 shadow-wrapper ">
+            <div className="text-lg md:text-2xl pb-8 ">
+              <p className="">I just send a 4-digit SMS code to you on </p>
+              <span className="text-xl font-medium">
+                {cookie.get("contactNo") && (
+                  <Typewriter
+                    options={{
+                      strings: cookie.get("contactNo").contactNo,
+                      autoStart: true,
+                      loop: false,
+                      delay: 80,
+                    }}
+                  />
+                )}
+              </span>
+              <p>Please enter it to verify yourself.</p>
+            </div>
+            <p className="px-6 py-1">SMS Code</p>
+            <div
+              className="flex gap-x-4 justify-center pb-8"
+              onKeyUp={(e) => handleInput(e)}
             >
-              <em className=" group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left"></em>{" "}
-              Edit Number
-            </Link>
+              <input
+                className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-9/10 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-7 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-50 outline outline-1 dark:outline-primary-color-5"
+                type="text"
+                value={OTP[0]}
+                maxLength="1"
+                alt="1"
+                onChange={handleChange}
+                placeholder="0"
+                autoFocus
+                ref={inputRef}
+              />
+              <input
+                className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-9/10 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-7 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-50 outline outline-1 dark:outline-primary-color-5"
+                type="text"
+                value={OTP[1]}
+                maxLength="1"
+                alt="2"
+                onChange={handleChange}
+                placeholder="0"
+              />
+              <input
+                className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-9/10 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-7 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-50 outline outline-1 dark:outline-primary-color-5"
+                type="text"
+                value={OTP[2]}
+                maxLength="1"
+                alt="3"
+                onChange={handleChange}
+                placeholder="0"
+              />
+              <input
+                className="px-5 text-xl h-12 w-14 rounded-xl bg-primary-color-9/10 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-7 text-primary-color-1 font-medium placeholder:text-primary-color-1 placeholder:opacity-50 outline outline-1 dark:outline-primary-color-5"
+                type="text"
+                value={OTP[3]}
+                maxLength="1"
+                alt="4"
+                onChange={handleChange}
+                placeholder="0"
+              />
+            </div>
+            <div className="w-full flex mx-auto justify-start">
+              <Link
+                to={"/login"}
+                className="group font-medium flex items-center justify-end gap-x-2 w-28 h-14 text-center p-3 border border-primary-color-1 dark:bg-primary-color-9 dark:hover:bg-primary-color-4 rounded-md dark:border-2 dark:border-primary-color-5"
+              >
+                <em className=" group-hover:mr-2 text-xl transition-all duration-200 fa fa-arrow-left"></em>{" "}
+                Edit Number
+              </Link>
+            </div>
           </div>
         </div>
       </div>

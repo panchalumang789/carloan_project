@@ -44,6 +44,11 @@ userRoutes.get("/user/verify", authorization.verifyToken, (req, res) => {
   res.status(200).json({ user: res.locals.userDetail, role: res.locals.role });
 });
 
+// @return user role
+userRoutes.get("/user/verify/role", authorization.getUserRole, (req, res) => {
+  res.status(200).json({ role: res.locals.role });
+});
+
 // @admin user details by id
 userRoutes.get(
   "/user/:id",
@@ -61,6 +66,18 @@ userRoutes.post(
   "/user",
   authorization.generateToken("User"),
   userController.createUser,
+  (req, res) => {
+    res.status(200).send(res.locals.user);
+  }
+);
+
+/**
+ * @returns register agent
+ */
+userRoutes.post(
+  "/agent",
+  authorization.generateToken("Agent"),
+  userController.createAgent,
   (req, res) => {
     res.status(200).send(res.locals.user);
   }

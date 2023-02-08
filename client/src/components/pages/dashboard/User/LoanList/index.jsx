@@ -66,7 +66,7 @@ const LoanList = () => {
       id="mainDiv"
       className="px-4 pt-4 pb-0 md:pb:0 lg:p-0 gap-y-3 flex flex-col h-[calc(100%-190px)] md:h-[calc(100%-190px)] lg:flex-row w-full gap-x-6 overflow-y-auto lg:overflow-y-hidden"
     >
-      <div className="w-full border-primary-color-1 bg-primary-color-7 dark:bg-primary-color-9 border dark:border-primary-color-7 lg:w-1/5 p-4 text-primary-color-1 dark:text-primary-color-7">
+      <div className="w-full border-primary-color-1 bg-primary-color-9/10 dark:bg-primary-color-9 border dark:border-primary-color-7 lg:w-1/5 p-4 text-primary-color-1 dark:text-primary-color-7">
         <p className="text-xl">Get loan options</p>
         <ul className="list-disc text-sm py-2 mx-3">
           <li>Compare 30+ matched lenders in 60 seconds.</li>
@@ -106,7 +106,7 @@ const LoanList = () => {
         </div>
         <div
           id="loanlist"
-          className="flex flex-col h-auto lg:h-[calc(100%-48px)] lg:overflow-y-auto border rounded-t-md border-primary-color-1 dark:border-primary-color-7"
+          className="flex flex-col h-auto lg:h-[calc(100%-48px)] lg:overflow-y-auto border border-primary-color-1 dark:border-primary-color-7"
         >
           {Loading ? (
             <div className="h-40 w-full flex justify-center items-center mx-auto">
@@ -126,7 +126,7 @@ const LoanList = () => {
                         state={role}
                         key={index}
                         to={`loan/${loan.id}`}
-                        className="w-full hover:cursor-pointer border-b-2 border-primary-color-1 dark:border-primary-color-5 hover:shadow-2xl bg-primary-color-7 dark:bg-primary-color-9 transition-all duration-500 text-primary-color-1 dark:text-primary-color-7 py-2 md:py-4 hover:z-50"
+                        className="w-full hover:cursor-pointer border-b-2 border-primary-color-1 dark:border-primary-color-5 hover:shadow-2xl bg-primary-color-9/10 dark:bg-primary-color-9 transition-all duration-500 text-primary-color-1 dark:text-primary-color-7 py-2 md:py-4 hover:z-10"
                       >
                         <div className="p-2">
                           <div className="flex px-5 justify-between">

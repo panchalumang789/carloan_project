@@ -90,10 +90,12 @@ const getUser = async (req, res, next) => {
           },
         },
       ],
+      role: "User",
     };
     if (res.locals.role === "User") {
       filter = {
         id: res.locals.user.id,
+        role: "User",
       };
     }
     let findLength = await userTable.count({
@@ -218,6 +220,33 @@ const createUser = async (req, res, next) => {
 };
 
 /**
+ * @param {*} req get agent details from body
+ * @param {*} res add new agent
+ */
+const createAgent = async (req, res, next) => {
+  try {
+    const { error } = userValidation.validate(req.body);
+    if (error) {
+      next({ error: { status: 400, message: error.message } });
+    }
+    let addUser = await userTable.build(req.body).save();
+    let updateUser = await userTable.update(
+      { role: "Agent" },
+      { where: { id: addUser.id } }
+    );
+
+    res.locals.user = {
+      message: `${req.body.firstName} ${req.body.lastName} added successfully.`,
+    };
+    next();
+  } catch (error) {
+    if (error.errors)
+      next({ error: { status: 400, message: error.errors[0].message } });
+    else next({ error: { status: 400, message: error.original.detail } });
+  }
+};
+
+/**
  * @param {*} req get user details from body
  * @param {*} res add new user details
  */
@@ -287,6 +316,7 @@ module.exports = {
   getUserById,
   getUserByContactNo,
   createUser,
+  createAgent,
   updateUser,
   deleteUser,
 };

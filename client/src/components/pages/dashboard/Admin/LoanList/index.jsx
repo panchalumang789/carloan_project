@@ -19,6 +19,7 @@ const LoanList = (props) => {
   const [graph, setgraph] = useState("hidden");
   const [tableKeys, setTableKeys] = useState([]);
   const [graphData, setGraphData] = useState([]);
+  console.log(limit);
 
   useEffect(() => {
     let loadingtime;
@@ -87,7 +88,11 @@ const LoanList = (props) => {
                 " aria-pressed:after:bg-primary-color-1 dark:aria-pressed:after:bg-primary-color-10"
               }
               aria-pressed={status === "In progress"}
-              onClick={() => filterLoan("In progress")}
+              onClick={() => {
+                filterLoan("In progress");
+                // setlimit(5);
+                // setpage(1);
+              }}
             >
               In progress
             </button>
@@ -97,7 +102,11 @@ const LoanList = (props) => {
                 " aria-pressed:after:bg-primary-color-1 dark:aria-pressed:after:bg-primary-color-10"
               }
               aria-pressed={status === "In review"}
-              onClick={() => filterLoan("In review")}
+              onClick={() => {
+                filterLoan("In review");
+                // setlimit(5);
+                // setpage(1);
+              }}
             >
               In review
             </button>
@@ -107,7 +116,11 @@ const LoanList = (props) => {
                 " aria-pressed:after:bg-primary-color-1 dark:aria-pressed:after:bg-primary-color-10"
               }
               aria-pressed={status === "Approved"}
-              onClick={() => filterLoan("Approved")}
+              onClick={() => {
+                filterLoan("Approved");
+                // setlimit(5);
+                // setpage(1);
+              }}
             >
               Approved
             </button>
@@ -117,7 +130,11 @@ const LoanList = (props) => {
                 " aria-pressed:after:bg-primary-color-1 dark:aria-pressed:after:bg-primary-color-10"
               }
               aria-pressed={status === "Rejected"}
-              onClick={() => filterLoan("Rejected")}
+              onClick={() => {
+                filterLoan("Rejected");
+                // setlimit(5);
+                // setpage(1);
+              }}
             >
               Rejected
             </button>

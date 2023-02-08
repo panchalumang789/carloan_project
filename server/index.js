@@ -15,7 +15,7 @@ const loanRoutes = require("./routes/loan.routes");
 const incomeRoutes = require("./routes/income.routes");
 const expensesRoutes = require("./routes/expenses.routes");
 const morgan = require("morgan");
-require("./routes/index");0
+require("./routes/index");
 
 app.use(bodyParser.json(), cookieParser(), cors(), morgan("dev"));
 

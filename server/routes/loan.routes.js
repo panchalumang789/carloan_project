@@ -99,7 +99,13 @@ loanRoutes.put("/loan/sendMail/:id", adminController.sendMail, (req, res) => {
 loanRoutes.post(
   "/documentUpload/:loanId",
   authorization.verifyToken,
-  upload.single("file"),
+  upload.fields([
+    { name: "licenceFrontImage", maxCount: 1 },
+    { name: "licenceBackImage", maxCount: 1 },
+    // { name: "medicalcardImage", maxCount: 1 },
+    // { name: "mostRecentPayslip", maxCount: 1 },
+    // { name: "secondMostRecentPayslip", maxCount: 1 },
+  ]),
   loanController.updateDocument,
   (req, res) => {
     res.status(200).json({ message: "Doneee" });

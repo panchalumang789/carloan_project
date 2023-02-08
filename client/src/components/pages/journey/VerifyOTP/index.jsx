@@ -137,8 +137,8 @@ const VerifyOTP = () => {
             alt="OTP verification image"
           />
         </div>
-        <div className="w-5/6 lg:w-1/2 md:px-28">
-          <div className="text-lg md:text-2xl pb-8">
+        <div className="w-5/6 lg:w-1/2 md:px-24 rounded-xl p-8 shadow-wrapper">
+          <div className="text-lg md:text-2xl mb-12">
             <p>I just send a 4-digit SMS code to you on </p>
             <span className="text-xl md:text-2xl font-medium">
               {cookie.get("contactNo") && (
@@ -156,11 +156,11 @@ const VerifyOTP = () => {
           </div>
           <p className="px-6 py-1">SMS-Code</p>
           <div
-            className="flex gap-x-4 justify-center pb-8"
+            className="flex gap-x-4 justify-center pb-8 "
             onKeyUp={(e) => handleInput(e)}
           >
             <input
-              className="px-5 text-xl font-medium h-12 w-14 rounded-xl bg-primary-color-12 outline outline-1 outline-primary-color-1 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 5ont-medium placeholder:text-primary-color-1 placeholder:opacity-30"
+              className="px-5 text-xl font-medium h-12 w-14 rounded-xl bg-primary-color-9/10 outline outline-1 outline-primary-color-1 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 5ont-medium placeholder:text-primary-color-1 placeholder:opacity-30"
               type="text"
               value={OTP[0]}
               maxLength="1"
@@ -171,7 +171,7 @@ const VerifyOTP = () => {
               ref={inputRef}
             />
             <input
-              className="px-5 text-xl font-medium h-12 w-14 rounded-xl bg-primary-color-12 outline outline-1 outline-primary-color-1 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 5ont-medium placeholder:text-primary-color-1 placeholder:opacity-30"
+              className="px-5 text-xl font-medium h-12 w-14 rounded-xl bg-primary-color-9/10 outline outline-1 outline-primary-color-1 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 5ont-medium placeholder:text-primary-color-1 placeholder:opacity-30"
               type="text"
               value={OTP[1]}
               maxLength="1"
@@ -180,7 +180,7 @@ const VerifyOTP = () => {
               placeholder="0"
             />
             <input
-              className="px-5 text-xl font-medium h-12 w-14 rounded-xl bg-primary-color-12 outline outline-1 outline-primary-color-1 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 5ont-medium placeholder:text-primary-color-1 placeholder:opacity-30"
+              className="px-5 text-xl font-medium h-12 w-14 rounded-xl bg-primary-color-9/10 outline outline-1 outline-primary-color-1 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 5ont-medium placeholder:text-primary-color-1 placeholder:opacity-30"
               type="text"
               value={OTP[2]}
               maxLength="1"
@@ -189,7 +189,7 @@ const VerifyOTP = () => {
               placeholder="0"
             />
             <input
-              className="px-5 text-xl font-medium h-12 w-14 rounded-xl bg-primary-color-12 outline outline-1 outline-primary-color-1 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 5ont-medium placeholder:text-primary-color-1 placeholder:opacity-30"
+              className="px-5 text-xl font-medium h-12 w-14 rounded-xl bg-primary-color-9/10 outline outline-1 outline-primary-color-1 dark:bg-primary-color-9 dark:text-primary-color-7 dark:placeholder:text-primary-color-5 text-primary-color-1 5ont-medium placeholder:text-primary-color-1 placeholder:opacity-30"
               type="text"
               value={OTP[3]}
               maxLength="1"

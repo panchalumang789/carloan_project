@@ -58,39 +58,41 @@ const Dashboard = () => {
                   className="fa-solid fa-ellipsis cursor-pointer"
                 ></span>
                 <div className={Widget + " relative right-[167px] -top-2"}>
-                  <div className="fixed text-sm font-medium flex flex-col bg-primary-color-7 dark:bg-primary-color-9 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-lg px-3 py-1 z-10">
-                    <Link
-                      id="new_loan"
-                      to={"/journey"}
-                      onClick={openWidget}
-                      className="py-2 pr-3 border-b-2 border-primary-color-1 dark:border-primary-color-7 hover:text-primary-color-4 dark:hover:text-white hover:scale-105 transition-all duration-300"
-                    >
-                      <span className="text-base pr-1 fa-solid fa-plus"></span>
-                      <span> New</span>
-                    </Link>
+                  <div className="fixed text-sm font-medium flex flex-col w-36 bg-primary-color-7 dark:bg-primary-color-9 border-2 border-primary-color-1 dark:border-primary-color-7 rounded-lg px-3 py-1 z-10">
+                    {user.role === "User" && (
+                      <Link
+                        id="new_loan"
+                        to={"/journey"}
+                        onClick={openWidget}
+                        className="py-2 pr-3 border-b-2 border-primary-color-1 dark:border-primary-color-7 hover:text-primary-color-4 dark:hover:text-white hover:scale-105 transition-all duration-300"
+                      >
+                        <span className="text-base pr-1 fa-solid fa-plus"></span>
+                        <span> New</span>
+                      </Link>
+                    )}
                     {user.role !== "Admin" && (
                       <Link
                         id="view_profile"
                         to={"profile"}
                         state={{ contactNo: user.contactNo }}
                         onClick={openWidget}
-                        className="py-2 pr-3 border-b-2 border-primary-color-1 dark:border-primary-color-7 hover:text-primary-color-4 dark:hover:text-white hover:scale-105 transition-all duration-300"
+                        className="py-2 pr-3 hover:text-primary-color-4 dark:hover:text-white hover:scale-105 transition-all duration-300"
                       >
                         <span className="text-base pr-1 fa-solid fa-user"></span>
                         <span> View Profile</span>
                       </Link>
                     )}
-                    <Link
-                      id="logout"
-                      to={"/"}
-                      onClick={logout}
-                      className="py-2 pr-3 hover:text-primary-color-4 dark:hover:text-white hover:scale-105 transition-all duration-300"
-                    >
-                      <em className="text-base pr-1 fa-solid fa-right-from-bracket"></em>
-                      <span> Logout</span>
-                    </Link>
                     {user.role === "Admin" && (
                       <>
+                        <Link
+                          to={"/dashboard/add-agent"}
+                          id="viewLoans"
+                          onClick={openWidget}
+                          className="py-2 pr-3 hover:text-primary-color-4 dark:hover:text-white hover:scale-105 transition-all duration-300"
+                        >
+                          <em className="text-base pr-1 fa-solid fa-user-tie"></em>
+                          <span> Add Agent</span>
+                        </Link>
                         <Link
                           to={"/dashboard"}
                           id="viewLoans"
@@ -111,6 +113,15 @@ const Dashboard = () => {
                         </Link>
                       </>
                     )}
+                    <Link
+                      id="logout"
+                      to={"/"}
+                      onClick={logout}
+                      className="py-2 pr-3 border-t-2 border-primary-color-1 dark:border-primary-color-7 hover:text-primary-color-4 dark:hover:text-white hover:scale-105 transition-all duration-300"
+                    >
+                      <em className="text-base pr-1 fa-solid fa-right-from-bracket"></em>
+                      <span> Logout</span>
+                    </Link>
                   </div>
                 </div>
               </div>

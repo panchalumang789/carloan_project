@@ -70,10 +70,10 @@ const AdminLogin = () => {
             alt="Authentication Image"
           />
         </div>
-        <div className="w-5/6 lg:w-1/2 md:px-28">
+        <div className="w-5/6 lg:w-1/2 md:px-24">
           <form
             onSubmit={handleSubmit(getMobile)}
-            className="flex justify-center flex-col mx-auto"
+            className="flex justify-center flex-col mx-auto rounded-xl p-8 shadow-wrapper "
           >
             <div className="flex flex-col gap-y-5">
               <FormTitle formTitle={"Admin Login"} />

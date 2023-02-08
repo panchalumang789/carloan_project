@@ -19,6 +19,7 @@ import UserList from "components/pages/dashboard/Admin/UserList/index";
 import UserLoan from "components/pages/dashboard/Admin/UserLoan/index";
 import Profile from "components/pages/dashboard/Profile";
 import CodingTest from "components/reviewTest/CodingTest";
+import AddAgent from "components/pages/dashboard/Admin/AddAgent";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -39,6 +40,7 @@ root.render(
           <Route path="" element={<LoanList />}></Route>
           <Route path="loan/:loanId" element={<LoanDetail />}></Route>
           <Route path="user" element={<UserList />}></Route>
+          <Route path="add-agent" element={<AddAgent />}></Route>
           <Route path="user/loans/:id" element={<UserLoan />}></Route>
           <Route path="profile" element={<Profile />}></Route>
         </Route>

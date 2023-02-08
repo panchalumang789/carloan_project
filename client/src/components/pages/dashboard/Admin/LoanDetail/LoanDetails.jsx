@@ -156,7 +156,7 @@ const LoanDetails = (props) => {
                 <input
                   className={
                     inputClasses +
-                    " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                    " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
                   }
                   type="number"
                   disabled
@@ -172,7 +172,7 @@ const LoanDetails = (props) => {
                   disabled={!Editing}
                   className={
                     selectClasses +
-                    " dark:border-2 dark:border-primary-color-7 dark:bg-primary-color-9 disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                    " dark:border-2 dark:border-primary-color-7 dark:bg-primary-color-9 disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
                   }
                   {...register("status")}
                 >
@@ -197,7 +197,7 @@ const LoanDetails = (props) => {
                 <input
                   className={
                     inputClasses +
-                    " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
+                    " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed pl-10"
                   }
                   type="number"
                   disabled={!Editing}
@@ -236,7 +236,7 @@ const LoanDetails = (props) => {
                 <input
                   className={
                     inputClasses +
-                    " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
+                    " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed pl-10"
                   }
                   type="number"
                   disabled={!Editing}
@@ -275,7 +275,7 @@ const LoanDetails = (props) => {
                   id="term"
                   className={
                     selectClasses +
-                    " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                    " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
                   }
                   disabled={!Editing}
                   {...register("term", {
@@ -318,7 +318,7 @@ const LoanDetails = (props) => {
                 <input
                   className={
                     inputClasses +
-                    " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                    " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
                   }
                   type="number"
                   disabled={!Editing}
@@ -347,7 +347,7 @@ const LoanDetails = (props) => {
                 <select
                   className={
                     selectClasses +
-                    " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                    " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
                   }
                   disabled={!Editing}
                   {...register("user_status", {
@@ -382,7 +382,7 @@ const LoanDetails = (props) => {
                   type="number"
                   className={
                     inputClasses +
-                    " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
+                    " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed pl-10"
                   }
                   disabled={!Editing}
                   {...register("user_income", {
@@ -413,7 +413,7 @@ const LoanDetails = (props) => {
                   value={ApplyDate}
                   className={
                     inputClasses +
-                    " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                    " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
                   }
                   disabled
                 />
@@ -426,7 +426,7 @@ const LoanDetails = (props) => {
                   id="agent"
                   className={
                     selectClasses +
-                    " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                    " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
                   }
                   disabled={!Editing}
                   {...register("agentId", {
@@ -464,7 +464,7 @@ const LoanDetails = (props) => {
             <button
               type="submit"
               disabled={!Submitting}
-              className="group font-medium flex items-center justify-start gap-x-2 w-28 text-center p-2 border border-primary-color-1 dark:bg-primary-color-9 bg-primary-color-7 hover:bg-white dark:hover:bg-primary-color-8 rounded-md dark:border-2 dark:border-primary-color-3 disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+              className="group font-medium flex items-center justify-start gap-x-2 w-28 text-center p-2 border border-primary-color-1 dark:bg-primary-color-9 bg-primary-color-7 hover:bg-white dark:hover:bg-primary-color-8 rounded-md dark:border-2 dark:border-primary-color-3 disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
             >
               SUBMIT
               <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right" />

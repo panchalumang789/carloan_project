@@ -1,6 +1,3 @@
-import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import customerService from "services/customerServices";
 import {
   errorToast,
   FormTitle,
@@ -8,14 +5,13 @@ import {
   selectClasses,
   successToast,
 } from "components/pages/journey/extra/Widget";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { ToastContainer } from "react-toastify";
+import customerService from "services/customerServices";
 
-const UserDetails = (props) => {
-  const updateService = new customerService();
-  const [userDetails, setUserData] = useState({});
-  const [Editing, setEditing] = useState(false);
+const AddAgent = () => {
   const [States, setStates] = useState([]);
-  const [Submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const userService = new customerService();
@@ -28,102 +24,29 @@ const UserDetails = (props) => {
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     formState: { errors },
   } = useForm({
     mode: "all",
   });
-
-  useEffect(() => {
-    setUserData(props.UserDetails);
-    setValue("prefix", props.UserDetails.prefix);
-    setValue(
-      "medicalcardImage",
-      props.UserDetails.medicalcardImage ||
-        `medicalcardImage${props.UserDetails.id}.jpg`
-    );
-    setValue(
-      "licenceFrontImage",
-      props.UserDetails.licenceFrontImage ||
-        `licenceFrontImage${props.UserDetails.id}.jpg`
-    );
-    setValue(
-      "licenceBackImage",
-      props.UserDetails.licenceBackImage ||
-        `licenceBackImage${props.UserDetails.id}.jpg`
-    );
-    setValue("firstName", props.UserDetails.firstName);
-    setValue("lastName", props.UserDetails.lastName);
-    setValue("email", props.UserDetails.email);
-    setValue("contactNo", props.UserDetails.contactNo);
-    setValue("licenceNumber", props.UserDetails.licenceNumber);
-    setValue("licenceType", props.UserDetails.licenceType);
-    setValue("licenseFirstName", props.UserDetails.licenseFirstName);
-    setValue("licenseLastName", props.UserDetails.licenseLastName);
-  }, [props, setValue]);
-
-  useEffect(() => {
-    let change = false;
-    const preData = watch();
-    Object.keys(preData).forEach((i) => {
-      if (preData[i] !== userDetails[i]) {
-        change = true;
-      }
-    });
-    if (change) {
-      setSubmitting(true);
-    } else {
-      setSubmitting(false);
-    }
-    // eslint-disable-next-line
-  }, [watch()]);
-
-  useEffect(() => {
-    setValue("state", props.UserDetails.state);
-    setValue("licenceIssueState", props.UserDetails.licenceIssueState);
-    if (userDetails.licenseIssueDate) {
-      setValue("licenseIssueDate", userDetails.licenseIssueDate.split("T")[0]);
-    }
-    if (userDetails.licenceExpireDate) {
-      setValue(
-        "licenceExpireDate",
-        userDetails.licenceExpireDate.split("T")[0]
-      );
-    }
-  }, [
-    States,
-    setValue,
-    userDetails,
-    props.UserDetails.state,
-    props.UserDetails.licenceIssueState,
-    userDetails.licenseIssueDate,
-    userDetails.licenceExpireDate,
-  ]);
-
-  const submitCustomerData = async (data) => {
-    const { output, error } = await updateService.updateUser({
-      path: `user/${props.UserId}`,
-      details: data,
-      headerData: localStorage.getItem("token"),
+  const addAgent = new customerService();
+  const AddAgentData = async (data) => {
+    const { output, error } = await addAgent.registerAgent({
+      bodyData: data,
     });
     if (!output) {
       errorToast(error.data.message);
     } else {
       successToast(output.message);
-      props.UpdateLoan();
-      setEditing(false);
     }
   };
-
   return (
-    <div className="w-full border-2 rounded-md flex flex-col gap-y-3 md:h-full md:overflow-y-auto border-primary-color-1 dark:border-primary-color-10 px-4">
+    <div className="w-full border-2 rounded-md flex flex-col gap-y-3 h-[calc(100%-210px)]  overflow-auto md:h-full md:overflow-y-auto border-primary-color-1 dark:border-primary-color-10 px-4">
       <form
-        onSubmit={handleSubmit(submitCustomerData)}
-        className="flex flex-col gap-5"
+        onSubmit={handleSubmit(AddAgentData)}
+        className="flex flex-col gap-3"
       >
         <ToastContainer />
-        <div className="my-3 w-fit">
+        <div className="mt-2 w-fit">
           <FormTitle formTitle={"Personal Details"} />
         </div>
         <div className="grid md:grid-cols-2 gap-5 px-2">
@@ -142,11 +65,11 @@ const UserDetails = (props) => {
                 id="contactNo"
                 className={
                   inputClasses +
-                  " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed pl-10"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
                 }
                 type="number"
-                disabled={!Editing}
                 autoComplete="off"
+                placeholder="9876543210"
                 {...register("contactNo", {
                   required: "Please enter you contact no!",
                   pattern: {
@@ -176,9 +99,9 @@ const UserDetails = (props) => {
                 id="prefix"
                 className={
                   selectClasses +
-                  " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
                 }
-                disabled={!Editing}
+                defaultValue=""
                 {...register("prefix", { required: "Please select prefix!" })}
               >
                 <option value="" disabled>
@@ -204,10 +127,10 @@ const UserDetails = (props) => {
                 id="firstName"
                 className={
                   inputClasses +
-                  " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
                 }
                 type="text"
-                disabled={!Editing}
+                placeholder="Agent Firstname"
                 autoComplete="off"
                 {...register("firstName", {
                   required: "Please enter firstname!",
@@ -238,11 +161,11 @@ const UserDetails = (props) => {
                 id="lastName"
                 className={
                   inputClasses +
-                  " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
                 }
                 type="text"
-                disabled={!Editing}
                 autoComplete="off"
+                placeholder="Agent Lastname"
                 {...register("lastName", {
                   required: "Please enter lastname!",
                   minLength: {
@@ -272,11 +195,11 @@ const UserDetails = (props) => {
                 id="email"
                 className={
                   inputClasses +
-                  " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
                 }
                 type="text"
-                disabled={!Editing}
                 autoComplete="off"
+                placeholder="Agent Email"
                 {...register("email", {
                   required: "Please enter you email id!",
                   pattern: {
@@ -306,9 +229,9 @@ const UserDetails = (props) => {
                 id="state"
                 className={
                   selectClasses +
-                  " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
                 }
-                disabled={!Editing}
+                defaultValue=""
                 {...register("state", { required: "Please select state!" })}
               >
                 <option value="" disabled>
@@ -330,7 +253,7 @@ const UserDetails = (props) => {
             </div>
           </div>
         </div>
-        <div className="my-3 w-fit">
+        <div className="mt-2 w-fit">
           <FormTitle formTitle={"License Details"} />
         </div>
         <div className="grid md:grid-cols-2 gap-5 px-2">
@@ -344,12 +267,12 @@ const UserDetails = (props) => {
             <div className="flex flex-col w-1/2 md:w-3/5">
               <input
                 id="licenseNumber"
+                placeholder="Agent License-Number"
                 className={
                   inputClasses +
-                  " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
                 }
                 type="text"
-                disabled={!Editing}
                 autoComplete="off"
                 {...register("licenceNumber", {
                   required: "Please enter license number!",
@@ -383,9 +306,9 @@ const UserDetails = (props) => {
                 id="licenseType"
                 className={
                   selectClasses +
-                  " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
                 }
-                disabled={!Editing}
+                defaultValue=""
                 autoComplete="off"
                 {...register("licenceType", {
                   required: "Please select your license-type!",
@@ -415,12 +338,12 @@ const UserDetails = (props) => {
             <div className="flex flex-col w-1/2 md:w-3/5">
               <input
                 id="licenseFirstname"
+                placeholder="Agent License-Firstname"
                 className={
                   inputClasses +
-                  " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
                 }
                 type="text"
-                disabled={!Editing}
                 autoComplete="off"
                 {...register("licenseFirstName", {
                   required: "Please enter license holder's firstname!",
@@ -452,13 +375,13 @@ const UserDetails = (props) => {
             <div className="flex flex-col w-1/2 md:w-3/5">
               <input
                 id="licenseLastname"
+                placeholder="Agent License-Lastname"
                 className={
                   inputClasses +
-                  " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
                 }
                 type="text"
                 autoComplete="off"
-                disabled={!Editing}
                 {...register("licenseLastName", {
                   required: "Please enter license holder's lastname!",
                   minLength: {
@@ -491,10 +414,10 @@ const UserDetails = (props) => {
                 id="licenseIssueDate"
                 className={
                   inputClasses +
-                  " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
                 }
+                max={new Date().toISOString().split("T")[0]}
                 type="date"
-                disabled={!Editing}
                 {...register("licenseIssueDate", {
                   required: "Please select license issue date!",
                 })}
@@ -518,10 +441,10 @@ const UserDetails = (props) => {
                 id="licenseExpiryDate"
                 className={
                   inputClasses +
-                  " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
                 }
+                min={new Date().toISOString().split("T")[0]}
                 type="date"
-                disabled={!Editing}
                 {...register("licenceExpireDate", {
                   required: "Please select license expiry date!",
                 })}
@@ -545,9 +468,9 @@ const UserDetails = (props) => {
                 id="licenseIssueState"
                 className={
                   selectClasses +
-                  " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
                 }
-                disabled={!Editing}
+                defaultValue=""
                 {...register("licenceIssueState", {
                   required: "Please select license issue state!",
                 })}
@@ -573,16 +496,8 @@ const UserDetails = (props) => {
         </div>
         <div className="w-full flex justify-end px-36 gap-4">
           <button
-            type="button"
-            onClick={() => setEditing(true)}
-            className="group font-medium flex items-center justify-center gap-x-2 w-16 hover:font-semibold text-center p-2 border border-primary-color-1 bg-primary-color-7 hover:bg-white dark:bg-primary-color-9 dark:hover:bg-primary-color-8 rounded-md dark:border-2 dark:border-primary-color-3"
-          >
-            Edit
-          </button>
-          <button
             type="submit"
-            disabled={!Submitting}
-            className="group font-medium flex items-center justify-start gap-x-2 w-28 text-center p-2 border border-primary-color-1 dark:bg-primary-color-9 bg-primary-color-7 hover:bg-white dark:hover:bg-primary-color-8 rounded-md dark:border-2 dark:border-primary-color-3 disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
+            className="group font-medium flex items-center justify-start gap-x-2 w-28 text-center p-2 border border-primary-color-1 dark:bg-primary-color-9 bg-primary-color-7 hover:bg-white dark:hover:bg-primary-color-8 rounded-md dark:border-2 dark:border-primary-color-3 disabled:bg-white/40 disabled:hover:cursor-not-allowed"
           >
             SUBMIT
             <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right" />
@@ -593,4 +508,4 @@ const UserDetails = (props) => {
   );
 };
 
-export default UserDetails;
+export default AddAgent;

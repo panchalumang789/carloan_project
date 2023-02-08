@@ -83,8 +83,8 @@ const LoginDetails = () => {
             alt="OTP verification image"
           />
         </div>
-        <div className="w-5/6 lg:w-1/2 md:px-28">
-          <div className="text-lg md:text-2xl pb-8">
+        <div className="w-5/6 lg:w-1/2 md:px-24 rounded-xl p-8 shadow-wrapper">
+          <div className="text-lg md:text-2xl mb-12">
             <p>Please protect your account with SMS authentication.</p>
             <Typewriter
               options={{

@@ -4,12 +4,15 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
+      boxShadow: {
+        wrapper: "0px 0px 60px 0px rgb(0 0 0 / 37%)",
+      },
       colors: {
         "primary-color-1": "#023641",
         "primary-color-2": "#276F77",
         "primary-color-3": "#558F96",
         "primary-color-4": "#001118",
-        "primary-color-5": "#e3f6f5",
+        // "primary-color-5": "#e3f6f5",
         "primary-color-6": "#042830",
         "primary-color-7": "#fefefe",
         "primary-color-8": "#1B2430",
@@ -17,9 +20,10 @@ module.exports = {
         "primary-color-10": "#cce3de",
         "primary-color-11": "#194e6e",
         "primary-color-12": "#c5dfdf",
+        "primary-color-13": "#e3f6f5",
         // "primary-color-5": "#A3BEBE",
         // "primary-color-5": "#fffffe",
-        // "primary-color-7": "#e0f5f5",
+        "primary-color-5": "#ffffff",
         // "primary-color-8": "#222831",
         // "primary-color-8": "#0a0603",
         // "primary-color-5": "#FAEAFF",

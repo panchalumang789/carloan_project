@@ -148,9 +148,9 @@ const LicenseDetails = () => {
         </div>
         <form
           onSubmit={handleSubmit(licenseDetail)}
-          className="w-5/6 lg:w-1/2 md:px-28"
+          className="w-5/6 lg:w-1/2 md:px-24"
         >
-          <div className="flex flex-col gap-y-5">
+          <div className="flex flex-col gap-y-5 rounded-xl p-8 shadow-wrapper">
             <FormTitle formTitle={"License details"} />
             <div className="flex text-md flex-col">
               <label htmlFor="license_number" className="px-1">
