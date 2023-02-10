@@ -111,9 +111,11 @@ const Navbar = () => {
         }
       >
         <div className="flex flex-col justify-center items-center gap-y-5 h-screen uppercase">
-          <Link to={"/dashboard"} onClick={toggleNav} className={LinkClasses}>
-            Dashboard
-          </Link>
+          {LoggedIn !== "" && (
+            <Link to={"/dashboard"} onClick={toggleNav} className={LinkClasses}>
+              Dashboard
+            </Link>
+          )}
           <Link to={"/"} onClick={toggleNav} className={LinkClasses}>
             Services
           </Link>

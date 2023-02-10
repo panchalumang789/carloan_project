@@ -19,7 +19,6 @@ const LoanList = (props) => {
   const [graph, setgraph] = useState("hidden");
   const [tableKeys, setTableKeys] = useState([]);
   const [graphData, setGraphData] = useState([]);
-  console.log(limit);
 
   useEffect(() => {
     let loadingtime;

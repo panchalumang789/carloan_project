@@ -4,11 +4,15 @@ import { useForm } from "react-hook-form";
 // import Typewriter from "typewriter-effect";
 import LoadingPage from "../extra/LoadingPage";
 import LoginImage from "assest/images/LoginImage.jpg";
-import { FormTitle, inputClasses } from "../extra/Widget";
+import {
+  errorToast,
+  FormTitle,
+  inputClasses,
+  successToast,
+} from "../extra/Widget";
 import loanService from "services/loanService";
 import { useLocation } from "react-router-dom";
 import useProgress from "useProgress";
-window.Buffer = window.Buffer || require("buffer").Buffer;
 
 const inputFileClasses =
   "block w-full file:rounded-sm text-base file:text-base text-primary-color-1 dark:text-primary-color-7 file:mr-4 file:py-2 file:px-4 file:border file:hover:cursor-pointer file:border-primary-color-1 dark:file:border-white file:text-sm file:font-semibold file:bg-black/10 dark:file:bg-primary-color-9 file:text-primary-color-1 dark:file:text-primary-color-7 hover:file:bg-white/50 dark:hover:file:bg-primary-color-8 hover:file:border-primary-color-1";
@@ -33,8 +37,12 @@ const DocumentUpload = () => {
       loanId: location.state,
       headerData: localStorage.getItem("token"),
     });
-    console.log(output.message);
-    console.log(error);
+    console.log(output);
+    if (output) {
+      successToast(output.message);
+    } else {
+      errorToast(error.data.message);
+    }
   };
 
   return (
@@ -128,7 +136,7 @@ const DocumentUpload = () => {
                   </span>
                 )}
               </div>
-              <div className="flex flex-col">
+              {/* <div className="flex flex-col">
                 <label>Most recent payslip</label>
                 <div className={inputClasses + " mb-0.5"}>
                   <div className="flex justify-between items-center text-primary-color-1  dark:text-primary-color-7">
@@ -165,7 +173,7 @@ const DocumentUpload = () => {
                     {errors.secondMostRecentPayslip?.message}
                   </span>
                 )}
-              </div>
+              </div> */}
               <div className="w-full flex justify-end">
                 <button
                   type="submit"

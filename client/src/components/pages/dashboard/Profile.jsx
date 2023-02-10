@@ -182,7 +182,7 @@ const Profile = () => {
                 id="prefix"
                 className={
                   selectClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
                 }
                 disabled={!Editing}
                 {...register("prefix", { required: "Please select prefix!" })}
@@ -252,7 +252,7 @@ const Profile = () => {
                 id="state"
                 className={
                   selectClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
                 }
                 disabled={!Editing}
                 {...register("state", { required: "Please select state!" })}
@@ -306,7 +306,7 @@ const Profile = () => {
                 id="licenseType"
                 className={
                   selectClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
                 }
                 disabled={!Editing}
                 autoComplete="off"
@@ -408,7 +408,7 @@ const Profile = () => {
                 id="licenseIssueState"
                 className={
                   selectClasses +
-                  " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+                  " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
                 }
                 disabled={!Editing}
                 {...register("licenceIssueState", {
@@ -452,7 +452,7 @@ const Profile = () => {
           <button
             type="submit"
             disabled={!Editing}
-            className="group font-medium flex items-center justify-start gap-x-2 w-28 text-center p-2 border border-primary-color-1 dark:bg-primary-color-9 bg-primary-color-7 hover:bg-white dark:hover:bg-primary-color-8 rounded-md dark:border-2 dark:border-primary-color-3 disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+            className="group font-medium flex items-center justify-start gap-x-2 w-28 text-center p-2 border border-primary-color-1 dark:bg-primary-color-9 bg-primary-color-7 hover:bg-white dark:hover:bg-primary-color-8 rounded-md dark:border-2 dark:border-primary-color-3 disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
           >
             SUBMIT
             <em className="group-hover:ml-2 transition-all duration-200 text-xl fa fa-arrow-right" />

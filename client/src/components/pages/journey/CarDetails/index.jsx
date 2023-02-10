@@ -89,7 +89,7 @@ const CarDetails = () => {
     if (Car.id) {
       let leadCookie = cookie.get("leadDetails");
       cookie.remove("leadDetails");
-      cookie.set("carDetails", Car);
+      cookie.set("carDetails", Car, { maxAge: 3600 });
       cookie.set(
         "leadDetails",
         { ...leadCookie, carId: Car.id },

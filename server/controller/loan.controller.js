@@ -356,6 +356,7 @@ const uploadDoc = async (data) => {
           .then((v) => {
             resolve({ [key]: v.Location });
           });
+        fs.unlinkSync(`./document/${data[key][0].filename}`);
       });
     });
   };
@@ -371,17 +372,13 @@ const updateDocument = async (req, res, next) => {
     });
 
     const updateData = await uploadDoc(req.files);
-    console.log(updateData);
-    console.log(...updateData);
-    const updateUser = await userTable.update(updateData, {
+    const temp = updateData.reduce((prev, curr) => {
+      return { ...prev, ...curr };
+    }, {});
+    const updateUser = await userTable.update(temp, {
       where: { id: findLoan.userId },
     });
     console.log(updateUser);
-    // console.log(updateData);
-    // if (updateData.length === 5) {
-    //   updateDocumentLink(updateData);
-    // }
-    // });
     next();
   } catch (error) {
     console.log(error);

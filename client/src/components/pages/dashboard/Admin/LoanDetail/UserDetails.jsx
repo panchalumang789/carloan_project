@@ -582,7 +582,7 @@ const UserDetail = (props) => {
           <div className="font-medium text-xl flex gap-x-2 items-center">
             <button
               type="button"
-              className="font-medium border border-black px-5 py-2.5 hover:bg-primary-color-9/20"
+              className="font-medium border border-primary-color-6 dark:border-primary-color-7 px-5 py-2.5 hover:bg-primary-color-9/20"
               onClick={() => {
                 setModelVisible("visible");
                 setModelImage({
@@ -597,7 +597,7 @@ const UserDetail = (props) => {
           <div className="font-medium text-xl flex gap-x-2 items-center">
             <button
               type="button"
-              className="font-medium border border-black px-5 py-2.5 hover:bg-primary-color-9/20"
+              className="font-medium border border-primary-color-6 dark:border-primary-color-7 px-5 py-2.5 hover:bg-primary-color-9/20"
               onClick={() => {
                 setModelVisible("visible");
                 setModelImage({
@@ -612,7 +612,7 @@ const UserDetail = (props) => {
           <div className="font-medium text-xl flex gap-x-2 items-center">
             <button
               type="button"
-              className="font-medium border border-black px-5 py-2.5 hover:bg-primary-color-9/20"
+              className="font-medium border border-primary-color-6 dark:border-primary-color-7 px-5 py-2.5 hover:bg-primary-color-9/20"
               onClick={() => {
                 setModelVisible("visible");
                 setModelImage({

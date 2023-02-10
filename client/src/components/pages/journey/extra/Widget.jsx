@@ -85,7 +85,7 @@ const PrependInput = (props) => {
         id={props.id}
         className={
           inputClasses +
-          " disabled:bg-white/40 disabled:hover:cursor-not-allowed pl-10"
+          " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed pl-10"
         }
         type={props.type}
         disabled={props.disabled}
@@ -108,7 +108,7 @@ const Input = (props) => {
         id={props.id}
         className={
           inputClasses +
-          " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+          " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
         }
         type={props.type}
         disabled={props.disabled}
@@ -133,7 +133,7 @@ const DateInput = (props) => {
         max={props.max || ""}
         className={
           inputClasses +
-          " disabled:bg-white/40 disabled:hover:cursor-not-allowed"
+          " disabled:bg-primary-color-9/10 disabled:hover:cursor-not-allowed"
         }
         type="date"
         disabled={props.disabled}

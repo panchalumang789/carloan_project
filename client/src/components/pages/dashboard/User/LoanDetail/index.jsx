@@ -37,7 +37,9 @@ const LoanDetail = () => {
   const [status, setstatus] = useState("");
   const [incomeDetails, setIncomeData] = useState({});
   const [expensesDetails, setExpensesData] = useState({});
+  const [userIncome, setUserIncome] = useState(0);
   let { loanId } = useParams();
+
   useEffect(() => {
     const loanServices = new loanService();
     try {
@@ -61,6 +63,26 @@ const LoanDetail = () => {
     return () => {};
   }, [loanId]);
 
+  useEffect(() => {
+    let total = [];
+    Object.keys(incomeDetails).map((item) => {
+      if (
+        item !== "id" &&
+        item !== "userId" &&
+        item !== "loanId" &&
+        item !== "additional_income"
+      ) {
+        return total.push(parseInt(incomeDetails[item]));
+      } else return false;
+    });
+    setUserIncome(
+      total.reduce((pre, curr) => {
+        return pre + curr;
+      }, 0)
+    );
+    return () => {};
+  }, [incomeDetails]);
+  console.log(userIncome);
   useEffect(() => {
     setstatus(loanDetails.status);
   }, [loanDetails]);
@@ -227,7 +249,10 @@ const LoanDetail = () => {
               </div>
             </div>
             <IncomeDetails incomeDetails={incomeDetails} />
-            <ExpensesDetails expensesDetails={expensesDetails} />
+            <ExpensesDetails
+              expensesDetails={expensesDetails}
+              userIncome={userIncome}
+            />
             {state !== "Admin" && (
               <div className="flex justify-around lg:justify-between items-center border-2 max-w-screen-sm w-full mx-auto px-3 border-primary-color-1 dark:border-primary-color-7 bg-primary-color-9/10 rounded-md">
                 <p className="font-medium text-xl pt-1">Upload Document</p>

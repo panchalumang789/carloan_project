@@ -248,7 +248,7 @@ const createAgent = async (req, res, next) => {
 
 /**
  * @param {*} req get user details from body
- * @param {*} res add new user details
+ * @param {*} res update user details
  */
 const updateUser = async (req, res, next) => {
   try {
