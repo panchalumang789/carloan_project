@@ -68,21 +68,14 @@ const Navbar = () => {
             </div>
           </div>
           {LoggedIn !== "" ? (
-            <div className="hidden md:flex items-center p-1.5 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7 my-2 rounded-md border-2 border-primary-color-1 dark:border-primary-color-5 dark:hover:bg-white/20 hover:bg-primary-color-9/20">
-              <Link
-                to={"/"}
-                onClick={logout}
-                className="text-xl text-primary-color-1 dark:text-primary-color-7"
-              >
+            <div className="hidden md:flex items-center p-1.5 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7 my-2 rounded-md border-2 border-primary-color-1 dark:border-primary-color-5 hover:bg-primary-color-9/80 hover:text-primary-color-7 dark:hover:bg-primary-color-7 dark:hover:text-primary-color-4">
+              <Link to={"/"} onClick={logout} className="text-xl ">
                 LOGOUT
               </Link>
             </div>
           ) : (
-            <div className="hidden md:flex items-center p-1.5 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7 my-2 rounded-md border-2 border-primary-color-1 dark:border-primary-color-5 dark:hover:bg-white/20 hover:bg-primary-color-9/20">
-              <Link
-                to={"/login"}
-                className="text-xl text-primary-color-1 dark:text-primary-color-7"
-              >
+            <div className="hidden md:flex items-center p-1.5 mx-5 font-medium text-primary-color-6 dark:text-primary-color-7 my-2 rounded-md border-2 border-primary-color-1 dark:border-primary-color-5 hover:bg-primary-color-9/80 hover:text-primary-color-7 dark:hover:bg-primary-color-7 dark:hover:text-primary-color-4">
+              <Link to={"/login"} className="text-xl ">
                 LOGIN
               </Link>
             </div>

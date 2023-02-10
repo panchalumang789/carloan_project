@@ -153,22 +153,27 @@ const getLoanById = async (req, res, next) => {
       order: ["id"],
       where: filter,
       include: [
-        {
-          model: incomeTable,
-          attributes: {
-            exclude: ["createdAt", "updatedAt"],
-          },
-        },
-        {
-          model: userTable,
-          attributes: {
-            exclude: ["id"],
-          },
-        },
+        // {
+        //   model: userTable,
+        //   attributes: {
+        //     exclude: [
+        //       "id",
+        //       "medicalcardImage",
+        //       "licenceBackImage",
+        //       "licenceFrontImage",
+        //     ],
+        //   },
+        // },
         {
           model: carTable,
           attributes: {
             exclude: ["id", "createdAt", "updatedAt"],
+          },
+        },
+        {
+          model: incomeTable,
+          attributes: {
+            exclude: ["createdAt", "updatedAt"],
           },
         },
         {
@@ -333,6 +338,29 @@ const s3 = new AWS.S3({
   region: "ap-south-1",
 });
 
+const uploadDoc = async (data) => {
+  const getPromises = () => {
+    return Object.keys(data).map((key, index) => {
+      return new Promise((resolve) => {
+        const fileContent = fs.readFileSync(
+          `./document/${data[key][0].filename}`
+        );
+        const params = {
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: `${data[key][0].filename}.jpg`,
+          Body: fileContent,
+        };
+
+        s3.upload(params)
+          .promise()
+          .then((v) => {
+            resolve({ [key]: v.Location });
+          });
+      });
+    });
+  };
+  return Promise.all(getPromises());
+};
 /**
  * @param {*} req get user documents
  */
@@ -341,29 +369,19 @@ const updateDocument = async (req, res, next) => {
     const findLoan = await loanTable.findOne({
       where: { id: req.params.loanId },
     });
-    
-    console.log(req.files);
-    Object.keys(req.files).forEach(async (key) => {
-      const fileContent = fs.readFileSync(
-        `./document/${req.files[key][0].filename}`
-      );
-      const params = {
-        Bucket: process.env.AWS_BUCKET_NAME,
-        Key: `${req.files[key][0].filename}.jpg`,
-        Body: fileContent,
-      };
-      const uploadImage = s3.upload(params, async (err, data) => {
-        if (err) {
-          console.log(err);
-        } else {
-          fs.unlinkSync(`./document/${req.files[key][0].filename}`);
-          const updateUser = await userTable.update(
-            { [key]: data.Location },
-            { where: { id: findLoan.userId } }
-          );
-        }
-      });
+
+    const updateData = await uploadDoc(req.files);
+    console.log(updateData);
+    console.log(...updateData);
+    const updateUser = await userTable.update(updateData, {
+      where: { id: findLoan.userId },
     });
+    console.log(updateUser);
+    // console.log(updateData);
+    // if (updateData.length === 5) {
+    //   updateDocumentLink(updateData);
+    // }
+    // });
     next();
   } catch (error) {
     console.log(error);

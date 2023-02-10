@@ -17,7 +17,6 @@ const LoanList = () => {
         const findUser = await userService.verifyRole({
           headerData: localStorage.getItem("token"),
         });
-        console.log(findUser.role);
         setRole(findUser.role);
       })();
     }

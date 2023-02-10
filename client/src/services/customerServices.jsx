@@ -45,6 +45,24 @@ class customerService {
     return { output, error };
   };
 
+  getUserById = async (data) => {
+    let output, error;
+    try {
+      const getUsers = await axios.get(
+        `${process.env.REACT_APP_HOST_URL}user/${data.userId}`,
+        {
+          headers: {
+            Authorization: data.headerData,
+          },
+        }
+      );
+      output = getUsers.data;
+    } catch (err) {
+      error = err.response;
+    }
+    return { output, error };
+  };
+
   sendOTP = async (data) => {
     try {
       let output = await axios.post(
@@ -115,8 +133,6 @@ class customerService {
     } catch (err) {
       error = err.response;
     }
-    console.log(output);
-    console.log(error);
     return { output, error };
   };
 

@@ -170,11 +170,11 @@ const getUserByContactNo = async (req, res, next) => {
  */
 const getUserById = async (req, res, next) => {
   try {
-    if (res.locals.role === "Admin") {
+    if (res.locals.role === "Admin" || res.locals.role === "Agent") {
       let findUser = await userTable.findOne({
         where: { id: req.params.id },
         order: ["id"],
-        include: [{ model: loanTable, include: [incomeTable, expensesTable] }],
+        // include: [{ model: loanTable, include: [incomeTable, expensesTable] }],
       });
       if (Object.keys(findUser).length <= 0) {
         next({ error: { status: 404, message: "Users not found!" } });
@@ -272,8 +272,13 @@ const updateUser = async (req, res, next) => {
       if (!updateUser) {
         next({ error: { status: 500, message: "Something is wrong!" } });
       }
+      const findRole = await userTable.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
       credential = {
-        role: "User",
+        role: findRole.role,
         contactNo: req.body.contactNo,
         email: req.body.email,
       };

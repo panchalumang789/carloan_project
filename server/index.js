@@ -34,6 +34,7 @@ app.use("*", (req, res) => {
 
 // Error handler
 app.use((error, req, res, next) => {
+  console.log(error);
   if (error.error && error.error.detail) {
     res.status(error.error.status || 500).send({ message: error.error.detail });
   } else {

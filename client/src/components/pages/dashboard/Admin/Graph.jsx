@@ -52,6 +52,7 @@ const Graph = (props) => {
     legend.data.setAll(series.dataItems);
 
     series.appear(1000, 100);
+    // eslint-disable-next-line
   }, [chartID]);
 
   return (

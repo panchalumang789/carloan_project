@@ -144,7 +144,6 @@ const UserList = (props) => {
                               <td className="border border-primary-color-1 dark:border-primary-color-5">
                                 {new Date(user.createdAt).toLocaleDateString()}
                               </td>
-                              {console.log(user.createdAt)}
                             </tr>
                           );
                         })}

@@ -216,12 +216,12 @@ class loanService {
     let formData = new FormData();
     formData.append("licenceFrontImage", data.bodyData.licenceFrontImage[0]);
     formData.append("licenceBackImage", data.bodyData.licenceBackImage[0]);
-    // formData.append("medicalcardImage", data.bodyData.medicalcardImage[0]);
-    // formData.append("mostRecentPayslip", data.bodyData.mostRecentPayslip[0]);
-    // formData.append(
-    //   "secondMostRecentPayslip",
-    //   data.bodyData.secondMostRecentPayslip[0]
-    // );
+    formData.append("medicalcardImage", data.bodyData.medicalcardImage[0]);
+    formData.append("mostRecentPayslip", data.bodyData.mostRecentPayslip[0]);
+    formData.append(
+      "secondMostRecentPayslip",
+      data.bodyData.secondMostRecentPayslip[0]
+    );
 
     let output, error;
     try {

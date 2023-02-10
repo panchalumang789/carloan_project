@@ -116,9 +116,9 @@ const DocumentUpload = () => {
                     <input
                       type="file"
                       className={inputFileClasses}
-                      // {...register("medicalcardImage", {
-                      //   required: "Please upload medicare card image !",
-                      // })}
+                      {...register("medicalcardImage", {
+                        required: "Please upload medicare card image !",
+                      })}
                     />
                   </div>
                 </div>
@@ -135,9 +135,9 @@ const DocumentUpload = () => {
                     <input
                       type="file"
                       className={inputFileClasses}
-                      // {...register("mostRecentPayslip", {
-                      //   required: "Please upload most recent payslip !",
-                      // })}
+                      {...register("mostRecentPayslip", {
+                        required: "Please upload most recent payslip !",
+                      })}
                     />
                   </div>
                 </div>
@@ -154,9 +154,9 @@ const DocumentUpload = () => {
                     <input
                       type="file"
                       className={inputFileClasses}
-                      // {...register("secondMostRecentPayslip", {
-                      //   required: "Please upload second most recent payslip !",
-                      // })}
+                      {...register("secondMostRecentPayslip", {
+                        required: "Please upload second most recent payslip !",
+                      })}
                     />
                   </div>
                 </div>

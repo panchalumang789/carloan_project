@@ -9,20 +9,30 @@ import {
   successToast,
 } from "components/pages/journey/extra/Widget";
 import { ToastContainer } from "react-toastify";
+import DocumentModel from "./DocumentModel";
 
-const UserDetails = (props) => {
+const UserDetail = (props) => {
   const updateService = new customerService();
+  const [States, setStates] = useState([]);
   const [userDetails, setUserData] = useState({});
   const [Editing, setEditing] = useState(false);
-  const [States, setStates] = useState([]);
   const [Submitting, setSubmitting] = useState(false);
+  const [modelVisible, setModelVisible] = useState("hidden");
+  const [modelImage, setModelImage] = useState({ link: "", name: "" });
 
-  useEffect(() => {
+  const fetchData = async () => {
     const userService = new customerService();
-    (async () => {
-      const result = await userService.getState();
-      setStates(result);
-    })();
+    const states = await userService.getState();
+    setStates(states);
+    const result = await userService.getUserById({
+      userId: props.UserId,
+      headerData: localStorage.getItem("token"),
+    });
+    setUserData(result.output);
+  };
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line
   }, []);
 
   const {
@@ -36,32 +46,38 @@ const UserDetails = (props) => {
   });
 
   useEffect(() => {
-    setUserData(props.UserDetails);
-    setValue("prefix", props.UserDetails.prefix);
+    setValue("prefix", userDetails.prefix);
     setValue(
       "medicalcardImage",
-      props.UserDetails.medicalcardImage ||
-        `medicalcardImage${props.UserDetails.id}.jpg`
+      userDetails.medicalcardImage || `medicalcardImage${userDetails.id}.jpg`
     );
     setValue(
       "licenceFrontImage",
-      props.UserDetails.licenceFrontImage ||
-        `licenceFrontImage${props.UserDetails.id}.jpg`
+      userDetails.licenceFrontImage || `licenceFrontImage${userDetails.id}.jpg`
     );
     setValue(
       "licenceBackImage",
-      props.UserDetails.licenceBackImage ||
-        `licenceBackImage${props.UserDetails.id}.jpg`
+      userDetails.licenceBackImage || `licenceBackImage${userDetails.id}.jpg`
     );
-    setValue("firstName", props.UserDetails.firstName);
-    setValue("lastName", props.UserDetails.lastName);
-    setValue("email", props.UserDetails.email);
-    setValue("contactNo", props.UserDetails.contactNo);
-    setValue("licenceNumber", props.UserDetails.licenceNumber);
-    setValue("licenceType", props.UserDetails.licenceType);
-    setValue("licenseFirstName", props.UserDetails.licenseFirstName);
-    setValue("licenseLastName", props.UserDetails.licenseLastName);
-  }, [props, setValue]);
+    setValue("firstName", userDetails.firstName);
+    setValue("lastName", userDetails.lastName);
+    setValue("email", userDetails.email);
+    setValue("contactNo", userDetails.contactNo);
+    setValue("licenceNumber", userDetails.licenceNumber);
+    setValue("licenceType", userDetails.licenceType);
+    setValue("licenseFirstName", userDetails.licenseFirstName);
+    setValue("licenseLastName", userDetails.licenseLastName);
+    setValue("licenceIssueState", userDetails.licenceIssueState);
+    if (userDetails.licenseIssueDate) {
+      setValue("licenseIssueDate", userDetails.licenseIssueDate.split("T")[0]);
+    }
+    if (userDetails.licenceExpireDate) {
+      setValue(
+        "licenceExpireDate",
+        userDetails.licenceExpireDate.split("T")[0]
+      );
+    }
+  }, [userDetails, setValue]);
 
   useEffect(() => {
     let change = false;
@@ -80,26 +96,8 @@ const UserDetails = (props) => {
   }, [watch()]);
 
   useEffect(() => {
-    setValue("state", props.UserDetails.state);
-    setValue("licenceIssueState", props.UserDetails.licenceIssueState);
-    if (userDetails.licenseIssueDate) {
-      setValue("licenseIssueDate", userDetails.licenseIssueDate.split("T")[0]);
-    }
-    if (userDetails.licenceExpireDate) {
-      setValue(
-        "licenceExpireDate",
-        userDetails.licenceExpireDate.split("T")[0]
-      );
-    }
-  }, [
-    States,
-    setValue,
-    userDetails,
-    props.UserDetails.state,
-    props.UserDetails.licenceIssueState,
-    userDetails.licenseIssueDate,
-    userDetails.licenceExpireDate,
-  ]);
+    setValue("state", userDetails.state);
+  }, [States, setValue, userDetails]);
 
   const submitCustomerData = async (data) => {
     const { output, error } = await updateService.updateUser({
@@ -113,11 +111,17 @@ const UserDetails = (props) => {
       successToast(output.message);
       props.UpdateLoan();
       setEditing(false);
+      fetchData();
     }
   };
 
   return (
     <div className="w-full border-2 rounded-md flex flex-col gap-y-3 md:h-full md:overflow-y-auto border-primary-color-1 dark:border-primary-color-10 px-4">
+      <DocumentModel
+        display={modelVisible}
+        setDisplay={setModelVisible}
+        image={modelImage}
+      />
       <form
         onSubmit={handleSubmit(submitCustomerData)}
         className="flex flex-col gap-5"
@@ -571,7 +575,57 @@ const UserDetails = (props) => {
             </div>
           </div>
         </div>
-        <div className="w-full flex justify-end px-36 gap-4">
+        <div className="my-3 w-fit">
+          <FormTitle formTitle={"Personal Document"} />
+        </div>
+        <div className="flex flex-col gap-3 mx-10 justify-around">
+          <div className="font-medium text-xl flex gap-x-2 items-center">
+            <button
+              type="button"
+              className="font-medium border border-black px-5 py-2.5 hover:bg-primary-color-9/20"
+              onClick={() => {
+                setModelVisible("visible");
+                setModelImage({
+                  link: userDetails.licenceFrontImage,
+                  name: "licenceFrontImage",
+                });
+              }}
+            >
+              License Image (front)
+            </button>
+          </div>
+          <div className="font-medium text-xl flex gap-x-2 items-center">
+            <button
+              type="button"
+              className="font-medium border border-black px-5 py-2.5 hover:bg-primary-color-9/20"
+              onClick={() => {
+                setModelVisible("visible");
+                setModelImage({
+                  link: userDetails.licenceBackImage,
+                  name: "licenceBackImage",
+                });
+              }}
+            >
+              License Image (back)
+            </button>
+          </div>
+          <div className="font-medium text-xl flex gap-x-2 items-center">
+            <button
+              type="button"
+              className="font-medium border border-black px-5 py-2.5 hover:bg-primary-color-9/20"
+              onClick={() => {
+                setModelVisible("visible");
+                setModelImage({
+                  link: userDetails.medicalcardImage,
+                  name: "medicalcardImage",
+                });
+              }}
+            >
+              Medical-card Image
+            </button>
+          </div>
+        </div>
+        <div className="w-full flex justify-end px-36 gap-4 pb-3">
           <button
             type="button"
             onClick={() => setEditing(true)}
@@ -593,4 +647,4 @@ const UserDetails = (props) => {
   );
 };
 
-export default UserDetails;
+export default UserDetail;
